@@ -112,6 +112,7 @@ class PostController extends Controller{
       if(!empty($post)){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
+        $post->tags_are = $post->tags;
         $this->response['status'] = "1";
         $this->response['data']['post'] = $post;
       }

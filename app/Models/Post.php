@@ -25,4 +25,8 @@ class Post extends Model
         'video_thumb_image',
         'link_id'
     ];
+
+    public function tags(){
+      return $this->belongsToMany('App\Models\Tag','posts_tags','post_id','tag_id');
+    }
 }
