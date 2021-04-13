@@ -26,9 +26,6 @@ class PostController extends Controller{
 
     /*get data*/
     $post =  Post::query();
-    $post->leftJoin('categories', function($join){
-      $join->on('posts.category_id','=','categories.id');
-    });
     $post->where(['posts.status'=>'1']);
     $post->orderBy('posts.updated_at','desc');
     if(!empty($request->limit)){
@@ -36,11 +33,12 @@ class PostController extends Controller{
       $post->offset(($request->page - 1) * $request->limit);
     }
     $post->orderBy('posts.created_at','desc');
-    $posts = $post->get(['posts.id','posts.title as post_title','posts.post_type','posts.image','posts.content','categories.title as category_title','posts.created_at']);
+    $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
+        $post->category = $post->category;
       }
       $this->response['status'] = "1";
       $this->response['data']['total_count'] = $totalCount;
@@ -62,9 +60,9 @@ class PostController extends Controller{
 
     /*get data*/
     $post =  Post::query();
-    $post->leftJoin('categories', function($join){
-      $join->on('posts.category_id','=','categories.id');
-    });
+    // $post->leftJoin('categories', function($join){
+    //   $join->on('posts.category_id','=','categories.id');
+    // });
     $post->where(['posts.post_type'=>'1','posts.status'=>'1']);
     $post->orderBy('posts.updated_at','desc');
     if(!empty($request->limit)){
@@ -72,11 +70,13 @@ class PostController extends Controller{
       $post->offset(($request->page - 1) * $request->limit);
     }
     $post->orderBy('posts.created_at','desc');
-    $posts = $post->get(['posts.id','posts.title as post_title','posts.image','posts.content','categories.title as category_title','posts.created_at']);
+    $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
+    //$posts = $post->get(['posts.*']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
+        $post->category = $post->category;
       }
       $this->response['status'] = "1";
       $this->response['data']['total_count'] = $totalCount;
@@ -108,11 +108,11 @@ class PostController extends Controller{
         $join->on('posts.category_id','=','categories.id');
       })
       ->where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
-      ->first(['posts.*','categories.title as category_title']);
+      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','categories.title as category_title']);
       if(!empty($post)){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
-        $post->tags_are = $post->tags;
+        $post->tags = $post->tags;
         $this->response['status'] = "1";
         $this->response['data']['post'] = $post;
       }
@@ -126,5 +126,107 @@ class PostController extends Controller{
     $this->sendResponse($this->response);
   }
 
+  public function getNewsListByTag(Request $request){
+    $posts = [];
+    $validation['tag_slug'] = 'required|string|exists:tags,slug';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    $this->error = $this->validateError($validator);
+    if(count($this->error) == 0){
+      $slug = $request->tag_slug;
+      /*get total count*/
+      $post =  Post::query();
+      $post->where(['posts.post_type'=>'1','posts.status'=>'1']);
+      $post->whereHas('tags', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $totalCount = $post->count();
+
+      /*get data*/
+      $post =  Post::query();
+      $post->leftJoin('categories', function($join){
+        $join->on('posts.category_id','=','categories.id');
+      });
+      $post->where(['posts.post_type'=>'1','posts.status'=>'1']);
+      $post->whereHas('tags', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $post->orderBy('posts.updated_at','desc');
+      if(!empty($request->limit)){
+        $post->limit($request->limit);
+        $post->offset(($request->page - 1) * $request->limit);
+      }
+      $post->orderBy('posts.created_at','desc');
+      $posts = $post->get(['posts.id','posts.title as post_title','posts.image','posts.content','categories.title as category_title','posts.created_at']);
+      if(count($posts)>0){
+        foreach($posts as $key=>$post){
+          $post->image = url('images/posts/news',$post->image);
+          $post->user_name = 'Jhone Smith';
+          //$post->category = $post->category;
+        }
+        $this->response['status'] = "1";
+        $this->response['data']['total_count'] = $totalCount;
+        $this->response['data']['posts'] = $posts;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(["Sorry, there is no data to display."]);
+      }
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+  }
+
+  public function getNewsListByCategory(Request $request){
+    $posts = [];
+    $validation['category_slug'] = 'required|string|exists:categories,slug';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    $this->error = $this->validateError($validator);
+    if(count($this->error) == 0){
+      $slug = $request->category_slug;
+      /*get total count*/
+      $post =  Post::query();
+      $post->where(['posts.post_type'=>'1','posts.status'=>'1']);
+      $post->whereHas('category', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $totalCount = $post->count();
+
+      /*get data*/
+      $post =  Post::query();
+      $post->where(['posts.post_type'=>'1','posts.status'=>'1']);
+      $post->whereHas('category', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $post->orderBy('posts.updated_at','desc');
+      if(!empty($request->limit)){
+        $post->limit($request->limit);
+        $post->offset(($request->page - 1) * $request->limit);
+      }
+      $post->orderBy('posts.created_at','desc');
+      $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
+      if(count($posts)>0){
+        foreach($posts as $key=>$post){
+          $post->image = url('images/posts/news',$post->image);
+          $post->user_name = 'Jhone Smith';
+          $post->category = $post->category;
+        }
+        $this->response['status'] = "1";
+        $this->response['data']['total_count'] = $totalCount;
+        $this->response['data']['posts'] = $posts;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(["Sorry, there is no data to display."]);
+      }
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+  }
 
 }

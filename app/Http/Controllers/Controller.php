@@ -42,4 +42,19 @@ class Controller extends BaseController
     	$datetime = (trim($datetime)=='') ? date($format) : $datetime;
     	return date($format,strtotime($datetime));
     }
+
+    public function validateError($validator){
+      $errorArray = [];
+      if($validator->fails()){
+       $errors = json_decode($validator->errors()->toJson(), true);
+       if (!empty($errors)){
+          foreach($errors as $k => $v) {
+            foreach($v as $error){
+              $errorArray[] = $error;
+            }
+          }
+       }
+      }
+      return $errorArray;
+    }
 }

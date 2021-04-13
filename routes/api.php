@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::any('/get_post_list', [App\Http\Controllers\API\PostController::class, 'getPostList']);
 Route::any('/get_news_list', [App\Http\Controllers\API\PostController::class, 'getNewsList']);
 Route::any('/get_news_detail', [App\Http\Controllers\API\PostController::class, 'getNewsDetail']);
+Route::any('/get_news_list_by_tag', [App\Http\Controllers\API\PostController::class, 'getNewsListByTag']);
+Route::any('/get_news_list_by_category', [App\Http\Controllers\API\PostController::class, 'getNewsListByCategory']);

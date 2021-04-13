@@ -14,4 +14,8 @@ class Category extends Model
         'status',
         'post_type'
     ];
+
+    public function post(){
+      return $this->hasMany('App\Models\Post');
+    }
 }

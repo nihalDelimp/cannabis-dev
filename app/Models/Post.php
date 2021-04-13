@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    protected $hidden = ['pivot'];
     protected $fillable = [
         'title',
         'sub_title',
@@ -27,6 +28,10 @@ class Post extends Model
     ];
 
     public function tags(){
-      return $this->belongsToMany('App\Models\Tag','posts_tags','post_id','tag_id');
+      return $this->belongsToMany('App\Models\Tag','posts_tags','post_id','tag_id')->select(['tags.id', 'tags.title', 'tags.slug']);
+    }
+
+    public function category(){
+      return $this->belongsTo('App\Models\Category','category_id')->select(['categories.id', 'categories.title', 'categories.slug']);
     }
 }
