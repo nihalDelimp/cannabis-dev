@@ -8,7 +8,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\User;
+use Illuminate\Support\Str;
+use App\Models\User;
 //use App\Mail\ForgotMail;
 use Illuminate\Support\Facades\Mail;
 use App;
@@ -52,12 +53,6 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $user = User::where('email',$request->email)->first();
-        if($user && !$user->is_verified){
-          return redirect()->back()->with('error','your account is still pending for self varifiction check your inbox or spam.');
-        }
-        if($user && !$user->status){
-          return redirect()->back()->with('error','your account is not active.');
-        }
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -168,7 +163,7 @@ class LoginController extends Controller
       $validate['email'] = 'required|email|exists:users';
       $request->validate($validate);
       $user = User::where('email','=',$request->email)->first();
-      $password = str_random(8);
+      $password = Str::random(8);
       User::whereId($user->id)->update(array('password'=>Hash::make($password)));
       $data = array(
         'name' => $user->name,

@@ -158,12 +158,12 @@ class PostController extends Controller{
         $post->offset(($request->page - 1) * $request->limit);
       }
       $post->orderBy('posts.created_at','desc');
-      $posts = $post->get(['posts.id','posts.title as post_title','posts.image','posts.content','categories.title as category_title','posts.created_at']);
+      $posts = $post->get(['posts.id','posts.title as post_title','posts.slug','posts.image','posts.content','posts.category_id','posts.created_at']);
       if(count($posts)>0){
         foreach($posts as $key=>$post){
           $post->image = url('images/posts/news',$post->image);
           $post->user_name = 'Jhone Smith';
-          //$post->category = $post->category;
+          $post->category = $post->category;
         }
         $this->response['status'] = "1";
         $this->response['data']['total_count'] = $totalCount;

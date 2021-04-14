@@ -6,14 +6,19 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public $login_account;
     public $response = [];
     public $error = [];
     public function __construct(){
       $this->middleware(function ($request, $next) {
+      if(Auth::check()){
+        $this->login_account = Auth::user();
+      }
       return $next($request);
       });
     }

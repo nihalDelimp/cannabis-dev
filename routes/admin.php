@@ -14,6 +14,7 @@
 Route::get('/', function () {
   return redirect(route('admin',app()->getLocale()));
 });
+
 Route::group([
   'prefix' => '{locale}',
   'where' => ['locale' => '[a-zA-Z]{2}'],
@@ -28,7 +29,6 @@ Route::group([
   }
 );
 
-Route::get('generateinvoicepdf/{query_id}/{product_type}', 'LeadController@generateInvoicePdf')->name('request.invoicepdf');
 
 Route::group([
   'prefix' => '{locale}',
