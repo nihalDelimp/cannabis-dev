@@ -108,7 +108,7 @@ class PostController extends Controller{
         $join->on('posts.category_id','=','categories.id');
       })
       ->where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
-      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','categories.title as category_title']);
+      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','categories.title as category_title']);
       if(!empty($post)){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';

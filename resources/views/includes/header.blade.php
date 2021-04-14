@@ -1,0 +1,51 @@
+<a href="#" class="logo">
+  <span class="logo-mini"><img src="{{ asset('favicon.png')}}" /></span>
+  <span class="logo-lg"><img src="{{ asset('logo.png')}}" /></span>
+</a>
+<nav class="navbar navbar-static-top">
+  <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+    <span class="sr-only">Toggle navigation</span>
+  </a>
+  <div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+      <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <img src="{{ url('profile/dummy-profile-image.jpg') }}" class="user-image" alt="User Image">
+          <span class="hidden-xs">{{ Auth::user()->name }} <strong>(@if(Auth::user()->role == 1)
+            {{ langMessage('super admin') }}
+          @elseif(Auth::user()->role == 2)
+            {{ langMessage('sub admin') }}
+          @elseif(Auth::user()->role == 3)
+            {{ langMessage('company admin') }}
+          @else
+            {{ langMessage('sales representative') }}
+          @endif)</strong>
+
+          </span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="user-header">
+            <img src="{{ url('profile/dummy-profile-image.jpg') }}" class="img-circle" alt="User Image">
+            <p>{{ Auth::user()->name }}</p>
+          </li>
+          <li class="user-footer">
+            <div class="pull-left">
+              <a class="btn btn-default btn-flat" href="{{ route('dashboard.editprofile',app()->getLocale()) }}">@lang(strtolower('Profile'))</a>
+            </div>
+            <div class="pull-right">
+              <a class="btn btn-default btn-flat" href="{{ route('logout',app()->getLocale()) }}"
+                 onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();">
+                  @lang(strtolower('Sign out'))
+              </a>
+
+              <form id="logout-form" action="{{ route('logout',app()->getLocale()) }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
