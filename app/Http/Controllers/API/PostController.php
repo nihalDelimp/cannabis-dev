@@ -104,15 +104,13 @@ class PostController extends Controller{
      }
     }
     if(count($this->error) == 0){
-      $post = Post::leftJoin('categories', function($join){
-        $join->on('posts.category_id','=','categories.id');
-      })
-      ->where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
-      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','categories.title as category_title']);
+      $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
+      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.category_id']);
       if(!empty($post)){
         $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->tags = $post->tags;
+        $post->category = $post->category;
         $this->response['status'] = "1";
         $this->response['data']['post'] = $post;
       }
