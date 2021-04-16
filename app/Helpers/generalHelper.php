@@ -128,7 +128,7 @@ function getLatLongByAddress($address){
 function getEmailTemplate($slug){
   if(trim($slug)!=""){
     $locale = app()->getLocale();
-    $template = App\Template::where('slug',$slug)->first(['subject','name','message_'.$locale.' as message'])->toArray();
+    $template = App\Models\Template::where('slug',$slug)->first(['subject','name','message_'.$locale.' as message'])->toArray();
     return $template;
   }
   return false;

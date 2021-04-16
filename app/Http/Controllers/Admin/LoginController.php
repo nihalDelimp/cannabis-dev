@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\User;
-//use App\Mail\ForgotMail;
+use App\Mail\ForgotMail;
 use Illuminate\Support\Facades\Mail;
 use App;
 class LoginController extends Controller
@@ -169,7 +169,7 @@ class LoginController extends Controller
         'name' => $user->name,
         'password' => $password
       );
-      //Mail::to($request->email)->send(new ForgotMail($data));
+      Mail::to($request->email)->send(new ForgotMail($data));
       return back()->with('success', 'Thanks we have sent your password!');
     }
 }

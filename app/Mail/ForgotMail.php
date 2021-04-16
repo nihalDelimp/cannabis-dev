@@ -27,8 +27,8 @@ class ForgotMail extends Mailable
      * @return $this
      */
     public function build(){
-      //$template = getEmailTemplate('forgot-password-success');
-      //File::put(base_path('resources/views/includes/email/forgot_password.blade.php'),$template['message']);
+      $template = getEmailTemplate('forgot-password-success');
+      File::put(base_path('resources/views/includes/email/forgot_password.blade.php'),$template['message']);
       return $this->from('info@thsbooking.com','Cannabis Capitol')->subject(langMessage($template['subject']))->view('includes.email.forgot_password')->with('data', $this->data);
     }
 }
