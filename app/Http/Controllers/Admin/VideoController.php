@@ -12,33 +12,33 @@ use App\Models\Tag;
 use File;
 use ImageResize;
 
-class NewsController extends Controller{
+class VideoController extends Controller{
   public function __construct(){
     parent::__construct();
     //$this->middleware('adminAuth');
   }
 
   public function index(){
-    $pageHeading = "Manage News";
-    $categories = Category::where(['post_type'=>'1','status'=>'1'])->get();
-    return view('admin.news.index',compact('pageHeading','categories'));
+    $pageHeading = "Manage Video";
+    $categories = Category::where(['post_type'=>'2','status'=>'1'])->get();
+    return view('admin.video.index',compact('pageHeading','categories'));
   }
 
   public function create(){
-    $pageHeading = "Add News";
-    $categories = Category::where(['post_type'=>'1','status'=>'1'])->get();
-    $tags = Tag::where(['post_type'=>'1','status'=>'1'])->get();
-    return view('admin.news.create',compact('pageHeading','categories','tags'));
+    $pageHeading = "Add Video";
+    $categories = Category::where(['post_type'=>'2','status'=>'1'])->get();
+    $tags = Tag::where(['post_type'=>'2','status'=>'1'])->get();
+    return view('admin.video.create',compact('pageHeading','categories','tags'));
   }
 
   public function edit(Request $request){
     $id = $request->segment(4);
-    $pageHeading = "Update News";
-    $news = Post::where(['id'=>$id,'post_type'=>'1'])->first();
-    $news->tags = $news->tags->pluck('id')->toArray();
-    $categories = Category::where(['post_type'=>'1','status'=>'1'])->get();
-    $tags = Tag::where(['post_type'=>'1','status'=>'1'])->get();
-    return view('admin.news.edit',compact('pageHeading','news','categories','tags'));
+    $pageHeading = "Update Video";
+    $video = Post::where(['id'=>$id,'post_type'=>'2'])->first();
+    $video->tags = $video->tags->pluck('id')->toArray();
+    $categories = Category::where(['post_type'=>'2','status'=>'1'])->get();
+    $tags = Tag::where(['post_type'=>'2','status'=>'1'])->get();
+    return view('admin.video.edit',compact('pageHeading','video','categories','tags'));
   }
 
   public function store(Request $request){
@@ -47,10 +47,11 @@ class NewsController extends Controller{
     $validate['sub_title'] = 'required';
     $validate['content'] = 'required';
     $validate['status'] = 'required';
+    $validate['link_id'] = 'required';
     $validate['category_id'] = 'required';
     $validate['image'] = 'required|mimes:jpeg,png,jpg|max:51200';
     $messages = [];
-    $attributes = ['category_id'=>'category','sub_title'=>'Sub Title'];
+    $attributes = ['category_id'=>'category','sub_title'=>'Sub Title','link_id'=>'Youtube Link Id'];
     $validator = Validator::make($request->all(),$validate,$messages,$attributes);
     if($validator->fails()){
       return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -61,12 +62,14 @@ class NewsController extends Controller{
     $insert['sub_title'] = $request->sub_title;
     $insert['content'] = $request->content;
     $insert['status'] = $request->status;
+    $insert['link_id'] = $request->link_id;
     $insert['category_id'] = $request->category_id;
+    $insert['post_type'] = 2;
     $tags_id = $request->tags_id;
     if(!empty($image)){
       $imageHeight = ImageResize::make($image)->height();
       $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/news');
+      $destinationPath = public_path('images/posts/video');
 
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
       $insert['image'] = time().'-'.$insert['slug'].'.'.$image->getClientOriginalExtension();
@@ -92,12 +95,12 @@ class NewsController extends Controller{
       }
       $image->move($destinationPath, $insert['image']);
     }
-    $news = Post::create($insert);
+    $video = Post::create($insert);
     if(!empty($tags_id)){
       $tags = Tag::find($tags_id);
-      $news->tags()->attach($tags);
+      $video->tags()->attach($tags);
     }
-    return redirect(route('news.index',app()->getLocale()))->with('success', 'News added successfully.');
+    return redirect(route('video.index',app()->getLocale()))->with('success', 'Video added successfully.');
   }
 
   public function update(Request $request){
@@ -127,7 +130,7 @@ class NewsController extends Controller{
     if(!empty($image)){
       $imageHeight = ImageResize::make($image)->height();
       $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/news');
+      $destinationPath = public_path('images/posts/video');
 
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
       $update['image'] = time().'-'.$update['slug'].'.'.$image->getClientOriginalExtension();
@@ -160,7 +163,7 @@ class NewsController extends Controller{
       $news = Post::find($id);
       $news->tags()->sync($tags_id);
     }
-    return redirect(route('news.index',app()->getLocale()))->with('success', 'News is successfully updated');
+    return redirect(route('video.index',app()->getLocale()))->with('success', 'Video is successfully updated');
   }
 
   public function getSearchableFields($request){
@@ -174,7 +177,7 @@ class NewsController extends Controller{
     return $search;
   }
 
-  public function getNews(Request $request){
+  public function getVideo(Request $request){
     $search = $this->getSearchableFields($request->all());
     $columns = array(0=>'id', 1=>'title', 2=>'category_id', 3=>'status', 4=>'created_at', 5=>'id');
 
@@ -193,7 +196,7 @@ class NewsController extends Controller{
           $temp->where('posts.category_id','=',$sh->category_id);
         }
     }
-    $temp->where('posts.post_type','=','1');
+    $temp->where('posts.post_type','=','2');
     $temp->offset($start);
     $temp->limit($limit);
     $temp->orderBy($order,$dir);
@@ -208,15 +211,15 @@ class NewsController extends Controller{
           $temp->where('posts.category_id','=',$sh->category_id);
         }
       }
-      $temp->where('posts.post_type','=','1');
+      $temp->where('posts.post_type','=','2');
       $totalData  = $temp->count();
       $totalFiltered = $totalData;
     $data = array();
     if(!empty($temps)){
       foreach ($temps as $key=>$temp){
-        $show =  route('news.show', ['news' => $temp->id, 'locale' => app()->getLocale()]);
-        $edit =  route('news.edit', ['news' => $temp->id, 'locale' => app()->getLocale()]);
-        $destroy = route('news.destroy', ['news' => $temp->id, 'locale' => app()->getLocale()]);
+        $show =  route('video.show', ['video' => $temp->id, 'locale' => app()->getLocale()]);
+        $edit =  route('video.edit', ['video' => $temp->id, 'locale' => app()->getLocale()]);
+        $destroy = route('video.destroy', ['video' => $temp->id, 'locale' => app()->getLocale()]);
         $nestedData['sn'] = ($start+$key+1);
         $nestedData['name'] = $temp->title;
         $nestedData['category'] = $temp->category;
@@ -244,26 +247,26 @@ class NewsController extends Controller{
 
   public function destroy(Request $request){
     $id = $request->segment(4);
-    $news = Post::findOrFail($id);
-    if(!empty($news->image)  && file_exists(public_path('images/posts/news/'.$news->image))){
-      @unlink(public_path('images/posts/news/'.$news->image));
-      if(getcwd().'images/posts/news/'.$news->image){
-        @unlink(getcwd().'/public/images/posts/news/main/'.$news->image);
-        @unlink(getcwd().'/public/images/posts/news/listing/'.$news->image);
+    $video = Post::findOrFail($id);
+    if(!empty($video->image)  && file_exists(public_path('images/posts/video/'.$video->image))){
+      @unlink(public_path('images/posts/video/'.$video->image));
+      if(getcwd().'images/posts/video/'.$video->image){
+        @unlink(getcwd().'/public/images/posts/video/main/'.$video->image);
+        @unlink(getcwd().'/public/images/posts/video/listing/'.$video->image);
       }
     }
-    $news->tags()->detach();
-    $news->delete();
-    return redirect(route('news.index',app()->getLocale()))->with('success', 'News is deleted successfully.');
+    $video->tags()->detach();
+    $video->delete();
+    return redirect(route('video.index',app()->getLocale()))->with('success', 'Video is deleted successfully.');
   }
 
   public function removeNewsImage($news_id){
     $news = Post::findOrFail($news_id);
-    if(!empty($news->image)  && file_exists(public_path('images/posts/news/'.$news->image))){
-      @unlink(public_path('images/posts/news/'.$news->image));
-      if(getcwd().'images/posts/news/'.$news->image){
-        @unlink(getcwd().'/public/images/posts/news/main/'.$news->image);
-        @unlink(getcwd().'/public/images/posts/news/listing/'.$news->image);
+    if(!empty($news->image)  && file_exists(public_path('images/posts/video/'.$news->image))){
+      @unlink(public_path('images/posts/video/'.$news->image));
+      if(getcwd().'images/posts/video/'.$news->image){
+        @unlink(getcwd().'/public/images/posts/video/main/'.$news->image);
+        @unlink(getcwd().'/public/images/posts/video/listing/'.$news->image);
       }
     }
   }

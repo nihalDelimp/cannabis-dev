@@ -58,6 +58,8 @@ Route::group([
   Route::post('getTag', 'TagController@getTag')->name('getTag');
   Route::resource('news', 'NewsController');
   Route::post('getNews', 'NewsController@getNews')->name('getNews');
+  Route::resource('video', 'VideoController');
+  Route::post('getVideo', 'VideoController@getVideo')->name('getVideo');
   Route::resource('template', 'TemplateController');
   Route::post('getTemplates', 'TemplateController@getTemplates')->name('getTemplates');
   Route::resource('job', 'JobController');

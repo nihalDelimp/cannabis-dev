@@ -33,10 +33,10 @@ class PostController extends Controller{
       $post->offset(($request->page - 1) * $request->limit);
     }
     $post->orderBy('posts.created_at','desc');
-    $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
+    $posts = $post->get(['id','title','slug','category_id','image','post_type','content','created_at']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
-        $post->image = url('images/posts/news/listing',$post->image);
+        $post->image = ($post->post_type == '1')?url('images/posts/news/listing',$post->image):url('images/posts/video/listing',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->category = $post->category;
       }
