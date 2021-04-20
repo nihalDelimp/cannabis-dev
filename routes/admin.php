@@ -52,6 +52,12 @@ Route::group([
   Route::resource('sales_user', 'SalesController');
   Route::post('getsalesusers', 'SalesController@getSalesUsers')->name('getsalesusers');
   Route::get('sales_user/{site}/delete', ['as' => 'sales_user.delete', 'uses' => 'SalesController@destroy']);
+  Route::resource('category', 'CategoryController');
+  Route::post('getCategory', 'CategoryController@getCategory')->name('getCategory');
+  Route::resource('tag', 'TagController');
+  Route::post('getTag', 'TagController@getTag')->name('getTag');
+  Route::resource('news', 'NewsController');
+  Route::post('getNews', 'NewsController@getNews')->name('getNews');
   Route::resource('template', 'TemplateController');
   Route::post('getTemplates', 'TemplateController@getTemplates')->name('getTemplates');
   Route::resource('job', 'JobController');

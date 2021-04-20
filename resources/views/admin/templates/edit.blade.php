@@ -35,7 +35,7 @@
         </ul>
       </div>
     @endif
-    <form method="post" action="{{ route('template.update', ['id'=>$template->id,'locale'=>app()->getLocale()]) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('template.update', ['template'=>$template->id,'locale'=>app()->getLocale()]) }}" enctype="multipart/form-data">
       @csrf
       @method('PATCH')
         <div class="form-group">

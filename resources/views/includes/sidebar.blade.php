@@ -25,16 +25,40 @@
     <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('template.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage email template')}}</a></li>
     </ul>
     </li>
-    <li class="treeview {{ $controller == 'CompanyController'?'active menu-open':''}}">
+    <li class="treeview {{ $controller == 'CategoryController'?'active menu-open':''}}">
     <a href="#">
-    <i class="fa fa-table"></i> <span>{{langMessage('company')}}</span>
+    <i class="fa fa-table"></i> <span>{{langMessage('Category')}}</span>
     <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>
     </span>
     </a>
     <ul class="treeview-menu">
-    <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('company_user.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
-    <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('company_user.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
+    <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('category.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
+    <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('category.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
+    </ul>
+    </li>
+    <li class="treeview {{ $controller == 'TagController'?'active menu-open':''}}">
+    <a href="#">
+    <i class="fa fa-table"></i> <span>{{langMessage('Tag')}}</span>
+    <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+    <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('tag.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
+    <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('tag.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
+    </ul>
+    </li>
+    <li class="treeview {{ $controller == 'NewsController'?'active menu-open':''}}">
+    <a href="#">
+    <i class="fa fa-table"></i> <span>{{langMessage('News')}}</span>
+    <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+    <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('news.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
+    <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('news.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
     </ul>
     </li>
     <li class="treeview {{ $controller == 'SalesController'?'active menu-open':''}}">

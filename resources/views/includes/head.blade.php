@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="{{ asset('bower_components/fullcalendar/dist/fullcalendar.print.min.css') }}" media="print">
 <link href="{{ asset('bower_components/Ionicons/css/ionicons.min.css') }}" rel="stylesheet">
 <link href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet" >
 <link href="{{ asset('dist/css/AdminLTE.min.css') }}" rel="stylesheet">
 <link href="{{ asset('dist/css/skins/_all-skins.min.css') }}" rel="stylesheet">
 <link href="{{ asset('bower_components/morris.js/morris.css') }}" rel="stylesheet">

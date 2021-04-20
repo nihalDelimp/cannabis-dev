@@ -34,6 +34,7 @@
 
 <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
 <script src="{{ asset('bower_components/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 <!-- <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script> -->

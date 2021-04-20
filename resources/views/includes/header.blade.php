@@ -1,6 +1,6 @@
 <a href="#" class="logo">
-  <span class="logo-mini"><img src="{{ asset('favicon.png')}}" /></span>
-  <span class="logo-lg"><img src="{{ asset('logo.png')}}" /></span>
+  <!-- <span class="logo-mini"><img src="{{ asset('favicon.png')}}" /></span> -->
+  <span class="logo-lg"><img src="{{ asset('sidebar_logo.png')}}" /></span>
 </a>
 <nav class="navbar navbar-static-top">
   <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">

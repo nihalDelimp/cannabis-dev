@@ -16,17 +16,11 @@ class TemplateController extends Controller{
  }
 
   public function index(){
-    $this->subAdmin_accessDenied();
-    $this->companyAdmin_accessDenied();
-    $this->salesRep_accessDenied();
     $pageHeading = "Manage Email Templates";
     return view('admin.templates.index',compact('pageHeading'));
   }
 
   public function create(){
-    $this->subAdmin_accessDenied();
-    $this->companyAdmin_accessDenied();
-    $this->salesRep_accessDenied();
     $pageHeading = "Add Email Template";
     return view('admin.templates.create',compact('pageHeading'));
   }
@@ -61,9 +55,6 @@ class TemplateController extends Controller{
   }
 
   public function edit(Request $request, $id){
-    $this->subAdmin_accessDenied();
-    $this->companyAdmin_accessDenied();
-    $this->salesRep_accessDenied();
     $id = $request->segment(4);
     $pageHeading = "Update Template";
     $template = Template::findOrFail($id);
@@ -172,9 +163,9 @@ class TemplateController extends Controller{
     $data = array();
     if(!empty($temps)){
       foreach ($temps as $key=>$temp){
-        $show =  route('template.show', ['id' => $temp->id, 'locale' => app()->getLocale()]);
-        $edit =  route('template.edit', ['id' => $temp->id, 'locale' => app()->getLocale()]);
-        $destroy = route('template.destroy', ['id' => $temp->id, 'locale' => app()->getLocale()]);
+        $show =  route('template.show', ['template' => $temp->id, 'locale' => app()->getLocale()]);
+        $edit =  route('template.edit', ['template' => $temp->id, 'locale' => app()->getLocale()]);
+        $destroy = route('template.destroy', ['template' => $temp->id, 'locale' => app()->getLocale()]);
         $nestedData['sn'] = ($start+$key+1);
         $nestedData['name'] = $temp->name;
         $nestedData['hint'] = $temp->hint;
