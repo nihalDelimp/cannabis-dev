@@ -245,7 +245,7 @@ class PostController extends Controller{
       $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
       ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.link_id','posts.category_id','posts.created_at']);
       if(!empty($post)){
-        $post->image = url('images/posts/news/main',$post->image);
+        $post->image = url('images/posts/video/main',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->tags = $post->tags;
         $post->category = $post->category;
