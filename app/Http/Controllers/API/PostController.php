@@ -226,4 +226,40 @@ class PostController extends Controller{
     $this->sendResponse($this->response);
   }
 
+  public function getVideoDetail(Request $request){
+    $validation['slug'] = 'required|string';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    if($validator->fails()){
+     $errors = json_decode($validator->errors()->toJson(), true);
+     if (!empty($errors)){
+        foreach($errors as $k => $v) {
+          foreach($v as $error){
+            $this->error[] = $error;
+          }
+        }
+     }
+    }
+    if(count($this->error) == 0){
+      $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
+      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.link_id','posts.category_id','posts.created_at']);
+      if(!empty($post)){
+        $post->image = url('images/posts/news/main',$post->image);
+        $post->user_name = 'Jhone Smith';
+        $post->tags = $post->tags;
+        $post->category = $post->category;
+        $this->response['status'] = "1";
+        $this->response['data']['post'] = $post;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+      }
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+  }
+
 }
