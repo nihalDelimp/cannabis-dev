@@ -16,6 +16,11 @@ class Category extends Model
     ];
 
     public function post(){
-      return $this->hasMany('App\Models\Post');
+        return $this->hasMany('App\Models\Post');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany('App\Models\Post')->where(['post_type'=>'2','status'=>'1'])->orderBy('sort', 'ASC');
     }
 }

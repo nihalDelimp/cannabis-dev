@@ -2,6 +2,7 @@
 <html>
 <head>
   @include('includes.head')
+  @yield('pagecss')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

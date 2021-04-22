@@ -61,5 +61,6 @@
     <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('video.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
     </ul>
     </li>
+    <li class="{{ $controller == 'PlayListController'?'active':''}}"><a href="{{ route('admin.play.list',app()->getLocale()) }}"><i class="fa fa-tachometer"></i> <span>{{langMessage('Play List')}}</span></a></li>
   </ul>
 </section>

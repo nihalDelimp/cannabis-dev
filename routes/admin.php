@@ -76,4 +76,10 @@ Route::group([
   Route::post('remove_uploaded_image', 'JobController@removeUploadImage')->name('remove_uploaded_image');
   Route::post('check_uploaded_image', 'JobController@checkUploadImage')->name('check_uploaded_image');
   Route::post('getcompaniesname', 'JobController@getCompaniesName')->name('getcompaniesname');
+
+  /* Play List */
+  Route::get('play-list', 'PlayListController@index')->name('admin.play.list');
+  Route::post('play-list-data', 'PlayListController@dataTable')->name('play.list.data');
+  Route::post('play-list-sort', 'PlayListController@sort')->name('play.list.sort');
+  Route::get('play-list/{id}', 'PlayListController@view')->name('play.list.view');
 });
