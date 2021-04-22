@@ -22,3 +22,4 @@ Route::any('/get_news_list', [App\Http\Controllers\API\PostController::class, 'g
 Route::any('/get_news_detail', [App\Http\Controllers\API\PostController::class, 'getNewsDetail']);
 Route::any('/get_news_list_by_tag', [App\Http\Controllers\API\PostController::class, 'getNewsListByTag']);
 Route::any('/get_news_list_by_category', [App\Http\Controllers\API\PostController::class, 'getNewsListByCategory']);
+Route::any('/get_video_detail', [App\Http\Controllers\API\PostController::class, 'getVideoDetail']);
