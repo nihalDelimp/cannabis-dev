@@ -78,7 +78,7 @@ Route::group([
   Route::post('getcompaniesname', 'JobController@getCompaniesName')->name('getcompaniesname');
 
   /* Play List */
-  Route::get('play-list', 'PlayListController@index')->name('admin.play.list');
+  Route::get('play-list', 'PlayListController@playListIndex')->name('admin.play.list');
   Route::post('play-list-data', 'PlayListController@dataTable')->name('play.list.data');
   Route::post('play-list-sort', 'PlayListController@sort')->name('play.list.sort');
   Route::get('play-list/{id}', 'PlayListController@view')->name('play.list.view');

@@ -18,7 +18,7 @@ class PlayListController extends Controller {
 		parent::__construct();
 	}
 
-	public function index()
+	public function playListIndex()
 	{
 		$pageHeading = "Play-list Categories";
 		$categories = Category::where(['post_type'=>'2','status'=>'1'])->get();
