@@ -83,7 +83,7 @@ class TagController extends Controller{
 
   public function getTag(Request $request){
     $search = $this->getSearchableFields($request->all());
-    $columns = array(0=>'id', 1=>'title', 2=>'created_at', 3=>'id');
+    $columns = array(0=>'id', 1=>'title', 2=>'post_type', 3=>'status', 4=>'created_at', 5=>'id');
 
     $limit = $request->input('length');
     $start = $request->input('start');
