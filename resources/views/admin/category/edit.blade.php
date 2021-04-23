@@ -59,6 +59,14 @@
                   <strong>{{langMessage($message)}}</strong>
               </span>
           @enderror
+        </div><div class="form-group">
+          <label for="petrol_saved">{{langMessage('Description')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+          <textarea name="description" rows="8" cols="80" class="form-control textarea border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="@lang('enter description')">{{ $category->description }}</textarea>
+          @error('description')
+              <span class="text-danger" role="alert">
+                  <strong>{{langMessage($message)}}</strong>
+              </span>
+          @enderror
         </div>
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>

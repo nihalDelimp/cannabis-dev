@@ -34,6 +34,7 @@ class CategoryController extends Controller{
   public function store(Request $request){
     $validate['title'] = 'required|unique:categories';
     $validate['post_type'] = 'required';
+    $validate['description'] = 'required';
     $validate['status'] = 'required';
     $messages = [];
     $attributes = ['post_type'=>'Type'];
@@ -45,6 +46,7 @@ class CategoryController extends Controller{
     $insert['title'] = $request->title;
     $insert['slug'] = Str::slug($request->title, '-');
     $insert['post_type'] = $request->post_type;
+    $insert['description'] = $request->description;
     $insert['status'] = $request->status;
     $news = Category::create($insert);
     return redirect(route('category.index',app()->getLocale()))->with('success', 'Category added successfully.');
@@ -54,6 +56,7 @@ class CategoryController extends Controller{
     $id = $request->segment(4);
     $validate['title'] = 'required|unique:categories,title,'.$id;
     $validate['post_type'] = 'required';
+    $validate['description'] = 'required';
     $validate['status'] = 'required';
     $messages = [];
     $attributes = ['post_type'=>'Type'];

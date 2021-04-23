@@ -12,6 +12,7 @@ class Category extends Model
         'title',
         'slug',
         'status',
+        'description',
         'post_type'
     ];
 
