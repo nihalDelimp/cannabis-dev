@@ -24,9 +24,7 @@ class PlayListController extends Controller{
 
   		$categories = Category::where('status', 1)
   			->with(['videos' => function($q) {
-  				$q->select('id','category_id','title', 'sub_title', 'link_id', 'image', 'slug')
-  				->skip(0)
-  				->take(5);
+  				$q->select('id','category_id','title', 'sub_title', 'link_id', 'image', 'slug');
   			}])
   			->orderBy('id', 'desc')
   			->limit($limit)
