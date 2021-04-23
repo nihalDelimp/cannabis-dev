@@ -49,7 +49,7 @@
     <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('news.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
     </ul>
     </li>
-    <li class="treeview {{ $controller == ('VideoController' || 'PlayListController') ?'active menu-open':''}}">
+    <li class="treeview {{ in_array($controller,['VideoController','PlayListController']) ?'active menu-open':''}}">
     <a href="#">
     <i class="fa fa-table"></i> <span>{{langMessage('Videos')}}</span>
     <span class="pull-right-container">
@@ -59,7 +59,7 @@
     <ul class="treeview-menu">
     <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('video.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
     <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('video.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
-    <li class="{{ $action == 'playListIndex'?'active':''}}"><a href="{{ route('admin.play.list',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> <span>{{langMessage('Play List')}}</span></a></li>
+    <li class="{{ $action == 'playListIndex'?'active':''}}"><a href="{{ route('admin.play.list',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> <span>{{langMessage('Playlist')}}</span></a></li>
     </ul>
     </li>
   </ul>
