@@ -24,7 +24,7 @@ class PlayListController extends Controller{
 
   		$categories = Category::where('status', 1)
   			->with(['videos' => function($q) {
-  				$q->select('id','category_id','title', 'sub_title', 'link_id')
+  				$q->select('id','category_id','title', 'sub_title', 'link_id', 'image', 'slug')
   				->skip(0)
   				->take(5);
   			}])
@@ -32,6 +32,16 @@ class PlayListController extends Controller{
   			->limit($limit)
   			->offset(($page- 1) * $page)
   			->get();
+
+  		$categories = $categories->map(function($item, $key) {
+
+  			$item->videos = $item->videos->map(function($video, $key) {
+	  			$video->image_path = $video->image_path;
+	  			return $video;
+	  		});
+
+  			return $item;
+  		});
 
   		$this->response['status'] = "1";
 		$this->response['data']['categories'] = $categories;

@@ -34,4 +34,9 @@ class Post extends Model
     public function category(){
       return $this->belongsTo('App\Models\Category','category_id')->select(['categories.id', 'categories.title', 'categories.slug']);
     }
+
+    public function getImagePathAttribute()
+    {
+        return url('images/posts/video/'.$this->image);
+    }
 }
