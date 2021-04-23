@@ -30,7 +30,7 @@ class PlayListController extends Controller{
   			}])
   			->orderBy('id', 'desc')
   			->limit($limit)
-  			->offset(($page- 1) * $page)
+  			->offset(($page - 1) * $page)
   			->get();
 
   		$categories = $categories->map(function($item, $key) {
