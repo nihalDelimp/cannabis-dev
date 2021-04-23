@@ -24,5 +24,8 @@ Route::any('/get_news_list_by_tag', [App\Http\Controllers\API\PostController::cl
 Route::any('/get_news_list_by_category', [App\Http\Controllers\API\PostController::class, 'getNewsListByCategory']);
 Route::any('/get_video_detail', [App\Http\Controllers\API\PostController::class, 'getVideoDetail']);
 
+
+Route::any('/get_related_videos', [App\Http\Controllers\API\PostController::class, 'relatedVideos']);
+
 /*video play-list */
 Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::class, 'categoriesWithVideos']);

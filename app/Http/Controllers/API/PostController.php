@@ -262,4 +262,53 @@ class PostController extends Controller{
     $this->sendResponse($this->response);
   }
 
+  public function relatedVideos(Request $request){
+    $validation['category_slug'] = 'required|string';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    $this->error = $this->validateError($validator);
+    if(count($this->error) == 0){
+      $slug = $request->category_slug;
+      /*get total count*/
+      $post =  Post::query();
+      $post->where(['posts.post_type'=>'2','posts.status'=>'1']);
+      $post->whereHas('category', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $totalCount = $post->count();
+
+      /*get data*/
+      $post =  Post::query();
+      $post->where(['posts.post_type'=>'2','posts.status'=>'1']);
+      $post->whereHas('category', function($q) use($slug){
+        $q->where(['slug'=>$slug]);
+      });
+      $post->orderBy('posts.updated_at','desc');
+      if(!empty($request->limit)){
+        $post->limit($request->limit);
+        $post->offset(($request->page - 1) * $request->limit);
+      }
+      $post->orderBy('posts.created_at','desc');
+      $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
+      if(count($posts)>0){
+        foreach($posts as $key=>$post){
+          $post->image = url('images/posts/video/listing',$post->image);
+          $post->user_name = 'Jhone Smith';
+          $post->category = $post->category;
+        }
+        $this->response['status'] = "1";
+        $this->response['data']['total_count'] = $totalCount;
+        $this->response['data']['posts'] = $posts;
+    }
+    else{
+      $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+    }
+  }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+  }
+
 }
