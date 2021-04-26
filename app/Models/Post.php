@@ -37,6 +37,6 @@ class Post extends Model
 
     public function getImagePathAttribute()
     {
-        return url('images/posts/video/'.$this->image);
+        return url('images/posts/video/listing/'.$this->image);
     }
 }
