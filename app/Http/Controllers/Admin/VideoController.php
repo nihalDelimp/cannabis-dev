@@ -42,6 +42,7 @@ class VideoController extends Controller{
   }
 
   public function store(Request $request){
+    //dd($request->all());
     $image = $request->file('image');
     $validate['title'] = 'required|unique:posts';
     $validate['sub_title'] = 'required';
@@ -95,11 +96,22 @@ class VideoController extends Controller{
       }
       $image->move($destinationPath, $insert['image']);
     }
+    if($request->is_feature) {
+      $videos = Post::where('is_feature', '1')->get();
+      $videos->map(function($item, $key) {
+        $item->is_feature = '0';
+        $item->save();
+      });
+
+      $insert['is_feature'] =  '1';
+    }
+
     $video = Post::create($insert);
     if(!empty($tags_id)){
       $tags = Tag::find($tags_id);
       $video->tags()->attach($tags);
     }
+
     return redirect(route('video.index',app()->getLocale()))->with('success', 'Video added successfully.');
   }
 
@@ -158,6 +170,16 @@ class VideoController extends Controller{
       $this->removeNewsImage($id);
     }
     $tags_id = $request->tags_id;
+
+    if($request->is_feature) {
+      $videos = Post::where('is_feature', '1')->get();
+      $videos->map(function($item, $key) {
+        $item->is_feature = '0';
+        $item->save();
+      });
+
+      $update['is_feature'] =  '1';
+    }
     Post::whereId($id)->update($update);
     if(!empty($tags_id)){
       $news = Post::find($id);

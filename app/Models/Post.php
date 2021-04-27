@@ -24,7 +24,8 @@ class Post extends Model
         'image',
         'file_path',
         'video_thumb_image',
-        'link_id'
+        'link_id',
+        'is_feature'
     ];
 
     public function tags(){

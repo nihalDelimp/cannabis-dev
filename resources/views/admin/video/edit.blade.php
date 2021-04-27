@@ -66,6 +66,11 @@
                 </span>
             @enderror
           </div>
+          <div class="checkbox">
+          <label>
+            <input type="checkbox" name="is_feature" value="1" {{$video->is_feature == '1' ? 'checked' : null}}><label> <b>{{langMessage('Featured')}}</b></label>
+          </label>
+        </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
