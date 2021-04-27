@@ -47,4 +47,19 @@ class PlayListController extends Controller{
 		$this->sendResponse($this->response);
   	}
 
+  	public function featuredVideo()
+  	{
+  		if(!$video = Post::where('is_feature', '1')->first()) {
+  			$this->response['status'] = "0";
+  			$this->response['data']['error'] = $this->langError(["Sorry, there is no data to display."]);
+			$this->sendResponse($this->response);
+  		}
+  		$video->image_path = $video->image_path;
+
+  		$this->response['status'] = "1";
+		$this->response['data']['video'] = $video;
+
+		$this->sendResponse($this->response);
+  	}
+
 }

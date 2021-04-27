@@ -29,3 +29,4 @@ Route::any('/get_related_videos', [App\Http\Controllers\API\PostController::clas
 
 /*video play-list */
 Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::class, 'categoriesWithVideos']);
+Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
