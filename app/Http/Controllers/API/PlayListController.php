@@ -56,6 +56,7 @@ class PlayListController extends Controller{
   		}
   		$video->image_path = $video->image_path;
   		$video->category_name = $video->category->title;
+  		$video->user_name = 'John Smith';
   		$video->makeHidden('category');
 
   		$this->response['status'] = "1";
