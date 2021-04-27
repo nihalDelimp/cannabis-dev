@@ -55,6 +55,8 @@ class PlayListController extends Controller{
 			$this->sendResponse($this->response);
   		}
   		$video->image_path = $video->image_path;
+  		$video->category_name = $video->category->title;
+  		$video->makeHidden('category');
 
   		$this->response['status'] = "1";
 		$this->response['data']['video'] = $video;
