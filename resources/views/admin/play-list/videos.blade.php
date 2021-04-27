@@ -28,14 +28,14 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                   
+
                     <div class="row">
                         <div class="col-xs-6">
                             <h3 class="box-title">{{langMessage($pageHeading)}}</h3>
                         </div>
                         <div class="col-xs-6">
                             <span id="sorting-msg-bx">
-                                
+
                             </span>
                         </div>
                     </div>
@@ -47,20 +47,22 @@
                         <p>{{langMessage($message)}}</p>
                     </div>
                     @endif
-                    
+
                     <ul id="sortable" class="list-group list-group-unbordered">
                         @foreach($videos as $video)
                         <li class="list-group-item" id="item-{{$video->id}}">
                             <div class="post">
-                                
                                 <div class="row margin-bottom">
-                                    <div class="col-sm-5">
-                                        <h4>{{$video->title}}</h4> {{$video->sub_title}}
+                                  <div class="col-sm-2">
+                                      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                  </div>
+                                    <div class="col-sm-4">
+                                      <h4>{{$video->category->title}} | {{$video->title}}</h4> {{$video->sub_title}}
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-2">
                                         <!--<img src="https://img.youtube.com/vi/{{ $video->link_id }}/default.jpg">-->
-                                        <img src="{{$video->image_path}}">
+                                        <img src="{{$video->image_path}}" style="width: 100%;">
                                         <!-- /.row -->
                                     </div>
                                     <div class="col-sm-2">
@@ -68,7 +70,6 @@
                                     </div>
                                     <!-- /.col -->
                                 </div>
-                                
                             </div>
                         </li>
                         @endforeach
@@ -86,7 +87,7 @@
 @section('pagejs')
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-    
+
     $('#sortable').sortable({
         axis: 'y',
         update: function (event, ui) {
@@ -104,11 +105,11 @@
                         $('#sorting-msg-bx').html('<button id="sort-order-success-btn" type="button" class="btn btn-primary btn-lrg ajax" title="Ajax Request"><i class="fa fa-fw fa-check"></i>&nbsp; Reordered</button>');
                         $('#sort-order-success-btn').delay(1000).fadeOut();
                     }
-                    console.log(data); 
+                    console.log(data);
                 }
             });
         }
     });
-    
+
 </script>
 @stop
