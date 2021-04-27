@@ -59,7 +59,8 @@
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-sm-5">
-                                        <img src="https://img.youtube.com/vi/{{ $video->link_id }}/default.jpg">
+                                        <!--<img src="https://img.youtube.com/vi/{{ $video->link_id }}/default.jpg">-->
+                                        <img src="{{$video->image_path}}">
                                         <!-- /.row -->
                                     </div>
                                     <div class="col-sm-2">
