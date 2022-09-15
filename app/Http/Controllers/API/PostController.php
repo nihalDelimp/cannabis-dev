@@ -4,8 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
 
@@ -16,6 +19,59 @@ class PostController extends Controller{
     $this->response['status'] = "0";
   }
 
+  public function storeUser(Request $request){
+    
+    //dd($request->all());
+    $name = $request->fname." ".$request->lname;
+    $data = [];
+    $data = [
+      'name' => $name,
+      'phone' => $request->phone,
+      'organization' => $request->organization,
+      'dob' => $request->dob,
+      'email' => $request->email,
+      'position' => $request->position,
+      'instagram_name' => $request->instagram_name,
+      'insterested_status' => $request->insterested_status,
+      'invited_owner' => $request->invited_owner,
+      'password'=>Hash::make($request->password),
+    ];
+    $validation['email'] = 'required|email|unique:users';
+    $validation['phone'] = 'required|unique:users';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    if($validator->fails()){
+     $errors = json_decode($validator->errors()->toJson(), true);
+     if (!empty($errors)){
+        foreach($errors as $k => $v) {
+          foreach($v as $error){
+            $this->error[] = $error;
+          }
+        }
+     }
+    }
+    if(count($this->error) == 0){
+      $user = User::create($data);
+      if(!empty($user)){
+        
+        $this->response['userId'] = $user->id;
+        $this->response['status'] = "1";
+        $this->response['data']['user'] = $user;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+      }
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+    
+    
+    // $request->title;
+    // $this->sendResponse($post);
+  }
   public function getPostList(Request $request){
     $posts = [];
 
