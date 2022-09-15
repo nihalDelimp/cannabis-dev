@@ -34,6 +34,6 @@ Route::post('users', [App\Http\Controllers\API\PostController::class, 'storeUser
 Route::post("login",[App\Http\Controllers\API\UserController::class,'index']);
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
-    Route::get("user-detail",[App\Http\Controllers\API\UserController::class,'view']);
+    Route::get("user-detail/{id}",[App\Http\Controllers\API\UserController::class,'view']);
 });
 
