@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 Route::any('/get_post_list', [App\Http\Controllers\API\PostController::class, 'getPostList']);
 Route::any('/get_news_list', [App\Http\Controllers\API\PostController::class, 'getNewsList']);
 Route::any('/get_news_detail', [App\Http\Controllers\API\PostController::class, 'getNewsDetail']);
@@ -32,8 +32,8 @@ Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::cla
 Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
 Route::post('users', [App\Http\Controllers\API\PostController::class, 'storeUser']);
 Route::post("login",[App\Http\Controllers\API\UserController::class,'index']);
-// Route::group(['middleware' => 'auth:sanctum'], function(){
-//     //All secure URL's
-//     Route::get("user-detail",[App\Http\Controllers\API\UserController::class,'view']);
-// });
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    //All secure URL's
+    Route::get("user-detail",[App\Http\Controllers\API\UserController::class,'view']);
+});
 

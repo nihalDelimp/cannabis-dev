@@ -42,6 +42,7 @@ class UserController extends Controller
     function view()
     {
         // $user= User::find($id);
+        dd("sdfjskdjf");
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this-> successStatus);
         // if(!empty($user)){
