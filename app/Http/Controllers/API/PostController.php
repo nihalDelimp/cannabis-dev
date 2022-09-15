@@ -11,6 +11,8 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Event;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PostController extends Controller{
   public function __construct(){
@@ -54,6 +56,7 @@ class PostController extends Controller{
     if(count($this->error) == 0){
       $user = User::create($data);
       if(!empty($user)){
+      //dd($user);
         
         $this->response['userId'] = $user->id;
         $this->response['status'] = "1";
@@ -71,6 +74,94 @@ class PostController extends Controller{
     
     // $request->title;
     // $this->sendResponse($post);
+  }
+  public function storeEvent(Request $request){
+    
+    //dd($request->all());
+   
+    //$QrCode = QrCode::generate('scan to me');
+    
+    $data = [];
+    $data = [
+      'name' => $request->name,
+      'discription' => $request->discription,
+      'date' => $request->date,
+      //'qr_code' => $request->qr_code,
+      'special_link' => $request->special_link,
+      'user_id' => $request->user_id,
+    ];
+    //dd($data);
+    // $validation['email'] = 'required|email|unique:users';
+    // $validation['phone'] = 'required|unique:users';
+    $validation['user_id'] = 'required';
+    $attributes = [];
+    $messages = [];
+    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+    if($validator->fails()){
+     $errors = json_decode($validator->errors()->toJson(), true);
+     if (!empty($errors)){
+        foreach($errors as $k => $v) {
+          foreach($v as $error){
+            $this->error[] = $error;
+          }
+        }
+     }
+    }
+    if(count($this->error) == 0){
+      $event = Event::create($data);
+      if(!empty($event)){
+      //dd($user);
+        
+        $this->response['status'] = "1";
+        $this->response['data']['event'] = $event;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+      }
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+    
+    
+    // $request->title;
+    // $this->sendResponse($post);
+  }
+  public function eidtEvent(Request $request, $id){
+   
+
+    
+    $data = [];
+    $data = [
+      'name' => $request->name,
+      'discription' => $request->discription,
+      'date' => $request->date,
+      //'qr_code' => $request->qr_code,
+      'special_link' => $request->special_link,
+    ];
+    
+    if($id != null){
+      $event = Event::find($id);
+      $event->update($data);
+     
+      if(!empty($event)){
+      //dd($user);
+        
+        $this->response['status'] = "1";
+        $this->response['data']['event'] = $event;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+      }
+      $this->sendResponse($this->response);
+
+    }
+    else{
+      $this->response['data']['error'] = $this->langError($this->error);
+    }
+    $this->sendResponse($this->response);
+    
   }
   public function getPostList(Request $request){
     $posts = [];

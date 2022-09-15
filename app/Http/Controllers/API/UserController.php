@@ -12,14 +12,16 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-    public function __construct(){
-        parent::__construct();
-        $this->response = $this->error = array();
-        $this->response['status'] = "0";
-    }
+    // public function __construct(){
+    //     parent::__construct();
+    //     $this->response = $this->error = array();
+    //     $this->response['status'] = "0";
+    // }
     function index(Request $request)
     {
         $user= User::where('email', $request->email)->first();
@@ -39,18 +41,118 @@ class UserController extends Controller
         
              return response($response, 201);
     }
-    function view()
+    function show()
     {
         // $user= User::find($id);
-        dd("sdfjskdjf");
         $user = Auth::user(); 
-        return response()->json(['success' => $user], $this-> successStatus);
-        // if(!empty($user)){
+        //return response()->json(['success' => $user], $this->response);
+        if(!empty($user)){
         
-        //     $this->response['userId'] = $user->id;
-        //     $this->response['status'] = "1";
-        //     $this->response['data']['user'] = $user;
+            $this->response['userId'] = $user->id;
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $user;
+        }
+        $this->sendResponse($this->response);
+    }
+    function show2($id)
+    {
+        dd('hjhj');
+        $user= User::find($id);
+        
+        if(!empty($user)){
+        
+            $this->response['userId'] = $user->id;
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $user;
+        }
+        
+        return $this->sendResponse($this->response);
+    }
+
+    ////////////////
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        // if ($token = $this->guard()->attempt($credentials)) {
+        //     return $this->respondWithToken($token);
         // }
-        // $this->sendResponse($this->response);
+
+        // return response()->json(['error' => 'Unauthorized'], 401);
+        
+        $validator = Validator::make($credentials, [
+            'email' => 'required|email',
+            'password' => 'required'
+            // 'password' => 'required|string|min:6|max:50'
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 200);
+        }
+
+        //Request is validated
+        //Crean token
+        //dd(JWTAuth::attempt($credentials));
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json([
+                	'success' => false,
+                	'message' => 'Login credentials are invalid.',
+                ], 400);
+            }
+           
+        } catch (JWTException $e) {
+            
+    	return $credentials;
+            return response()->json([
+                	'success' => false,
+                	'message' => 'Could not create token.',
+                ], 500);
+        }
+       
+ 		//Token created, return with success response and jwt token
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+        ]);
+    }
+ 
+    public function logout(Request $request)
+    {
+        //valid credential
+        $validator = Validator::make($request->only('token'), [
+            'token' => 'required'
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 200);
+        }
+
+		//Request is validated, do logout        
+        try {
+            JWTAuth::invalidate($request->token);
+ 
+            return response()->json([
+                'success' => true,
+                'message' => 'User has been logged out'
+            ]);
+        } catch (JWTException $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, user cannot be logged out'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+ 
+    public function get_user(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required'
+        ]);
+ 
+        $user = JWTAuth::authenticate($request->token);
+ 
+        return response()->json(['user' => $user]);
     }
 }

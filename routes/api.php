@@ -31,9 +31,15 @@ Route::any('/get_related_videos', [App\Http\Controllers\API\PostController::clas
 Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::class, 'categoriesWithVideos']);
 Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
 Route::post('users', [App\Http\Controllers\API\PostController::class, 'storeUser']);
-Route::post("login",[App\Http\Controllers\API\UserController::class,'index']);
-Route::group(['middleware' => 'auth:sanctum'], function(){
+
+Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate']);
+Route::group(['middleware' => 'jwt.verify'], function(){
+    
     //All secure URL's
-    Route::get("user-detail/{id}",[App\Http\Controllers\API\UserController::class,'view']);
+    Route::get("user-detail",[App\Http\Controllers\API\UserController::class,'show']);
+    Route::post('create-event', [App\Http\Controllers\API\PostController::class, 'storeEvent']);
+    Route::post('edit-event/{id}', [App\Http\Controllers\API\PostController::class, 'eidtEvent']);
+
 });
+Route::get("user-detail/{id}",[App\Http\Controllers\API\UserController::class,'show2']);
 

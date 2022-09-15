@@ -72,5 +72,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'setlocale' => \App\Http\Middleware\SetLocale::class,
         'adminRole' => \App\Http\Middleware\AdminRole::class,
+        
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
     ];
 }
