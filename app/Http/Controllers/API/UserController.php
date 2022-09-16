@@ -147,12 +147,75 @@ class UserController extends Controller
  
     public function get_user(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
- 
-        $user = JWTAuth::authenticate($request->token);
- 
+        $user = Auth::user(); 
+        //dd($user);
+        // $this->validate($request, [
+        //     'token' => 'required'
+        // ]);
+        
+        // $user = JWTAuth::authenticate($request->token);
+        
         return response()->json(['user' => $user]);
+    }
+    public function user_account_update(Request $request)
+    {
+        $user = Auth::user(); 
+        $data = [];
+        $data = [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'organization' => $request->organization,
+            'dob' => $request->dob,
+            'position' => $request->position,
+            'instagram_name' => $request->instagram_name,
+            'insterested_status' => $request->insterested_status,
+            'invited_owner' => $request->invited_owner,
+            'password'=>Hash::make($request->password),
+        ];
+        $user->update($data);
+        if(!empty($user)){
+        //dd($user);
+            
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $user;
+        }
+        else{
+            $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+        }
+        $this->sendResponse($this->response);
+        //return response()->json(['user' => $user]);
+    }
+    public function updateUser(Request $request , $id)
+    {
+        $user = User::find($id); 
+        if($user->role == 1){
+            $this->response['data']['error'] = $this->langError(['sorry You can not update this user.']);
+        } else {
+            $data = [];
+            $data = [
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'organization' => $request->organization,
+            'dob' => $request->dob,
+            'position' => $request->position,
+            'instagram_name' => $request->instagram_name,
+            'insterested_status' => $request->insterested_status,
+            'invited_owner' => $request->invited_owner,
+            'password'=>Hash::make($request->password),
+            ];
+            $user->update($data);
+            if(!empty($user)){
+            //dd($user);
+                
+                $this->response['status'] = "1";
+                $this->response['data']['user'] = $user;
+            }
+            else{
+                $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+            }
+            }
+            
+            $this->sendResponse($this->response);
+        //return response()->json(['user' => $user]);
     }
 }
