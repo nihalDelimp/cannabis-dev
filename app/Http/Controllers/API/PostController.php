@@ -22,11 +22,13 @@ class PostController extends Controller{
   }
   function deleteEvent($id)
   {
-    $Event= Event::find($id)->delete();
+    
+    $Event= Event::find($id);
     
     if ($Event) {
-    $this->response['status'] = "1";
-    $this->response['data']['msg'] = $id.' Event delete successfully. ';
+      $Event->delete();
+      $this->response['status'] = "1";
+      $this->response['data']['msg'] = $id.' Event delete successfully. ';
     
     }else {
     $this->response['status'] = "0";

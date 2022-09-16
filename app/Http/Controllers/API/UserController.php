@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
+use DB;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -70,15 +71,17 @@ class UserController extends Controller
     
     function deleteUser($id)
     {
-        $user= User::find($id)->delete();
+        $user= User::find($id);
+       
         
         if ($user) {
-        $this->response['status'] = "1";
-        $this->response['data']['msg'] = 'user delete successfully. ';
+            $user->delete();
+            $this->response['status'] = "1";
+            $this->response['data']['msg'] = $id.' user delete successfully. ';
         
-        }else {
-        $this->response['status'] = "0";
-        $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
+        } else {
+            $this->response['status'] = "0";
+            $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
         }
         return $this->sendResponse($this->response);
     }
@@ -90,6 +93,35 @@ class UserController extends Controller
         
             $this->response['status'] = "1";
             $this->response['data']['user'] = $user;
+        }
+        
+        return $this->sendResponse($this->response);
+    }
+    function userSearchList($slug)
+    {
+        //$user= User::where('role','!=',1)->get();
+        $query= User::where('role','!=',1);
+        $user= new User;
+        $table = $user->getTable();
+        $searchable = \DB::getSchemaBuilder()->getColumnListing($table);
+        array_splice($searchable,0, 2);
+        array_splice($searchable,10, 5);
+        //dd($searchable);
+        foreach($searchable as $columns) {
+            // if($query->where($columns, 'LIKE', "%{$slug}%") ) {
+
+            // }
+            $query->orWhere($columns, 'LIKE', "%{$slug}%");
+           
+        }
+        $result = $query->get();
+        
+       
+       
+        if(!empty($result)){
+        
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $result;
         }
         
         return $this->sendResponse($this->response);
