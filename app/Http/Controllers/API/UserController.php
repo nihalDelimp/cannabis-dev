@@ -41,7 +41,7 @@ class UserController extends Controller
         
              return response($response, 201);
     }
-    function show()
+    function showAuth()
     {
         // $user= User::find($id);
         $user = Auth::user(); 
@@ -54,14 +54,40 @@ class UserController extends Controller
         }
         $this->sendResponse($this->response);
     }
-    function show2($id)
+    function showUser($id)
     {
-        dd('hjhj');
         $user= User::find($id);
         
         if(!empty($user)){
         
             $this->response['userId'] = $user->id;
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $user;
+        }
+        
+        return $this->sendResponse($this->response);
+    }
+    
+    function deleteUser($id)
+    {
+        $user= User::find($id)->delete();
+        
+        if ($user) {
+        $this->response['status'] = "1";
+        $this->response['data']['msg'] = 'user delete successfully. ';
+        
+        }else {
+        $this->response['status'] = "0";
+        $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
+        }
+        return $this->sendResponse($this->response);
+    }
+    function userList()
+    {
+        $user= User::where('role','!=',1)->get();
+        
+        if(!empty($user)){
+        
             $this->response['status'] = "1";
             $this->response['data']['user'] = $user;
         }

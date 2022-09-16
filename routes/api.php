@@ -36,13 +36,18 @@ Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticat
 Route::group(['middleware' => 'jwt.verify'], function(){
     
     //All secure URL's
-    Route::get("user-detail",[App\Http\Controllers\API\UserController::class,'show']);
+    Route::get("auth-detail-show",[App\Http\Controllers\API\UserController::class,'showAuth']);
     Route::get("get-user",[App\Http\Controllers\API\UserController::class,'get_user']);
     Route::post("edit-auth-account",[App\Http\Controllers\API\UserController::class,'user_account_update']);
     Route::post('create-event', [App\Http\Controllers\API\PostController::class, 'storeEvent']);
     Route::post('edit-event/{id}', [App\Http\Controllers\API\PostController::class, 'eidtEvent']);
+    Route::post('delete-event/{id}', [App\Http\Controllers\API\PostController::class, 'deleteEvent']);
+    Route::get('event-list', [App\Http\Controllers\API\PostController::class, 'listEvent']);
+    Route::post('event-show/{id}', [App\Http\Controllers\API\PostController::class, 'showEvent']);
 
 });
-Route::get("user-detail/{id}",[App\Http\Controllers\API\UserController::class,'show2']);
+Route::get("delete-user/{id}",[App\Http\Controllers\API\UserController::class,'deleteUser']);
+Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
+Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
 Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
 

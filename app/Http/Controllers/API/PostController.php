@@ -20,7 +20,35 @@ class PostController extends Controller{
     $this->response = $this->error = array();
     $this->response['status'] = "0";
   }
-
+  function deleteEvent($id)
+  {
+    $Event= Event::find($id)->delete();
+    
+    if ($Event) {
+    $this->response['status'] = "1";
+    $this->response['data']['msg'] = $id.' Event delete successfully. ';
+    
+    }else {
+    $this->response['status'] = "0";
+    $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
+    }
+    return $this->sendResponse($this->response);
+  }
+  function showEvent($id)
+  {
+      $event= Event::find($id);
+      
+      if(!empty($event)){
+      
+          $this->response['status'] = "1";
+          $this->response['data']['event'] = $event;
+      } else {
+        $this->response['status'] = "0";
+        $this->response['data']['msg'] = "Sorry Invalid event..";
+      }
+      
+      return $this->sendResponse($this->response);
+  }
   public function storeUser(Request $request){
     
     //dd($request->all());
@@ -62,7 +90,7 @@ class PostController extends Controller{
         $this->response['status'] = "1";
         $this->response['data']['user'] = $user;
       }
-      else{
+      else {
         $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
       }
     }
@@ -129,10 +157,7 @@ class PostController extends Controller{
     // $this->sendResponse($post);
   }
   public function eidtEvent(Request $request, $id){
-   
-
-    
-    $data = [];
+   $data = [];
     $data = [
       'name' => $request->name,
       'discription' => $request->discription,
@@ -162,6 +187,17 @@ class PostController extends Controller{
     }
     $this->sendResponse($this->response);
     
+  }
+  public function listEvent() {
+    $event = Event::all();
+    if(!empty($event)) {
+        $this->response['status'] = "1";
+        $this->response['data']['event'] = $event;
+      }
+      else {
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+      }
+      $this->sendResponse($this->response);
   }
   public function getPostList(Request $request){
     $posts = [];
