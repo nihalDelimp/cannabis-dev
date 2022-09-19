@@ -52,8 +52,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        //dd($request->all());
         $user = User::where('email',$request->email)->first();
         $this->validateLogin($request);
+       
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -61,18 +63,21 @@ class LoginController extends Controller
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
+            
             return $this->sendLockoutResponse($request);
         }
 
         if ($this->attemptLogin($request)) {
+          
             $account = Auth::user();
+            //dd("return lsjfd", $account);
             return $this->sendLoginResponse($request);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
+         dd("ljsdflk");
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
@@ -88,34 +93,50 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
-        $request->validate([
+            //dd($this->username());
+            $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
+        return $request;
     }
 
     protected function attemptLogin(Request $request)
     {
-        return $this->guard()->attempt(
-            $this->credentials($request), $request->filled('remember')
-        );
+      
+      return $this->guard()->attempt(
+        $this->credentials($request), $request->filled('remember')
+      );
+
+     
+      //dd($return);
+       
     }
 
     protected function credentials(Request $request)
     {
+     
+      // $us = $request->only($this->username(), 'password');
+      //  dd("credentials",$us);
         return $request->only($this->username(), 'password');
     }
 
     protected function sendLoginResponse(Request $request)
     {
         $request->session()->regenerate();
+        
+        
         $this->clearLoginAttempts($request);
+        
         $account = Auth::user();
+        //dd("hello user",$account);
         //print_this($request,1);
         if($request->goto!=NULL){
+          dd("goto if");
           $redirecUrl = $request->goto;
         }
         else{
+           dd("else");
           $redirecUrl = route('dashboard',app()->getLocale());
         }
         return $this->authenticated($request, $this->guard()->user())

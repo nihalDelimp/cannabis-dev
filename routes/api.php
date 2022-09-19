@@ -32,7 +32,7 @@ Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::cla
 Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
 Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser']);
 
-Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate']);
+//Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate']);
 Route::group(['middleware' => 'jwt.verify'], function(){
     
     //All secure URL's

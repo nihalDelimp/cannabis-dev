@@ -20,6 +20,7 @@ class DashboardController extends Controller{
   public function index(Request $request){
     $pageHeading = "dashboard";
     $user = $this->login_account;
+    // dd($user);
     return view('admin.dashboard.index', compact('pageHeading','user'));
   }
 
