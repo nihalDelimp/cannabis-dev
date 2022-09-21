@@ -18,6 +18,8 @@ class DashboardController extends Controller{
   }
 
   public function index(Request $request){
+    //dd("user", $request->all());
+    //dd(auth()->user());
     $pageHeading = "dashboard";
     $user = $this->login_account;
     // dd($user);

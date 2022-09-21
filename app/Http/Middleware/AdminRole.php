@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Session\Middleware\StartSession;
 use Auth;
 class AdminRole
 {
@@ -15,12 +16,15 @@ class AdminRole
      */
     public function handle($request, Closure $next)
     {
-      if(auth::user()){
-
+            
+      if($user = Auth::user()){
+        
+        //dd("admin role-",$user);
       }
-      else{
-        return redirect(route('admin',app()->getLocale()));
-      }
+      // else{
+        
+      //   return redirect(route('admin',app()->getLocale()));
+      // }
       return $next($request);
     }
 }

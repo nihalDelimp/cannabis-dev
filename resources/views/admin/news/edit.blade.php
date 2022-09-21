@@ -153,6 +153,8 @@
 $(document).ready(function(){
   $('.select2').select2();
   $('.textarea').wysihtml5();
+
+  
 });
 </script>
 @stop

@@ -115,7 +115,9 @@ class PostController extends Controller{
     $data = [
       'name' => $request->name,
       'discription' => $request->discription,
-      'date' => $request->date,
+      'stat_date' => $request->stat_date,
+      'end_date' => $request->end_date,
+      'image_path' => $request->image_path,
       //'qr_code' => $request->qr_code,
       'special_link' => $request->special_link,
       'user_id' => $request->user_id,

@@ -56,8 +56,14 @@ Route::group([
   Route::post('getCategory', 'CategoryController@getCategory')->name('getCategory');
   Route::resource('tag', 'TagController');
   Route::post('getTag', 'TagController@getTag')->name('getTag');
+
   Route::resource('news', 'NewsController');
   Route::post('getNews', 'NewsController@getNews')->name('getNews');
+
+  Route::resource('events', 'EventController');
+  Route::post('getEvents', 'EventController@getEvents')->name('getEvents');
+
+
   Route::resource('video', 'VideoController');
   Route::post('getVideo', 'VideoController@getVideo')->name('getVideo');
   Route::resource('template', 'TemplateController');

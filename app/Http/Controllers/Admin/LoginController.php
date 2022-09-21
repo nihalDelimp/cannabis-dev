@@ -62,23 +62,25 @@ class LoginController extends Controller
         // the IP address of the client making these requests into this application.
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
+              dd("sfdasfasdf");
             $this->fireLockoutEvent($request);
             
             return $this->sendLockoutResponse($request);
         }
 
         if ($this->attemptLogin($request)) {
-          
             $account = Auth::user();
-            //dd("return lsjfd", $account);
+            // dd("sfdasfasdf",$account);
+
             return $this->sendLoginResponse($request);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
-         dd("ljsdflk");
-        $this->incrementLoginAttempts($request);
+        
+        
+        //dd($this->incrementLoginAttempts($request));
 
         return $this->sendFailedLoginResponse($request);
     }
@@ -93,50 +95,46 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
-            //dd($this->username());
+           
+
             $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-        ]);
+            $this->username() => 'required',
+            'password' => 'required',
+        ]); 
+        
         return $request;
     }
 
     protected function attemptLogin(Request $request)
     {
       
-      return $this->guard()->attempt(
-        $this->credentials($request), $request->filled('remember')
-      );
-
-     
-      //dd($return);
-       
+        $return = $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
+        $account = Auth::user();
+        //dd("sfsd",$account);
+        return $return;
+       //dd($return);
     }
 
     protected function credentials(Request $request)
     {
-     
-      // $us = $request->only($this->username(), 'password');
-      //  dd("credentials",$us);
         return $request->only($this->username(), 'password');
     }
 
     protected function sendLoginResponse(Request $request)
     {
         $request->session()->regenerate();
-        
-        
         $this->clearLoginAttempts($request);
-        
         $account = Auth::user();
-        //dd("hello user",$account);
+        // dd($account);
         //print_this($request,1);
         if($request->goto!=NULL){
-          dd("goto if");
+          // dd("goto if");
           $redirecUrl = $request->goto;
         }
         else{
-           dd("else");
+          // dd("else");
           $redirecUrl = route('dashboard',app()->getLocale());
         }
         return $this->authenticated($request, $this->guard()->user())
