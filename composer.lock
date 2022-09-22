@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1f8e0d2a4d2eaeb2c38290f927d6218",
+    "content-hash": "8dc19c94b37d9aab1a2bc8f06721d586",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -594,6 +594,63 @@
                 }
             ],
             "time": "2022-09-10T18:51:20+00:00"
+        },
+        {
+            "name": "drh2so4/thumbnail",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pratiksh404/laravel-thumbnails.git",
+                "reference": "7abdaea89755d430832e1d5073152538a2dd657c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pratiksh404/laravel-thumbnails/zipball/7abdaea89755d430832e1d5073152538a2dd657c",
+                "reference": "7abdaea89755d430832e1d5073152538a2dd657c",
+                "shasum": ""
+            },
+            "require": {
+                "intervention/image": "^2.4@dev",
+                "intervention/imagecache": "^2.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "5.x-dev"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "drh2so4\\Thumbnail\\ThumbnailServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "drh2so4\\Thumbnail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pratik Shrestha",
+                    "email": "pratikdai404@gmail.com"
+                }
+            ],
+            "description": "Package for making thumbnails instantly.",
+            "keywords": [
+                "laravel thumbnail",
+                "laravel thumbnail generator",
+                "laravel thumbnail package",
+                "thumbnail generator"
+            ],
+            "support": {
+                "issues": "https://github.com/pratiksh404/laravel-thumbnails/issues",
+                "source": "https://github.com/pratiksh404/laravel-thumbnails/tree/v1.0.9"
+            },
+            "time": "2022-04-02T15:55:44+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -1276,6 +1333,73 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "intervention/imagecache",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/imagecache.git",
+                "reference": "270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4",
+                "reference": "270d1e72ddff2fc0a6d3c7e6cbc9d23c9ec1e3e4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^5.5|~6|~7|~8|~9",
+                "illuminate/filesystem": "^5.5|~6|~7|~8|~9",
+                "intervention/image": "~2.2",
+                "nesbot/carbon": "^2.39",
+                "opis/closure": "^3.5",
+                "php": "~7.2|~8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "http://intervention.io/"
+                }
+            ],
+            "description": "Caching extension for the Intervention Image Class",
+            "homepage": "https://image.intervention.io",
+            "keywords": [
+                "cache",
+                "gd",
+                "image",
+                "imagick",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/imagecache/issues",
+                "source": "https://github.com/Intervention/imagecache/tree/2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-22T11:14:47+00:00"
         },
         {
             "name": "laravel/framework",

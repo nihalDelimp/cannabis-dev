@@ -11,11 +11,13 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Event;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
+//use Intervention\Image\ImageManagerStatic as Image;
 use File;
+use Image;
 use ImageResize;
 use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+//use Intervention\Image\ImageManager;
 
 class EventController extends Controller{
   public function __construct(){
@@ -45,7 +47,8 @@ class EventController extends Controller{
   }
 
   public function store(Request $request){
-    // dd($request->all());
+     //dd($request->all());
+    
     $image = $request->file('image_path');
     $validate['name'] = 'required';
     // $validate['sub_title'] = 'required';
@@ -61,43 +64,30 @@ class EventController extends Controller{
     }
     $insert = array();
     $insert['name'] = $request->name;
-    $insert['start_date'] = $request->start_date;
-    $insert['end_date'] = $request->end_date;
+    $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+    $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
     $insert['discription'] = $request->discription;
-    $insert['user_id'] = auth()->user()->id;
+    $insert['start_time'] = $request->start_time;//[0].":".$request->start_time[1]." ".$request->start_time[2];
+    $insert['end_time'] = $request->end_time;//[0].":".$request->end_time[1]." ".$request->end_time[2];
+    
     //$insert['image_path'] = $request->image_path;
     $insert['status'] = $request->status;
-    
-    if(!empty($image)){
-      $imageHeight = ImageResize::make($image)->height();
-      $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/events');
-
-      File::makeDirectory($destinationPath, $mode = 0777, true, true);
-      $insert['image_path'] = time().'.'.$image->getClientOriginalExtension();
-      File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
-
-
-      $img = ImageResize::make($image->getRealPath());
-
-      $img->orientate();
-      $img->resize(360, 180, function ($constraint){
-      $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$insert['image_path']);
-
-      //
-      File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
-      if($imageHeight > 450 || $imageWidth > 760){
-        $img = ImageResize::make($image->getRealPath());
-        $img->orientate();
-        $img->resize(760, 450, function ($constraint){
-        $constraint->aspectRatio();})->save($destinationPath.'/main/'.$insert['image_path']);
-      }
-      else{
-        $image->move($destinationPath.'/main/', $insert['image_path']);
-      }
-      $image->move($destinationPath, $insert['image_path']);
+    $event = Event::create($insert);
+    if($event){
+      $filename = $image->getClientOriginalName();
+      $destinationPath = public_path('/thumbnail');
+      $base_path = Storage::disk('admin')->put($event->id, $image);
+      $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
+      //dd($ImageUpload);
+      $file_name = time().'.'.$image->getClientOriginalExtension();
+      $thumbnail_path = Storage::disk('admin')->put($event->id.'/thumbnail/'.$file_name, $ImageUpload, 'public');
+      $deletefile_path = $destinationPath.'/'.$filename;  
+      File::delete($deletefile_path);
+      $event->image_path = Storage::disk('admin')->url($base_path);
+      $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
+      $event->save();
     }
-    $news = Event::create($insert);
+    
     // if(!empty($tags_id)){
     //   $tags = Tag::find($tags_id);
     //   $news->tags()->attach($tags);
@@ -107,6 +97,10 @@ class EventController extends Controller{
 
   public function update(Request $request){
     $id = $request->segment(4);
+    
+    //dd($request->start_date);
+    // echo date('Y-m-d H:i:s', strtotime($request->start_date));
+    //dd(Carbon::parse($request->start_date)->format('Y-m-d H:i:s'));
     // echo "id-".$id; 
     // dd($request->all());
     
@@ -125,63 +119,48 @@ class EventController extends Controller{
     if($validator->fails()){
       return redirect()->back()->withInput()->withErrors($validator->errors());
     }
+    
     $update = array();
     $update['name'] = $request->name;
-    $update['start_date'] = $request->start_date;
-    $update['end_date'] = $request->end_date;
+   
     $update['discription'] = $request->discription;
     $update['user_id'] = auth()->user()->id;
     $update['status'] = $request->status;
+
+    $update['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+    $update['start_time'] = $request->start_time;
+    if(!empty($request->end_date)) {
+      $update['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+      $update['end_time'] = $request->end_time;
+    }
+    
+    //[0].":".$request->start_time[1]." ".$request->start_time[2];
+    //[0].":".$request->end_time[1]." ".$request->end_time[2];
+    
 
     if($request->hasFile('image_path'))
     {
 
     $image = $request->file('image_path');
+    
     $filename = $image->getClientOriginalName();
-    $extension = $image->getClientOriginalExtension();
+    //$extension = $image->getClientOriginalExtension();
     $destinationPath = public_path('/thumbnail');
-    //$destinationPath = Storage::disk('admin')->url($id."/thumbnail");
-    
     $base_path = Storage::disk('admin')->put($id, $image);
-    $file_path = $image->getRealPath();
+    // $file_path = $image->getRealPath();
+    //$ImageUpload = Image::make($image)->resize(320, 240);
     
-
-      //$img = Image::make($image)->resize(320, 240);
-    // $ImageUpload = Image::make($image)->resize(320, 240)->encode($extension);
-    //$ImageUpload = Image::make($file_path)->resize(320, 240);  
-    //local store file
-    // $ImageUpload = Image::make($image->path())->resize(320, 240)->save($destinationPath.'/'.$filename);
-    // $filePath = $destinationPath.'/'.$ImageUpload->basename;
-    // $file = File::get($filePath);
-     
-    // $thumbnail_path = Storage::disk('admin')->put('thumbnail/',(string) $file);
-      
-    // dd($thumbnail_path);
-    // $img = Image::make($image)->resize(150, 250, function ($constraint) {$constraint->aspectRatio();});
-    
-    // $img->orientate();
-    
-    // $cloudpath = Storage::disk('admin')->put($id.'/thumbnail/', (string) $img->encode());
-    //   dd($cloudpath);
-    // dd(Storage::disk('admin')->url($id.'/thumbnail/'));
-    // return Storage::disk('admin')->url($id.'thumbnail/'.$filename);
-
-
-    //$thumbnail_path = Storage::disk('admin')->putFileAs($image->path(),$ImageUpload, $filename);
-
-    // Storage::disk('admin')->put($id."/thumbnail",$image);
-    
-    //->save($image->getClientOriginalName());
-    //return $update['thumbnail_path']->response('jpg');
-    //dd($update['thumbnail_path']);
-    //dd($thumbnail_path);
-
-    //$thumbnailPath = Storage::disk('admin')->url($thumbnail_path);
-    //dd($thumbnailPath);
-  
+    $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
+    //dd($ImageUpload);
+    $file_name = time().'.'.$image->getClientOriginalExtension();
+    $thumbnail_path = Storage::disk('admin')->put($id.'/thumbnail/'.$file_name, $ImageUpload, 'public');
+    $deletefile_path = $destinationPath.'/'.$filename;  
+    File::delete($deletefile_path);
+    //dd(Storage::disk('admin')->url($id.'/thumbnail/'.$file_name));
 
   
     $update['image_path'] = Storage::disk('admin')->url($base_path);
+    $update['thumbnail_path'] = Storage::disk('admin')->url($id.'/thumbnail/'.$file_name);
      
       
       

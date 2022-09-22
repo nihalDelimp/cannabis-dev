@@ -48,7 +48,62 @@
               </span>
           @enderror
         </div>
-        <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+              <input type="date" name="start_date" id="start_date" value="{{ old('start_date') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
+              @error('start_date')
+                  <span class="text-danger" role="alert">
+                      <strong>{{langMessage($message)}}</strong>
+                  </span>
+              @enderror
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set Time')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control" name="start_time[]">
+                @for ($i = 1; $i <= 12; $i++)
+                <option value="{{$i}}">{{$i}}</option>
+                @endfor
+              </select>
+             </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set Minute')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control" name="start_time[]">
+                @for ($i = 0; $i <= 4; $i++)
+               
+                  @if($i == 4) 
+                  <option value="{{$i*15-1}}">{{$i*15-1}}</option>
+                  @else 
+                  <option value="{{$i*15}}">{{$i*15}}</option>
+                  @endif
+                @endfor
+              </select>
+             </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control" name="start_time[]">
+                
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+                
+              </select>
+            </div>
+          </div>
+        </div>
+        {{-- <div class="form-group">
           <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           <input type="date" name="start_date" id="start_date" value="{{ old('start_date') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
           @error('start_date')
@@ -56,15 +111,62 @@
                   <strong>{{langMessage($message)}}</strong>
               </span>
           @enderror
-        </div>
-        <div class="form-group">
-          <label for="petrol_saved">{{langMessage('End Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <input type="date" name="end_date" id="end_date" disabled value="{{ old('end_date') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('End Date')}}" />
-          @error('end_date')
-              <span class="text-danger" role="alert">
-                  <strong>{{langMessage($message)}}</strong>
-              </span>
-          @enderror
+        </div> --}}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('End Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+              <input type="date" name="end_date" id="end_date" value="{{ old('end_date') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3 disableEndTime " placeholder="{{langMessage('End Date')}}" />
+              @error('end_date')
+                  <span class="text-danger" role="alert">
+                      <strong>{{langMessage($message)}}</strong>
+                  </span>
+              @enderror
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set Time')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control disableEndTime" name="end_time[]">
+                @for ($i = 1; $i <= 12; $i++)
+                <option value="{{$i}}">{{$i}}</option>
+                @endfor
+              </select>
+             </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set Minute')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control disableEndTime" name="end_time[]">
+                @for ($i = 0; $i <= 4; $i++)
+               
+                  @if($i == 4) 
+                  <option value="{{$i*15-1}}">{{$i*15-1}}</option>
+                  @else 
+                  <option value="{{$i*15}}">{{$i*15}}</option>
+                  @endif
+                @endfor
+              </select>
+             </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control disableEndTime" name="end_time[]">
+                
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+                
+              </select>
+            </div>
+          </div>
+
         </div>
         
         <div class="form-group">
@@ -159,7 +261,7 @@
           "min" : increse_date,
           //"value" : increse_date,         // values (or variables) here
     });
-
+    $(".disableEndTime").attr('disabled',true);
     $('body').on('change','#start_date',function(){
 
       var result = new Date($(this).val());
@@ -169,10 +271,10 @@
       var end_date = moment(increse_date).format('YYYY-MM-DD');  
       $("#end_date").attr({
             "min" : end_date,
-            "disabled" : false,
+            //"disabled" : false,
             //"value" : increse_date,         // values (or variables) here
       });
-
+      $(".disableEndTime").attr('disabled',false);
     });
 
     
