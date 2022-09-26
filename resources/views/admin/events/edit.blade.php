@@ -69,7 +69,7 @@
               </label> 
               <select class="form-control" name="start_time[]">
                 @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}" {{$i == $news->start_time[0] ? 'selected':''}}>{{$i}}</option>
+                <option value="{{$i}}" {{$i == $news->start_time[0] ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -91,7 +91,7 @@
                   @php
                   $num = $i*15;
                   @endphp
-                  <option value="{{$i*15}}" {{ $num == $news->start_time[1] ? 'selected':''}}>{{$i*15}}</option>
+                  <option value="{{$i*15}}" {{ $num == $news->start_time[1] ? 'selected':''}}>{{ sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>
@@ -133,7 +133,7 @@
               </label>
               <select class="form-control disableEndTime" name="end_time[]">
                 @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}" {{$i == $news->end_time[0] ? 'selected':''}}>{{$i}}</option>
+                <option value="{{$i}}" {{$i == $news->end_time[0] ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -154,7 +154,7 @@
                   @php
                   $num = $i*15;
                   @endphp
-                  <option value="{{$i*15}}" {{ $num == $news->end_time[1] ? 'selected':''}}>{{$i*15}}</option>
+                  <option value="{{$i*15}}" {{ $num == $news->end_time[1] ? 'selected':''}}>{{sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>

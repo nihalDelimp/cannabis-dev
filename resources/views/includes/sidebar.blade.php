@@ -49,7 +49,7 @@
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('news.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
       </li>
-      <li class="treeview {{ $controller == 'EventController'?'active menu-open':''}}">
+        <li class="treeview {{ $controller == 'EventController'?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Event')}}</span>
           <span class="pull-right-container">
@@ -60,7 +60,27 @@
               <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('events.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('events.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
-      </li>
+        </li>
+        <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}">
+          <a href="#">
+          <i class="fa fa-table"></i> <span>{{langMessage('User')}}</span>
+          <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+          </span>
+          </a>
+          <ul class="treeview-menu">
+                <li class="{{ $action == 'create'?'active':'' }}">
+                    <a href="{{ route('users.create',app()->getLocale()) }}">
+                    <i class="fa fa-circle-o"></i> {{langMessage('add')}}
+                    </a>
+                </li>
+                <li  class="{{ $action == 'index'?'active':'' }}">
+                    <a href="{{ route('users.index',app()->getLocale()) }}">
+                    <i class="fa fa-circle-o"></i> {{langMessage('manage')}}
+                    </a>
+                </li>
+          </ul>
+        </li>
       <li class="treeview {{ in_array($controller,['VideoController','PlayListController']) ?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Videos')}}</span>

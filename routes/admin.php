@@ -1,5 +1,5 @@
 <?php
-
+//use App\Http\Controllers\Admin\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,6 +62,12 @@ Route::group([
 
   Route::resource('events', 'EventController');
   Route::post('getEvents', 'EventController@getEvents')->name('getEvents');
+
+  Route::resource('users', 'UserController');
+  // Route::resource('users', UserController::class)->except([
+  //   'create', 'store', 'update', 'destroy'
+  // ]);
+  Route::post('getUsers', 'UserController@getUsers')->name('getUsers');
 
 
   Route::resource('video', 'VideoController');

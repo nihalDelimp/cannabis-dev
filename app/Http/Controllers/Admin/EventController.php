@@ -274,7 +274,7 @@ class EventController extends Controller{
       foreach ($temps as $key=>$temp){
         $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id]));
        //$show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
-        $destroy = "destroy";//route('events.destroy', ['events' => $temp->id, 'locale' => app()->getLocale()]);
+        $destroy = route('events.destroy', [app()->getLocale(),$temp->id]);
         $edit =  route('events.edit', [ app()->getLocale(),$temp->id]);
         
         $nestedData['sn'] = ($start+$key+1);
@@ -306,19 +306,11 @@ class EventController extends Controller{
     echo json_encode($json_data);
   }
 
-  public function destroy(Request $request){
+  public function destroy($id, Request $request){
     $id = $request->segment(4);
-    $news = Post::findOrFail($id);
-    if(!empty($news->image)  && file_exists(public_path('images/posts/news/'.$news->image))){
-      @unlink(public_path('images/posts/news/'.$news->image));
-      if(getcwd().'images/posts/news/'.$news->image){
-        @unlink(getcwd().'/public/images/posts/news/main/'.$news->image);
-        @unlink(getcwd().'/public/images/posts/news/listing/'.$news->image);
-      }
-    }
-    $news->tags()->detach();
-    $news->delete();
-    return redirect(route('news.index',app()->getLocale()))->with('success', 'News is deleted successfully.');
+    $news = Event::findOrFail($id)->delete();
+    
+    return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is deleted successfully.');
   }
 
   public function removeNewsImage($news_id){

@@ -67,7 +67,7 @@
               </label>
               <select class="form-control" name="start_time[]">
                 @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}">{{$i}}</option>
+                <option value="{{$i}}">{{ sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -83,7 +83,7 @@
                   @if($i == 4) 
                   <option value="{{$i*15-1}}">{{$i*15-1}}</option>
                   @else 
-                  <option value="{{$i*15}}">{{$i*15}}</option>
+                  <option value="{{$i*15}}">{{sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>
@@ -131,7 +131,7 @@
               </label>
               <select class="form-control disableEndTime" name="end_time[]">
                 @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}">{{$i}}</option>
+                <option value="{{$i}}">{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -147,7 +147,7 @@
                   @if($i == 4) 
                   <option value="{{$i*15-1}}">{{$i*15-1}}</option>
                   @else 
-                  <option value="{{$i*15}}">{{$i*15}}</option>
+                  <option value="{{$i*15}}">{{sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>
