@@ -30,12 +30,12 @@ Route::any('/get_related_videos', [App\Http\Controllers\API\PostController::clas
 /*video play-list */
 Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::class, 'categoriesWithVideos']);
 Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
-Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser']);
 
-Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate']);
+Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate'])->name('login');
 Route::group(['middleware' => 'jwt.verify'], function(){
     
     //All secure URL's
+    Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser'])->name('register-users');
     Route::get("auth-detail-show",[App\Http\Controllers\API\UserController::class,'showAuth']);
     Route::get("get-user",[App\Http\Controllers\API\UserController::class,'get_user']);
     Route::post("edit-auth-account",[App\Http\Controllers\API\UserController::class,'user_account_update']);
@@ -48,7 +48,10 @@ Route::group(['middleware' => 'jwt.verify'], function(){
     Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
     Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
     Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
+   
     Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
 });
+
+Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
 
 

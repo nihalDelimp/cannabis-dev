@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\createNewPassword;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +13,10 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Event;
+use DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PostController extends Controller{
@@ -66,10 +71,13 @@ class PostController extends Controller{
       'instagram_name' => $request->instagram_name,
       'insterested_status' => $request->insterested_status,
       'invited_owner' => $request->invited_owner,
-      'password'=>Hash::make($request->password),
+      //'password'=>Hash::make($request->password),
     ];
+    if(!empty($request->password)) {
+      $data['password'] = Hash::make($request->password);
+    }
     $validation['email'] = 'required|email|unique:users';
-    $validation['phone'] = 'required|unique:users';
+    //$validation['phone'] = 'required|unique:users';
     $attributes = [];
     $messages = [];
     $validator = Validator::make($request->all(), $validation,$messages,$attributes);
@@ -85,12 +93,31 @@ class PostController extends Controller{
     }
     if(count($this->error) == 0){
       $user = User::create($data);
+
+
+
       if(!empty($user)){
       //dd($user);
+        DB::table('password_resets')->insert([
+        'email' => $request->email,
+        'token' => Str::random(60),
+        'created_at' => Carbon::now()
+        ]);
+        //Get the token just created above
+        $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
+        $link = route('create.password.with.login', $tokenData->token);
+        //dd("elkdf->",$link);
+        $email = $data['email'];
+        $body = [
+          'url' => $link,
+          'name' => $data['email'],
+        ];
         
+        Mail::to($email)->send(new createNewPassword($body));
         $this->response['userId'] = $user->id;
         $this->response['status'] = "1";
         $this->response['data']['user'] = $user;
+        
       }
       else {
         $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
@@ -99,6 +126,7 @@ class PostController extends Controller{
     else{
       $this->response['data']['error'] = $this->langError($this->error);
     }
+    
     $this->sendResponse($this->response);
     
     

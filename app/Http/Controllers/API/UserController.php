@@ -130,7 +130,9 @@ class UserController extends Controller
     ////////////////
     public function authenticate(Request $request)
     {
+        
         $credentials = $request->only('email', 'password');
+        //dd($credentials);
         // if ($token = $this->guard()->attempt($credentials)) {
         //     return $this->respondWithToken($token);
         // }
@@ -171,6 +173,7 @@ class UserController extends Controller
  		//Token created, return with success response and jwt token
         return response()->json([
             'success' => true,
+            'status' => 1,
             'token' => $token,
         ]);
     }
@@ -227,9 +230,12 @@ class UserController extends Controller
             'position' => $request->position,
             'instagram_name' => $request->instagram_name,
             'insterested_status' => $request->insterested_status,
-            'invited_owner' => $request->invited_owner,
-            'password'=>Hash::make($request->password),
+            'invited_owner' => $request->invited_owner
+            
         ];
+        if(!empty($request->password)) {
+            $data['password'] = Hash::make($request->password);
+        }
         $user->update($data);
         if(!empty($user)){
         //dd($user);
@@ -258,9 +264,12 @@ class UserController extends Controller
             'position' => $request->position,
             'instagram_name' => $request->instagram_name,
             'insterested_status' => $request->insterested_status,
-            'invited_owner' => $request->invited_owner,
-            'password'=>Hash::make($request->password),
+            'invited_owner' => $request->invited_owner
+            // 'password'=>Hash::make($request->password),
             ];
+            if(!empty($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            }
             $user->update($data);
             if(!empty($user)){
             //dd($user);
@@ -275,5 +284,87 @@ class UserController extends Controller
             
             $this->sendResponse($this->response);
         //return response()->json(['user' => $user]);
+    }
+    public function loginPasswordUser(Request $request , $token)
+    {
+        //dd($token);
+        $password = $request->password; 
+
+        $confirm_password = $request->confirm_password;  
+        if($password == $confirm_password) {
+            $tokenData = DB::table('password_resets')
+            ->where('token', $token)->first();
+           // dd($tokenData);
+            // Redirect the user back to the password reset request form if the token is invalid
+            if (!$tokenData) {  return redirect()->route('register-users'); }
+            // if (!$tokenData) { dd("tokendata"); return view('auth.passwords.email'); }
+
+            $user = User::where('email', $tokenData->email)->first();
+            
+            // Redirect the user back if the email is invalid
+            if (!$user) { 
+                //dd("jdkkj");
+                return  response()->json(['email' => 'Email not found']);
+            }
+            //Hash and update the new password
+            $user->password = \Hash::make($password);
+            $error = false;
+            if($user->update()) {
+                $error = true;
+            }
+            
+            DB::table('password_resets')->where('email', $user->email)->delete();
+            $this->response['data']['user'] = $user;
+            //$this->sendResponse($this->response);
+            //////////////////////////
+            
+            $arr = ['email'=>$user->email, 'password'=>$password];
+            $credentials = $arr;
+           //dd($credentials);
+            try {
+                if (! $token = JWTAuth::attempt($credentials)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Login credentials are invalid.',
+                    ], 400);
+                }
+               
+            } catch (JWTException $e) {
+                
+            return $credentials;
+                return response()->json([
+                        'success' => false,
+                        'message' => 'Could not create token.',
+                    ], 500);
+            }
+           
+             //Token created, return with success response and jwt token
+            return response()->json([
+                'success' => true,
+                'status' => 1,
+                'token' => $token,
+            ]);
+
+
+
+        }
+        else {
+            return response()->json(['email' => trans('Password and Confirm password are not match .')]);
+             
+        }
+        
+        
+        
+        //return response()->json(compact('error'));
+        //Send Email Reset Success Email
+        // if ($this->sendSuccessEmail($tokenData->email)) {
+        //     return view('index');
+        // } else {
+        //     return redirect()->back()->withErrors(['email' => trans('A Network Error occurred. Please try again.')]);
+        // }
+
+            
+       
+       // return $this->sendResponse($result);
     }
 }

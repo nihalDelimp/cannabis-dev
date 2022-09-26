@@ -35,6 +35,7 @@ class JwtMiddleware extends BaseMiddleware
             }
         }
         //dd("fskdjfls");
+        ///$request['status'] = 1;
         return $next($request);
     }
 }
