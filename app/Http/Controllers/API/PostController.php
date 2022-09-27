@@ -134,6 +134,10 @@ class PostController extends Controller{
     // $request->title;
     // $this->sendResponse($post);
   }
+  public function getEventJoinLists(){
+    $this->response = EventJoinList::get();
+    $this->sendResponse($this->response);
+  }
   public function eventJoinLists(Request $request){
     $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
     // dd($request->all());

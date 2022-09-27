@@ -42,16 +42,20 @@ Route::group(['middleware' => 'jwt.verify'], function(){
     Route::post('create-event', [App\Http\Controllers\API\PostController::class, 'storeEvent']);
     Route::post('edit-event/{id}', [App\Http\Controllers\API\PostController::class, 'eidtEvent']);
     Route::delete('delete-event/{id}', [App\Http\Controllers\API\PostController::class, 'deleteEvent']);
-    Route::get('event-list', [App\Http\Controllers\API\PostController::class, 'listEvent']);
-    Route::post('event-show/{id}', [App\Http\Controllers\API\PostController::class, 'showEvent']);
+    
     Route::delete("delete-user/{id}",[App\Http\Controllers\API\UserController::class,'deleteUser']);
-    Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
-    Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
+    
+    
     Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
-    Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
+    Route::post('store-event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'eventJoinLists']);
+    Route::get('event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'getEventJoinLists']);
 });
 Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser'])->name('register-users');
 Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
-Route::post('event-join-list', [App\Http\Controllers\API\PostController::class, 'eventJoinLists']);
 
+Route::get('event-list', [App\Http\Controllers\API\PostController::class, 'listEvent']);
+Route::post('event-show/{id}', [App\Http\Controllers\API\PostController::class, 'showEvent']);
+Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
+Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
+Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
 
