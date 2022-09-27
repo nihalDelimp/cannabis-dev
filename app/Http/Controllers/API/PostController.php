@@ -142,13 +142,14 @@ class PostController extends Controller{
       $insert = [];
       $insert = [
         'event_id' => $request->event_id,
-        'user_id' => $request->user_id
+        'user_id' => $request->user_id,
+        'event_status' => 1,
       ];
       $this->response['eventList'] = EventJoinList::create($insert);
       $this->response['status'] = 1;
-      $user = User::find($request->user_id);
-      $user->event_status = 1;
-      $user->save();
+      // $user = User::find($request->user_id);
+      // $user->event_status = 1;
+      // $user->save();
 
     } else {
       $this->response['status'] = 0;
