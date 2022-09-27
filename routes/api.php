@@ -53,5 +53,5 @@ Route::group(['middleware' => 'jwt.verify'], function(){
 });
 
 Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
-
+Route::post('event-join-list', [App\Http\Controllers\API\PostController::class, 'eventJoinLists']);
 

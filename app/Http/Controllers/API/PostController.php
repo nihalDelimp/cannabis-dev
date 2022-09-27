@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Event;
+use App\Models\EventJoinList;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -132,6 +133,26 @@ class PostController extends Controller{
     
     // $request->title;
     // $this->sendResponse($post);
+  }
+  public function eventJoinLists(Request $request){
+    $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
+    // dd($request->all());
+    // dd($result);
+    if($result === null) {
+      $insert = [];
+      $insert = [
+        'event_id' => $request->event_id,
+        'user_id' => $request->user_id
+      ];
+      $this->response['eventList'] = EventJoinList::create($insert);
+      $this->response['status'] = 1;
+
+    } else {
+      $this->response['status'] = 0;
+      $this->response['error'] = $this->langError(['Record exist already.']);
+    }
+    $this->sendResponse($this->response);
+
   }
   public function storeEvent(Request $request){
     
