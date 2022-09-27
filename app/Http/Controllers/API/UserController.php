@@ -175,6 +175,7 @@ class UserController extends Controller
             'success' => true,
             'status' => 1,
             'token' => $token,
+            'user' => auth()->user(),
         ]);
     }
  
@@ -343,6 +344,7 @@ class UserController extends Controller
                 'success' => true,
                 'status' => 1,
                 'token' => $token,
+                'user' => $user,
             ]);
 
 
