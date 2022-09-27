@@ -62,7 +62,7 @@ class LoginController extends Controller
         // the IP address of the client making these requests into this application.
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
-              dd("sfdasfasdf");
+             // dd("sfdasfasdf");
             $this->fireLockoutEvent($request);
             
             return $this->sendLockoutResponse($request);

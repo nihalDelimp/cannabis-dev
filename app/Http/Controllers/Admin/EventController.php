@@ -47,7 +47,7 @@ class EventController extends Controller{
   }
 
   public function store(Request $request){
-     //dd($request->all());
+    //  dd($request->all());
     
     $image = $request->file('image_path');
     $validate['name'] = 'required';
@@ -64,11 +64,22 @@ class EventController extends Controller{
     }
     $insert = array();
     $insert['name'] = $request->name;
-    $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
-    $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+
+
+    $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
+    $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
+    //echo "date-".$timestamp1."</br>";
+    $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
+    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+
+    
+    // $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+    // $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+    $insert['start_date'] = $start_date;
+    $insert['end_date'] = $end_date;
     $insert['discription'] = $request->discription;
-    $insert['start_time'] = $request->start_time;//[0].":".$request->start_time[1]." ".$request->start_time[2];
-    $insert['end_time'] = $request->end_time;//[0].":".$request->end_time[1]." ".$request->end_time[2];
+    //$insert['start_time'] = $request->start_time;//[0].":".$request->start_time[1]." ".$request->start_time[2];
+    //$insert['end_time'] = $request->end_time;//[0].":".$request->end_time[1]." ".$request->end_time[2];
     
     //$insert['image_path'] = $request->image_path;
     $insert['status'] = $request->status;
@@ -98,11 +109,16 @@ class EventController extends Controller{
   public function update(Request $request){
     $id = $request->segment(4);
     
-    //dd($request->start_date);
-    // echo date('Y-m-d H:i:s', strtotime($request->start_date));
+    //dd($request->start_time);
+    $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
+    $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
+    //echo "date-".$timestamp1."</br>";
+    $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
+    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+    //echo $start_date;
     //dd(Carbon::parse($request->start_date)->format('Y-m-d H:i:s'));
     // echo "id-".$id; 
-    // dd($request->all());
+    //dd($request->all());
     
     $image = $request->file('image_path');
     $validate['name'] = 'required';
@@ -127,11 +143,13 @@ class EventController extends Controller{
     $update['user_id'] = auth()->user()->id;
     $update['status'] = $request->status;
 
-    $update['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
-    $update['start_time'] = $request->start_time;
+    $update['start_date'] = $start_date;
+    //Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+    //$update['start_time'] = $request->start_time;
     if(!empty($request->end_date)) {
-      $update['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
-      $update['end_time'] = $request->end_time;
+      $update['end_date'] = $end_date;
+      //Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+      //$update['end_time'] = $request->end_time;
     }
     
     //[0].":".$request->start_time[1]." ".$request->start_time[2];
@@ -227,13 +245,14 @@ class EventController extends Controller{
     $search = $this->getSearchableFields($request->all());
    ;
     $columns = array(0=>'id', 1=>'name', 2=>'date', 3=>'discription', 4=>'special_link', 5=>'status');
-
+    
     $limit = $request->input('length');
     $start = $request->input('start');
     $order = $columns[$request->input('order.0.column')];
     $dir = $request->input('order.0.dir');
 
     $temp =  Event::query();
+   
     //dd(count($search));
     if(count($search) > 0){
         $sh = (object)$search;
@@ -253,8 +272,9 @@ class EventController extends Controller{
     $temp->offset($start);
     $temp->limit($limit);
     $temp->orderBy($order,$dir);
-    $temps = $temp->get();
-    // $temps = $temp->get(['events.*']);
+    //dd($limit,"fm",$temp->get()->count());
+    //$temps = $temp->get();
+    $temps = $temp->get(['events.*']);
     //   $temp =  Event::query();
     //   if(count($search) > 0){
     //     $sh = (object)$search;
@@ -266,13 +286,15 @@ class EventController extends Controller{
     //     }
     //   }
       //$temp->where('posts.post_type','=','1');
-      $totalData  = $temps->count();
+      $totalData  = $temp->count();
+     
       $totalFiltered = $totalData;
     $data = array();
     
     if(!empty($temps)){
       foreach ($temps as $key=>$temp){
-        $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id]));
+        // $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id]));
+        $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id,'userId'=>auth()->user()->id]));
        //$show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
         $destroy = route('events.destroy', [app()->getLocale(),$temp->id]);
         $edit =  route('events.edit', [ app()->getLocale(),$temp->id]);

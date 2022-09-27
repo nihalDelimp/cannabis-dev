@@ -51,9 +51,10 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              
+              {{ \Carbon\Carbon::parse($news->start_date)->hour }}
+              {{ \Carbon\Carbon::parse($news->end_date)->minute }}
               <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="date" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($news->start_date)->format('Y-m-d') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
+              <input type="text" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($news->start_date)->format('m/d/Y') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
               @error('start_date')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -68,8 +69,8 @@
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label> 
               <select class="form-control" name="start_time[]">
-                @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}" {{$i == $news->start_time[0] ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
+                @for ($i = 1; $i <= 23; $i++)
+                <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->start_date)->hour ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -86,12 +87,12 @@
                   @php
                   $num = $i*15-1;
                   @endphp
-                  <option value="{{$i*15-1}}" {{$num == $news->start_time[1] ? 'selected':''}}> {{$i*15-1}}</option>
+                  <option value="{{$i*15-1}}" {{$num == \Carbon\Carbon::parse($news->start_date)->minute ? 'selected':''}}> {{$i*15-1}}</option>
                   @else 
                   @php
                   $num = $i*15;
                   @endphp
-                  <option value="{{$i*15}}" {{ $num == $news->start_time[1] ? 'selected':''}}>{{ sprintf("%02d", $i*15)}}</option>
+                  <option value="{{$i*15}}" {{ $num == \Carbon\Carbon::parse($news->start_date)->minute ? 'selected':''}}>{{ sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>
@@ -99,13 +100,14 @@
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
+              <label for="petrol_saved">{{langMessage('Set Second')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control" name="start_time[]">
                 
-                <option value="AM" {{ "AM" == $news->start_time[2] ? 'selected':''}}>AM</option>
-                <option value="PM" {{ "PM" == $news->start_time[2] ? 'selected':''}}>PM</option>
+                @for ($i = 0; $i <= 59; $i++)
+                <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->start_date)->second ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
+                @endfor
                 
               </select>
             </div>
@@ -117,7 +119,7 @@
             <div class="form-group">
             
               <label for="petrol_saved">{{langMessage('End Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="date" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($news->end_date)->format('Y-m-d') }}" class="form-control disableEndTime" placeholder="{{langMessage('End Date')}}" />
+              <input type="text" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($news->end_date)->format('Y-m-d') }}" class="form-control disableEndTime" placeholder="{{langMessage('End Date')}}" />
               @error('end_date')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -132,8 +134,8 @@
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control disableEndTime" name="end_time[]">
-                @for ($i = 1; $i <= 12; $i++)
-                <option value="{{$i}}" {{$i == $news->end_time[0] ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
+                @for ($i = 1; $i <= 23; $i++)
+                <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->end_date)->hour ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
@@ -149,12 +151,12 @@
                   @php
                   $num = $i*15-1;
                   @endphp
-                  <option value="{{$i*15-1}}" {{$num == $news->end_time[1] ? 'selected':''}}> {{$i*15-1}}</option>
+                  <option value="{{$i*15-1}}" {{$num == \Carbon\Carbon::parse($news->end_date)->minute ? 'selected':''}}> {{$i*15-1}}</option>
                   @else 
                   @php
                   $num = $i*15;
                   @endphp
-                  <option value="{{$i*15}}" {{ $num == $news->end_time[1] ? 'selected':''}}>{{sprintf("%02d", $i*15)}}</option>
+                  <option value="{{$i*15}}" {{ $num == \Carbon\Carbon::parse($news->end_date)->minute ? 'selected':''}}>{{sprintf("%02d", $i*15)}}</option>
                   @endif
                 @endfor
               </select>
@@ -162,13 +164,14 @@
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
+              <label for="petrol_saved">{{langMessage('Set Second')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control disableEndTime" name="end_time[]">
                 
-                <option value="AM" {{ "AM" == $news->end_time[2] ? 'selected':''}}>AM</option>
-                <option value="PM" {{ "PM" == $news->end_time[2] ? 'selected':''}}>PM</option>
+                @for ($i = 0; $i <= 59; $i++)
+                <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->end_date)->second ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
+                @endfor
                 
               </select>
             </div>
@@ -191,8 +194,8 @@
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           <select class="form-control" name="status">
-            <option value="1" {{ $news->status == '1' ?'selected':''}}>{{langMessage('Active')}}</option>
-            <option value="2" {{ $news->status == '2' ?'selected':''}}>{{langMessage('Inactive')}}</option>
+            <option value=1 {{ $news->status == 1 ?'selected':''}}>{{langMessage('Active')}}</option>
+            <option value=0 {{ $news->status == 0 ?'selected':''}}>{{langMessage('Inactive')}}</option>
           </select>
           @error('status')
               <span class="text-danger" role="alert">
@@ -256,18 +259,55 @@
 @section('pagejs')
 <script>
 $(document).ready(function(){
+ 
+  $('#end_date').datepicker();
   $('.select2').select2();
   $('.textarea').wysihtml5();
 
 
   var up_result = new Date($('#start_date').val());
+  let today = new Date();
   console.log("dat-",up_result);
   var up_inc_date = up_result.setDate(up_result.getDate());
   var increse_date = moment(up_inc_date).format('YYYY-MM-DD');  
-  $("#start_date").attr({
-        "min" : increse_date,
-        //"value" : increse_date,         // values (or variables) here
-  });
+  // $('#start_date').datepicker({ minDate: today, maxDate: "+1M +10D" });
+  $( function() {
+    var dateFormat = "mm/dd/yy",
+      from = $( "#start_date" )
+        .datepicker({
+          defaultDate: "+1w",
+          changeMonth: true,
+          minDate: today,
+          
+        })
+        .on( "change", function() {
+          to.datepicker( "option", "minDate", getDate( this ) );
+        }),
+      to = $( "#end_date" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3
+      })
+      .on( "change", function() {
+        from.datepicker( "option", "maxDate", getDate( this ) );
+      });
+ 
+      function getDate( element ) {
+        var date;
+        try {
+          date = $.datepicker.parseDate( dateFormat, element.value );
+        } catch( error ) {
+          date = null;
+        }
+  
+        return date;
+      }
+  } );
+
+  // $("#start_date").attr({
+  //       "min" : increse_date,
+  //       //"value" : increse_date,         // values (or variables) here
+  // });
   $(".disableEndTime").attr('disabled',true);
   $('body').on('change','#start_date',function(){
 
@@ -276,13 +316,17 @@ $(document).ready(function(){
     console.log("dat re-",result);
     var increse_date = result.setDate(result.getDate() + 1 );
     var end_date = moment(increse_date).format('YYYY-MM-DD');  
-    $("#end_date").attr({
-          "min" : end_date,
-          //"disabled" : false,
-          //"value" : increse_date,         // values (or variables) here
-    });
+    $('#end_date').datepicker({ minDate: result, maxDate: "+1M +10D" });
+
+    // $("#end_date").attr({
+    //       "min" : end_date,
+    //       //"disabled" : false,
+    //       //"value" : increse_date,         // values (or variables) here
+    // });
     $(".disableEndTime").attr('disabled',false);
   });
+
 });
+  
 </script>
 @stop

@@ -210,6 +210,7 @@ class NewsController extends Controller{
       }
       $temp->where('posts.post_type','=','1');
       $totalData  = $temp->count();
+      //dd($totalData);
       $totalFiltered = $totalData;
     $data = array();
     if(!empty($temps)){
