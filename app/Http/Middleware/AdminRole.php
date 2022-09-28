@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Session\Middleware\StartSession;
 use Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 class AdminRole
 {
     /**
@@ -26,17 +27,36 @@ class AdminRole
       //   return redirect(route('admin',app()->getLocale()));
       // }
 
-      $response = $next($request);
+     // $response = $next($request);
         
-        if(!$user = auth()->user()) {
-            return redirect()->route('admin');
-        }
+      // echo "<pre>"; 
+      // echo print_r(Auth::user());
+      if (Auth::user()) {
+          return $next($request);
+      }
+      else {
+        $user = JWTAuth::parseToken()->authenticate();
+        if($user && $user->role != 1) {
+          return response()->json(['status' => 'Authorization Token not found']);
+        } 
+        return $next($request);
+      }
 
-        if($user->role != 1 ) {
-            return redirect('/');
-        }
+        // if(!$user = Auth::user()) {
+        //     return redirect()->route('admin');
+        // }
 
-      return $response;
+        // if($user->role != 1 ) {
+        //     return redirect('/');
+        // }
+
+        // return $response;
+        //$user = JWTAuth::toUser($request->header('token'));
+        //json_decode((string) $response->getBody(), true)['access_token'];
+      //   $user = JWTAuth::parseToken()->authenticate();
+      //   dd($user);
+      // echo json_encode((string) $request->header('Authorization'));
+      // exit;sudhanshu@delimp
       
     }
 }

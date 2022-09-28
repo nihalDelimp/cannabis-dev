@@ -375,6 +375,7 @@ class UserController extends Controller
         $result =  User::where('email', $email)->first();
         if( $result != null) {
             $this->response['data'] = $result;
+            $this->response['auth'] = JWTAuth::parseToken()->authenticate();
             $this->response['status'] = 1;
             $this->sendResponse($this->response);
             
