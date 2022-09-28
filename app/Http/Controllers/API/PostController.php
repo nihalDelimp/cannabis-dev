@@ -18,6 +18,7 @@ use DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PostController extends Controller{
@@ -26,37 +27,8 @@ class PostController extends Controller{
     $this->response = $this->error = array();
     $this->response['status'] = "0";
   }
-  function deleteEvent($id)
-  {
-    
-    $Event= Event::find($id);
-    
-    if ($Event) {
-      $Event->delete();
-      $this->response['status'] = "1";
-      $this->response['data']['msg'] = $id.' Event delete successfully. ';
-    
-    }else {
-    $this->response['status'] = "0";
-    $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
-    }
-    return $this->sendResponse($this->response);
-  }
-  function showEvent($id)
-  {
-      $event= Event::find($id);
-      
-      if(!empty($event)){
-      
-          $this->response['status'] = "1";
-          $this->response['data']['event'] = $event;
-      } else {
-        $this->response['status'] = "0";
-        $this->response['data']['msg'] = "Sorry Invalid event..";
-      }
-      
-      return $this->sendResponse($this->response);
-  }
+  
+  
   public function storeUser(Request $request){
     
     //dd($request->all());
@@ -162,108 +134,9 @@ class PostController extends Controller{
     $this->sendResponse($this->response);
 
   }
-  public function storeEvent(Request $request){
-    
-    //dd($request->all());
-   
-    //$QrCode = QrCode::generate('scan to me');
-    
-    $data = [];
-    $data = [
-      'name' => $request->name,
-      'discription' => $request->discription,
-      'start_date' => $request->stat_date,
-      'end_date' => $request->end_date,
-      'image_path' => $request->image_path,
-      //'qr_code' => $request->qr_code,
-      'special_link' => $request->special_link,
-      'user_id' => $request->user_id,
-    ];
-    $data['start_time'] = $request->start_time;
-    $data['end_time'] = $request->end_time;
-    //dd($data);
-    // $validation['email'] = 'required|email|unique:users';
-    // $validation['phone'] = 'required|unique:users';
-    //$validation['user_id'] = 'required';
-    
-    $validation = [];
-    $attributes = [];
-    $messages = [];
-    $validator = Validator::make($request->all(), $validation,$messages,$attributes);
-    if($validator->fails()){
-     $errors = json_decode($validator->errors()->toJson(), true);
-     if (!empty($errors)){
-        foreach($errors as $k => $v) {
-          foreach($v as $error){
-            $this->error[] = $error;
-          }
-        }
-     }
-    }
-    if(count($this->error) == 0){
-      $event = Event::create($data);
-      if(!empty($event)){
-      //dd($user);
-        
-        $this->response['status'] = "1";
-        $this->response['data']['event'] = $event;
-      }
-      else{
-        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
-      }
-    }
-    else{
-      $this->response['data']['error'] = $this->langError($this->error);
-    }
-    $this->sendResponse($this->response);
-    
-    
-    // $request->title;
-    // $this->sendResponse($post);
-  }
-  public function eidtEvent(Request $request, $id){
-   $data = [];
-    $data = [
-      'name' => $request->name,
-      'discription' => $request->discription,
-      'date' => $request->date,
-      //'qr_code' => $request->qr_code,
-      'special_link' => $request->special_link,
-    ];
-    
-    if($id != null){
-      $event = Event::find($id);
-      $event->update($data);
-     
-      if(!empty($event)){
-      //dd($user);
-        
-        $this->response['status'] = "1";
-        $this->response['data']['event'] = $event;
-      }
-      else{
-        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
-      }
-      $this->sendResponse($this->response);
-
-    }
-    else{
-      $this->response['data']['error'] = $this->langError($this->error);
-    }
-    $this->sendResponse($this->response);
-    
-  }
-  public function listEvent() {
-    $event = Event::all();
-    if(!empty($event)) {
-        $this->response['status'] = "1";
-        $this->response['data']['event'] = $event;
-      }
-      else {
-        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
-      }
-      $this->sendResponse($this->response);
-  }
+ 
+  
+  
   public function getPostList(Request $request){
     $posts = [];
 

@@ -12,6 +12,7 @@ use App\Models\Tag;
 use App\Models\Event;
 use Illuminate\Support\Facades\Storage;
 //use Intervention\Image\ImageManagerStatic as Image;
+use URL;
 use File;
 use Image;
 use ImageResize;
@@ -64,6 +65,7 @@ class EventController extends Controller{
     }
     $insert = array();
     $insert['name'] = $request->name;
+    
 
 
     $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
@@ -96,6 +98,7 @@ class EventController extends Controller{
       File::delete($deletefile_path);
       $event->image_path = Storage::disk('admin')->url($base_path);
       $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
+      $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
       $event->save();
     }
     
@@ -139,6 +142,9 @@ class EventController extends Controller{
     $update = array();
     $update['name'] = $request->name;
    
+
+    // $update['special_link'] = URL::to($id."_".$request->name.'_'.md5(time()));
+        
     $update['discription'] = $request->discription;
     $update['user_id'] = auth()->user()->id;
     $update['status'] = $request->status;

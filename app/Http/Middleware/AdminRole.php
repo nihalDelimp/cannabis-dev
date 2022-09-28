@@ -17,14 +17,26 @@ class AdminRole
     public function handle($request, Closure $next)
     {
             
-      if($user = Auth::user()){
+      // if($user = Auth::user()){
         
-        //dd("admin role-",$user);
-      }
+      //   //dd("admin role-",$user);
+      // }
       // else{
         
       //   return redirect(route('admin',app()->getLocale()));
       // }
-      return $next($request);
+
+      $response = $next($request);
+        
+        if(!$user = auth()->user()) {
+            return redirect()->route('admin');
+        }
+
+        if($user->role != 1 ) {
+            return redirect('/');
+        }
+
+      return $response;
+      
     }
 }

@@ -35,6 +35,7 @@ Route::group([
   'where' => ['locale' => '[a-zA-Z]{2}'],
   'middleware' => ['setlocale','adminRole']
   ], function (){
+  //Route::get('event-list', [App\Http\Controllers\API\PostController::class, 'listEvent']);
     //Route::get('event-join-list', [App\Http\Controllers\API\PostController::class, 'getEventJoinLists']);
   Route::get('dashboard', 'DashboardController@index')->name('dashboard');
   Route::get('dashboard/editprofile', 'DashboardController@editProfile')->name('dashboard.editprofile');
