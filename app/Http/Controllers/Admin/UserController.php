@@ -53,8 +53,8 @@ class UserController extends Controller
             'position'=> $request->position,
             'organization'=> $request->organization,
             'instagram_name'=> $request->instagram_name,
-            'invited_owner'=> $request->invited_owner,
-            'insterested_status'=> $request->insterested_status,
+            'invited_owner'=> 1,
+            'insterested_status'=> 1,
         ];
         $user = User::create($insert);
         return redirect(route('users.index',app()->getLocale()))->with('success','User create successfully.');
@@ -139,6 +139,7 @@ class UserController extends Controller
         $limit = $request->input('length');
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
+        //dd($request->input('order.0.column'));
         $dir = $request->input('order.0.dir');
     
         $temp =  User::where('role','!=',1);

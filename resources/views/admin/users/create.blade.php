@@ -177,7 +177,7 @@
         </div> --}}
       </div>
       {{-- insterested_status`, `invited_owner` --}}
-      <div class="col-md-12">
+      {{-- <div class="col-md-12">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Invited Owner')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           <select class="form-control" name="invited_owner">
@@ -205,7 +205,7 @@
           @enderror
         </div>
         
-      </div>
+      </div> --}}
       <div class="form-group col-sm-12 text-center">
         <input class="btn btn-primary" name="add" type="submit" value="{{langMessage('add')}}">
       </div>

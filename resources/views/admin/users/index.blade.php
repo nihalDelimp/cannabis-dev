@@ -127,7 +127,7 @@
           'searching'   : false,
           "processing": true,
           "serverSide": true,
-          "order": [[ 5, "desc" ]],
+          "order": [[ 0, "desc" ]],
           "ajax":{
                    url: "{{ route('getUsers',app()->getLocale()) }}",
                    dataType: "json",

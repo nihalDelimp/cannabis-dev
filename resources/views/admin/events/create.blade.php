@@ -194,24 +194,7 @@
               </span>
           @enderror
         </div>
-        {{-- <div class="form-group">
-          <label for="petrol_saved">{{langMessage('Category')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <select class="form-control" name="category_id">
-            @if(!$categories->isEmpty())
-              <option value="">{{langMessage('Select')}}</option>
-              @foreach($categories as $category)
-                <option value="{{$category->id}}" {{ old('category_id') == $category->id ?'selected':''}}>{{langMessage($category->title)}}</option>
-              @endforeach
-            @else
-                <option value="">{{langMessage('Empty')}}</option>
-            @endif
-          </select>
-          @error('category_id')
-              <span class="text-danger" role="alert">
-                  <strong>{{langMessage($message)}}</strong>
-              </span>
-          @enderror
-        </div> --}}
+        
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Image')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           

@@ -58,4 +58,5 @@ Route::post('event-show/{id}', [App\Http\Controllers\API\EventApiController::cla
 Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
 Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
 Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
+Route::post("check-email",[App\Http\Controllers\API\UserController::class,'checkMail']);
 

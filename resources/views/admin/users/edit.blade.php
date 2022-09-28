@@ -54,7 +54,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('Email')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="email" id="email" value="{{$user->email}}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your email')}}" />
+              <input type="text" disabled name="email" id="email" value="{{$user->email}}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your email')}}" />
               @error('email')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -66,7 +66,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('phone')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="phone" id="phone" value="{{$user->phone}}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your phone number')}}" />
+              <input type="text" disabled name="phone" id="phone" value="{{$user->phone}}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your phone number')}}" />
               @error('phone')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -78,7 +78,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('DOB')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="date" name="dob" id="dob" value="{{\Carbon\Carbon::parse($user->dob)->format('Y-m-d') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your dob')}}" />
+              <input type="date" disabled name="dob" id="dob" value="{{\Carbon\Carbon::parse($user->dob)->format('Y-m-d') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your dob')}}" />
               @error('dob')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -145,7 +145,7 @@
         </div> --}}
       </div>
       {{-- insterested_status`, `invited_owner` --}}
-      <div class="col-md-12">
+      {{-- <div class="col-md-12">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Invited Owner')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           <select class="form-control" name="invited_owner">
@@ -158,8 +158,8 @@
               </span>
           @enderror
         </div>
-      </div>
-      <div class="col-md-12">
+      </div> --}}
+      {{-- <div class="col-md-12">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Insterested')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
           <select class="form-control" name="insterested_status">
@@ -172,28 +172,7 @@
               </span>
           @enderror
         </div>
-        
-          {{-- <div class="box box-primary">
-            <div class="box-header">
-              <h3 class="box-title">{{langMessage('Upload Image')}}</h3>
-            </div>
-            <div class="box-body">
-              <div class="form-group">
-              <input type="file" name="image_path" class="form-control">
-              @error('image_path')
-                  <span class="text-danger" role="alert">
-                      <strong>{{langMessage($message)}}</strong>
-                  </span>
-              @enderror
-              </div>
-              <div class="form-group">
-               
-              <img src="{{asset($user->thumbnail_path)}}" alt="">
-              
-              </div>
-            </div>
-          </div> --}}
-      </div>
+      </div> --}}
       <div class="form-group col-sm-12 text-center">
         <input class="btn btn-primary" name="add" type="submit" value="{{langMessage('update')}}">
       </div>

@@ -59,6 +59,7 @@ class EventJoinListController extends Controller{
     $this->sendResponse($this->response);
 
   }
+ 
 
   
 

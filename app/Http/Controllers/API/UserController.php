@@ -370,4 +370,22 @@ class UserController extends Controller
        
        // return $this->sendResponse($result);
     }
+    public function checkMail(Request $request) {
+        $email = $request->email;
+        $result =  User::where('email', $email)->first();
+        if( $result != null) {
+            $this->response['data'] = $result;
+            $this->response['status'] = 1;
+            $this->sendResponse($this->response);
+            
+        } else {
+            $this->response['data'] = '';
+            $this->response['status'] = 0;
+            $this->response['message'] = "Registration first";
+            //dd($this->response);
+            $this->sendResponse($this->response);
+        }
+        
+
+    }
 }
