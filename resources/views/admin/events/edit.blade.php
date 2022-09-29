@@ -51,8 +51,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              {{ \Carbon\Carbon::parse($news->start_date)->hour }}
-              {{ \Carbon\Carbon::parse($news->end_date)->minute }}
+              
               <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
               <input type="text" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($news->start_date)->format('m/d/Y') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
               @error('start_date')
@@ -119,7 +118,7 @@
             <div class="form-group">
             
               <label for="petrol_saved">{{langMessage('End Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($news->end_date)->format('Y-m-d') }}" class="form-control disableEndTime" placeholder="{{langMessage('End Date')}}" />
+              <input type="text" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($news->end_date)->format('m/d/Y') }}" class="form-control disableEndTime" placeholder="{{langMessage('End Date')}}" />
               @error('end_date')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>

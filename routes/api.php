@@ -39,18 +39,23 @@ Route::group(['middleware' => 'jwt.verify'], function(){
     Route::get("auth-detail-show",[App\Http\Controllers\API\UserController::class,'showAuth']);
     Route::get("get-user",[App\Http\Controllers\API\UserController::class,'get_user']);
     Route::post("edit-auth-account",[App\Http\Controllers\API\UserController::class,'user_account_update']);
-    Route::post('create-event', [App\Http\Controllers\API\EventApiController::class, 'storeEvent']);
-    Route::post('edit-event/{id}', [App\Http\Controllers\API\EventApiController::class, 'eidtEvent']);
-    Route::delete('delete-event/{id}', [App\Http\Controllers\API\EventApiController::class, 'deleteEvent']);
+    Route::post('create-event', [App\Http\Controllers\API\EventApiController::class, 'storeEvent'])->middleware('adminRole');;
+    Route::post('edit-event/{id}', [App\Http\Controllers\API\EventApiController::class, 'eidtEvent'])->middleware('adminRole');;
+    Route::delete('delete-event/{id}', [App\Http\Controllers\API\EventApiController::class, 'deleteEvent'])->middleware('adminRole');;
     
-    Route::delete("delete-user/{id}",[App\Http\Controllers\API\UserController::class,'deleteUser']);
+    Route::delete("delete-user/{id}",[App\Http\Controllers\API\UserController::class,'deleteUser'])->middleware('adminRole');;
     
     
-    Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
-    Route::post('store-event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'eventJoinLists']);
+    
+    
     Route::get('event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'getEventJoinLists']);
-    Route::post("check-email",[App\Http\Controllers\API\UserController::class,'checkMail']);//->middleware('adminRole');
+    Route::post("check-email",[App\Http\Controllers\API\UserController::class,'checkMail'])->middleware('adminRole');
+    //->middleware('adminRole');
 });
+
+
+Route::post('store-event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'eventJoinLists']);
+Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
 Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser'])->name('register-users');
 Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
 

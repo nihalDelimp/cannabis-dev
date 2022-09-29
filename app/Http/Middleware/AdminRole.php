@@ -31,10 +31,12 @@ class AdminRole
         
       // echo "<pre>"; 
       // echo print_r(Auth::user());
+      //dd(auth()->guard('api')->user());
       if (Auth::user()) {
           return $next($request);
       }
       else {
+        
         $user = JWTAuth::parseToken()->authenticate();
         if($user && $user->role != 1) {
           return response()->json(['status' => 'Authorization Token not found']);

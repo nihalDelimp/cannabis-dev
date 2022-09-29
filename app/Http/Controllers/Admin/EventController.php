@@ -37,6 +37,13 @@ class EventController extends Controller{
     $categories = Event::where(['status'=>'1'])->get();
     return view('admin.events.create',compact('pageHeading','categories'));
   }
+  public function show(Request $request){
+    $id = $request->segment(4);
+    
+    $pageHeading = "Show Events";
+    $event = Event::find($id);
+    return view('admin.events.show',compact('pageHeading','event'));
+  }
 
   public function edit(Request $request){
     $id = $request->segment(4);
@@ -300,8 +307,14 @@ class EventController extends Controller{
     if(!empty($temps)){
       foreach ($temps as $key=>$temp){
         // $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id]));
-        $qr_code = QrCode::size(100)->generate(route('events.edit', [ app()->getLocale(),$temp->id,'userId'=>auth()->user()->id]));
-       //$show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
+        if($temp->special_link != null) {
+          $qr_code = QrCode::size(100)->generate($temp->special_link);
+        } else {
+          $qr_code = QrCode::size(100)->generate("N/A");
+        }
+        
+        // $show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
+        $show =  route('events.show', [app()->getLocale(),$temp->id]);
         $destroy = route('events.destroy', [app()->getLocale(),$temp->id]);
         $edit =  route('events.edit', [ app()->getLocale(),$temp->id]);
         
@@ -315,6 +328,7 @@ class EventController extends Controller{
         $nestedData['qr_code'] = " $qr_code ";
         $nestedData['special_link'] = $temp->special_link;
         $nestedData['options'] = "";
+        $nestedData['options'] .= "<a href='{$show}' class='btn btn-warning'><i class='fa fa-eye' aria-hidden='true'></i></a>";
         $nestedData['options'] .= "&nbsp;&nbsp;<a href='{$edit}' class='btn btn-warning'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
         $nestedData['options'] .= "&nbsp;&nbsp;<form style='display:inline-block;' action='{$destroy}' method='post'>
           <input type='hidden' name='_token' value='".csrf_token()."'>
