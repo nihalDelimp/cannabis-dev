@@ -120,7 +120,7 @@
           'searching'   : false,
           "processing": true,
           "serverSide": true,
-          "order": [[ 5, "desc" ]],
+          "order": [[ 0, "desc" ]],
           "ajax":{
                    url: "{{ route('getEvents',app()->getLocale()) }}",
                    dataType: "json",
