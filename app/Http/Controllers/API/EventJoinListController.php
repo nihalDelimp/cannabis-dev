@@ -25,7 +25,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class EventJoinListController extends Controller{
   public function __construct(){
     // parent::__construct();
-    $this->user = JWTAuth::parseToken()->authenticate();
+    //$this->user = JWTAuth::parseToken()->authenticate();
     //dd($this->user);
     $this->response = $this->error = array();
     $this->response['status'] = "0";
