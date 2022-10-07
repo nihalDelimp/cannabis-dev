@@ -177,6 +177,7 @@ class UserController extends Controller
             'status' => 1,
             'token' => $token,
             'user' => auth()->user(),
+            // 'user' => auth()->user(),
         ]);
     }
  

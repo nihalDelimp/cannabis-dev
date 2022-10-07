@@ -124,10 +124,13 @@ class EventController extends Controller{
     
     //dd($request->start_time);
     $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
+    if(isset($request->end_date)) {
     $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
+    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+    }
     //echo "date-".$timestamp1."</br>";
     $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
-    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+    
     //echo $start_date;
     //dd(Carbon::parse($request->start_date)->format('Y-m-d H:i:s'));
     // echo "id-".$id; 
