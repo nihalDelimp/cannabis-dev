@@ -88,6 +88,10 @@ class EventApiController extends Controller{
      }
      if($id != null){
        $event = Event::find($id);
+       if($request->status == 1) {
+        $update_event = Event::where('id','!=',$id)->update(['status' => '0']);
+       
+        }
        $event->update($data);
       
        if(!empty($event)){

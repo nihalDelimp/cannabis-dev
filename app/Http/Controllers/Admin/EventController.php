@@ -236,19 +236,26 @@ class EventController extends Controller{
     //   $this->removeEventImage($id);
     // }
     // $tags_id = $request->tags_id;
+    if($request->status == 1) {
+      $update_event = Event::where('id','!=',$id)->update(['status' => '0']);
+     
+    }
     Event::find($id)->update($update);
    
-    return redirect(route('events.index',app()->getLocale()))->with('success', 'News is successfully updated');
+    return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is successfully updated');
   }
 
   public function getSearchableFields($request){
-    //dd($request['status']);
+    //echo $request['status'];
     $search = [];
     $searchableFields = ['name','status','start_date','end_date'];
     foreach($searchableFields as $field){
-      if(!empty($request[$field])){
+      if(isset($request[$field])){
         $search[$field] = $request[$field];
       }
+      // if(!empty($request[$field])){
+      //   $search[$field] = $request[$field];
+      // }
     }
     //dd($search);
     return $search;
@@ -257,7 +264,7 @@ class EventController extends Controller{
   public function getEvents(Request $request){
     $search = $this->getSearchableFields($request->all());
    ;
-    $columns = array(0=>'id', 1=>'name', 2=>'date', 3=>'discription', 4=>'special_link', 5=>'status');
+    $columns = array(0=>'id', 1=>'name', 2=>'start_date',3=>'end_date', 4=>'discription', 5=>'special_link', 6=>'status');
     
     $limit = $request->input('length');
     $start = $request->input('start');
@@ -269,19 +276,17 @@ class EventController extends Controller{
     //dd(count($search));
     if(count($search) > 0){
         $sh = (object)$search;
-
-      // dd($sh);
+      
+      //dd($sh);
         if(!empty($sh->name)){
           $temp->where('events.name','LIKE',"%{$sh->name}%");
         }
-        if(!empty($sh->status)){
+        if(isset($sh->status)){
           $temp->where('events.status','=',$sh->status);
         }
-        // if(!empty($sh->user_id)){
-        //   $temp->where('events.user_id','=',$sh->user_id);
-        // }
+        
     }
-    //$temp->where('posts.post_type','=','1');
+    //dd($temp->get()->count());
     $temp->offset($start);
     $temp->limit($limit);
     $temp->orderBy($order,$dir);

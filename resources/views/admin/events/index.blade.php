@@ -43,7 +43,7 @@
                 
                   <option value="">{{langMessage('Select status')}}</option>
                   <option value=1>{{langMessage('Active')}}</option>
-                  <option value=2>{{langMessage('Inactive')}}</option>
+                  <option value=0>{{langMessage('Inactive')}}</option>
               </select>
             </div>
             {{-- <div class="form-group col-sm-6 col-md-4">
