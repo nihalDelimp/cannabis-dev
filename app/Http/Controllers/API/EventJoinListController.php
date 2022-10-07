@@ -51,6 +51,7 @@ class EventJoinListController extends Controller{
 
     } else {
       $this->response['status'] = "0";
+      $this->response['message'] = "You are not join any event. ";
     }
     
     $this->sendResponse($this->response);
