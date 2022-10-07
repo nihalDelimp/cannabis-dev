@@ -70,7 +70,7 @@ class EventJoinListController extends Controller{
     } else {
 
       $this->response['status'] = 0;
-      $this->response['error'] = $this->langError(['Record exist already.']);
+      $this->response['message'] = "Record exist already.";//$this->langError(['Record exist already.']);
     }
     $this->sendResponse($this->response);
 
