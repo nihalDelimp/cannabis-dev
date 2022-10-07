@@ -93,6 +93,9 @@ class EventController extends Controller{
     //$insert['image_path'] = $request->image_path;
     $insert['status'] = $request->status;
     $event = Event::create($insert);
+    if($request->status == 1) {
+      $update_event = Event::where('id','!=',$event->id)->update(['status' => '0']);
+    }
     if($event){
       $filename = $image->getClientOriginalName();
       $destinationPath = public_path('/thumbnail');

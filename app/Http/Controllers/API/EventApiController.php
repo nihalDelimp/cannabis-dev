@@ -77,7 +77,7 @@ class EventApiController extends Controller{
      $data = [
        'name' => $request->name,
        'discription' => $request->discription,
-       'start_date' => $request->stat_date,
+       'start_date' => $request->start_date,
        'end_date' => $request->end_date,
        'status' => $request->status,
        //'qr_code' => $request->qr_code,
@@ -122,7 +122,7 @@ class EventApiController extends Controller{
     $data = [
       'name' => $request->name,
       'discription' => $request->discription,
-      'start_date' => $request->stat_date,
+      'start_date' => $request->start_date,
       'end_date' => $request->end_date,
       'image_path' => $request->image_path,
       'status' => $request->status,
@@ -151,6 +151,9 @@ class EventApiController extends Controller{
     }
     if(count($this->error) == 0){
       $event = Event::create($data);
+      if($request->status == 1) {
+        $update_event = Event::where('id','!=',$event->id)->update(['status' => '0']);
+      }
       if(!empty($event)){
       //dd($user);
         $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
