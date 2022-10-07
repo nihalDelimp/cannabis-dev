@@ -49,6 +49,8 @@ Route::group(['middleware' => 'jwt.verify'], function(){
     
     
     Route::get('event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'getEventJoinLists']);
+
+    Route::get('user-join-list/{id?}', [App\Http\Controllers\API\EventJoinListController::class, 'UserJoinLists']);
     Route::post("check-email",[App\Http\Controllers\API\UserController::class,'checkMail'])->middleware('adminRole');
     //->middleware('adminRole');
 });

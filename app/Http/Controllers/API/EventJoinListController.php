@@ -35,7 +35,17 @@ class EventJoinListController extends Controller{
     $this->response = EventJoinList::get();
     $this->sendResponse($this->response);
   }
-  public function eventJoinLists(Request $request){
+  public function UserJoinLists($id = null){
+    if($id != null) {
+      $this->response['eventList'] = EventJoinList::where('user_id',$id)->get();
+      $this->response['status'] = 1;
+    } else {
+      $this->response['status'] = 0;
+    }
+    
+    $this->sendResponse($this->response);
+  }
+  public function eventJoinLists(Request $request) {
     $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
     // dd($request->all());
     // dd($result);
@@ -46,13 +56,19 @@ class EventJoinListController extends Controller{
         'user_id' => $request->user_id,
         'event_status' => 1,
       ];
-      $this->response['eventList'] = EventJoinList::create($insert);
+      EventJoinList::where('user_id', $request->user_id)->update(['event_status' => 0]);
+     
+
+      $eventList = EventJoinList::create($insert);
+      $this->response['eventList'] = $eventList;
       $this->response['status'] = 1;
+      
       // $user = User::find($request->user_id);
       // $user->event_status = 1;
       // $user->save();
 
     } else {
+
       $this->response['status'] = 0;
       $this->response['error'] = $this->langError(['Record exist already.']);
     }
