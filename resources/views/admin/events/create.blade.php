@@ -35,7 +35,7 @@
         </ul>
       </div>
     @endif
-    <form method="post" action="{{ route('events.store', app()->getLocale()) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('events.store', app()->getLocale()) }}" enctype="multipart/form-data" id="createForm">
      
       @csrf
       <div class="col-md-6">
@@ -228,7 +228,7 @@
         </div>
       </div>
         <div class="form-group col-sm-12 text-center">
-        <input class="btn btn-primary" name="add" type="submit" value="{{langMessage('add')}}">
+        <input class="btn btn-primary" name="add" id="addSave" type="submit" value="{{langMessage('add')}}">
         </div>
     </form>
     </div>
@@ -244,6 +244,7 @@
 @section('pagejs')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> 
 <script>
+  
   $('.select2').select2({
       createTag: function (params) {
           var term = $.trim(params.term);
@@ -350,6 +351,13 @@
 
     
   });
-    
+  $(document).ready(function(){
+        $('#createForm').on('submit', function(e){
+            //alert("hdljflksdf");
+            $('#addSave').prop('disabled', true);
+            // $(e.originalEvent.submitter).prop('disabled', true);
+            $('#addSave').attr('value','Please wait...');
+        });
+    });
 </script>
 @stop

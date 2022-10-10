@@ -97,4 +97,6 @@ Route::group([
   Route::post('play-list-data', 'PlayListController@dataTable')->name('play.list.data');
   Route::post('play-list-sort', 'PlayListController@sort')->name('play.list.sort');
   Route::get('play-list/{id}', 'PlayListController@view')->name('play.list.view');
+  Route::get('invite', 'EventController@invite')->name('invite.index');
+  Route::post('send-invite', 'EventController@sendInvite')->name('invite.send');
 });

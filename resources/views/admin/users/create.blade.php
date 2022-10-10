@@ -220,7 +220,7 @@
         
       </div> --}}
       <div class="form-group col-sm-12 text-center">
-        <input class="btn btn-primary" name="add" type="submit" value="{{langMessage('add')}}">
+        <input class="btn btn-primary" id="addSave" name="add" type="submit" value="{{langMessage('add')}}">
       </div>
     </form>
     </div>
@@ -271,6 +271,14 @@
 
     
   });
-    
+  $(document).ready(function(){
+        $('#CreateForm').on('submit', function(e){
+            e.preventDefault();
+            alert("hdljflksdf");
+            $('#addSave').prop('disabled', true);
+            // $(e.originalEvent.submitter).prop('disabled', true);
+            $('#addSave').attr('value','Please wait...');
+        });
+    });
 </script>
 @stop

@@ -81,6 +81,23 @@
                 </li>
           </ul>
         </li>
+        {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}"> --}}
+        <li class="treeview ">
+          <a href="#">
+          <i class="fa fa-table"></i> <span>{{langMessage('Invite')}}</span>
+          <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+          </span>
+          </a>
+          <ul class="treeview-menu">
+               
+                <li  class="{{ $action == 'index'?'active':'' }}">
+                    <a href="{{ route('invite.index',app()->getLocale())}}">
+                    <i class="fa fa-circle-o"></i> {{langMessage('Invite User')}}
+                    </a>
+                </li>
+          </ul>
+        </li>
       <li class="treeview {{ in_array($controller,['VideoController','PlayListController']) ?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Videos')}}</span>

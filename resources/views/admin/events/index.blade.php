@@ -83,7 +83,7 @@
           <th>{{langMessage('Start Date')}}</th>
           {{-- <th>{{langMessage('End Date')}}</th> --}}
           <th>{{langMessage('Discription')}}</th>
-          <th>{{langMessage('QR Code')}}</th>
+          {{-- <th>{{langMessage('QR Code')}}</th> --}}
           <th>{{langMessage('Status')}}</th>
           <th>{{langMessage('Action')}}</th>
         </tr>
@@ -95,7 +95,7 @@
           <th>{{langMessage('Start Date')}}</th>
           {{-- <th>{{langMessage('End Date')}}</th> --}}
           <th>{{langMessage('Discription')}}</th>
-          <th>{{langMessage('QR Code')}}</th>
+          {{-- <th>{{langMessage('QR Code')}}</th> --}}
           <th>{{langMessage('Status')}}</th>
           <th>{{langMessage('Action')}}</th>
           </tr>
@@ -140,7 +140,7 @@
             { "data": "start_date" },
             // { "data": "end_date" },
             { "data": "discription" },            
-            { "data": "qr_code" },            
+            // { "data": "qr_code" },            
             { "data": "status" },
             { "data": "options" }
           ]

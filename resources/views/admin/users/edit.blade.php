@@ -35,7 +35,7 @@
         </ul>
       </div>
     @endif
-    <form method="post" action="{{ route('users.update', [app()->getLocale(),$user->id]) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('users.update', [app()->getLocale(),$user->id]) }}" enctype="multipart/form-data" id="editForm">
       @csrf
       @method('PATCH')
       <div class="col-md-12">
@@ -174,7 +174,7 @@
         </div>
       </div> --}}
       <div class="form-group col-sm-12 text-center">
-        <input class="btn btn-primary" name="add" type="submit" value="{{langMessage('update')}}">
+        <input class="btn btn-primary" name="add" id="addSave" type="submit" value="{{langMessage('update')}}">
       </div>
     </form>
     </div>
@@ -218,5 +218,14 @@ $(document).ready(function(){
     $(".disableEndTime").attr('disabled',false);
   });
 });
+$(document).ready(function(){
+        $('#editForm').on('submit', function(e){
+          //e.preventDefault();
+            //alert("hdljflksdf");
+            $('#addSave').prop('disabled', true);
+            // $(e.originalEvent.submitter).prop('disabled', true);
+            $('#addSave').attr('value','Please wait...');
+        });
+    });
 </script>
 @stop

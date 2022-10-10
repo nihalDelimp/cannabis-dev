@@ -319,10 +319,12 @@ class EventController extends Controller{
     //dd($temp->get()->count());
     $temp->offset($start);
     $temp->limit($limit);
+    
     $temp->orderBy($order,$dir);
     //dd($limit,"fm",$temp->get()->count());
     //$temps = $temp->get();
-    $temps = $temp->get(['events.*']);
+    $temps = $temp->get();
+    // $temps = $temp->get(['events.*']);
     //   $temp =  Event::query();
     //   if(count($search) > 0){
     //     $sh = (object)$search;
@@ -409,5 +411,29 @@ class EventController extends Controller{
         @unlink(getcwd().'/public/images/events/listing/'.$event->image_path);
       }
     }
+  }
+  public function invite(){
+    $events = Event::get();
+    $users = User::get();
+    $pageHeading = "Invite Users";
+    return view('admin.invite.index',compact('events','users','pageHeading'));
+   
+  }
+  public function sendInvite(Request $request){
+    //dd($request->all());
+    $event = Event::find($request->event_id);
+    foreach($request->user_id as $key => $email) {
+      
+      $body = [
+        'production_link' => $event->special_link,
+        'production_name' => $event->name,
+        'name' => $email,
+      ];
+      Mail::to($email)->send(new sendProductionNotification($body));
+    }
+    return redirect()->route('invite.index',app()->getLocale())->with('success','Invitation send successfully...');
+    // return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is deleted successfully.');
+  
+   
   }
 }
