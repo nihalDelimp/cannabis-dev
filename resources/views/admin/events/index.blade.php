@@ -81,7 +81,7 @@
           <th>{{langMessage('Sn.')}}</th>
           <th>{{langMessage('Name')}}</th>
           <th>{{langMessage('Start Date')}}</th>
-          <th>{{langMessage('End Date')}}</th>
+          {{-- <th>{{langMessage('End Date')}}</th> --}}
           <th>{{langMessage('Discription')}}</th>
           <th>{{langMessage('QR Code')}}</th>
           <th>{{langMessage('Status')}}</th>
@@ -93,7 +93,7 @@
           <th>{{langMessage('Sn.')}}</th>
           <th>{{langMessage('Name')}}</th>
           <th>{{langMessage('Start Date')}}</th>
-          <th>{{langMessage('End Date')}}</th>
+          {{-- <th>{{langMessage('End Date')}}</th> --}}
           <th>{{langMessage('Discription')}}</th>
           <th>{{langMessage('QR Code')}}</th>
           <th>{{langMessage('Status')}}</th>
@@ -138,7 +138,7 @@
             { "data": "sn" },
             { "data": "name" },
             { "data": "start_date" },
-            { "data": "end_date" },
+            // { "data": "end_date" },
             { "data": "discription" },            
             { "data": "qr_code" },            
             { "data": "status" },

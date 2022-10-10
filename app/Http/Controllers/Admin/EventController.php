@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Mail\sendProductionNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Event;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Storage;
 //use Intervention\Image\ImageManagerStatic as Image;
 use URL;
@@ -33,21 +37,22 @@ class EventController extends Controller{
   }
 
   public function create(){
-    $pageHeading = "Add Events";
+    $pageHeading = "Add Production";
     $categories = Event::where(['status'=>'1'])->get();
-    return view('admin.events.create',compact('pageHeading','categories'));
+    $users = User::get();
+    return view('admin.events.create',compact('pageHeading','categories','users'));
   }
   public function show(Request $request){
     $id = $request->segment(4);
     
-    $pageHeading = "Show Events";
+    $pageHeading = "Show Production";
     $event = Event::find($id);
     return view('admin.events.show',compact('pageHeading','event'));
   }
 
   public function edit(Request $request){
     $id = $request->segment(4);
-    $pageHeading = "Update Events";
+    $pageHeading = "Update Production";
     $news = Event::find($id);
     // $news = Event::where(['id'=>$id,'post_type'=>'1'])->first();
     
@@ -55,7 +60,8 @@ class EventController extends Controller{
   }
 
   public function store(Request $request){
-    //  dd($request->all());
+    
+    //dd($request->all());
     
     $image = $request->file('image_path');
     $validate['name'] = 'required';
@@ -75,17 +81,18 @@ class EventController extends Controller{
     
 
 
-    $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
-    $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
+    $timestamp1 = $request->start_date .' '.$request->start_time[0].':00:00';
+    // $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
+    // $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
     //echo "date-".$timestamp1."</br>";
     $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
-    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+    //$end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
 
     
     // $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
     // $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
     $insert['start_date'] = $start_date;
-    $insert['end_date'] = $end_date;
+    //$insert['end_date'] = $end_date;
     $insert['discription'] = $request->discription;
     //$insert['start_time'] = $request->start_time;//[0].":".$request->start_time[1]." ".$request->start_time[2];
     //$insert['end_time'] = $request->end_time;//[0].":".$request->end_time[1]." ".$request->end_time[2];
@@ -93,6 +100,13 @@ class EventController extends Controller{
     //$insert['image_path'] = $request->image_path;
     $insert['status'] = $request->status;
     $event = Event::create($insert);
+    /////////////////send emil user_id
+    
+      
+        
+        
+        ///Mail::to($email)->send(new sendProductionNotification($body));
+    /////////end emil
     if($request->status == 1) {
       $update_event = Event::where('id','!=',$event->id)->update(['status' => '0']);
     }
@@ -110,24 +124,34 @@ class EventController extends Controller{
       $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
       $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
       $event->save();
+      foreach($request->user_id as $key => $email) {
+      
+        $body = [
+          'production_link' => $event->special_link,
+          'production_name' => $event->name,
+          'name' => $email,
+        ];
+        Mail::to($email)->send(new sendProductionNotification($body));
+      }
     }
     
     // if(!empty($tags_id)){
     //   $tags = Tag::find($tags_id);
     //   $news->tags()->attach($tags);
     // }
-    return redirect(route('events.index',app()->getLocale()))->with('success', 'Events added successfully.');
+    return redirect(route('events.index',app()->getLocale()))->with('success', 'Production added successfully.');
   }
 
   public function update(Request $request){
     $id = $request->segment(4);
     
     //dd($request->start_time);
-    $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
-    if(isset($request->end_date)) {
-    $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
-    $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
-    }
+    $timestamp1 = $request->start_date .' '.$request->start_time[0].':00:00';
+    // $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
+    // if(isset($request->end_date)) {
+    // $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
+    // $end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
+    // }
     //echo "date-".$timestamp1."</br>";
     $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
     
@@ -165,11 +189,11 @@ class EventController extends Controller{
     $update['start_date'] = $start_date;
     //Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
     //$update['start_time'] = $request->start_time;
-    if(!empty($request->end_date)) {
-      $update['end_date'] = $end_date;
-      //Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
-      //$update['end_time'] = $request->end_time;
-    }
+    // if(!empty($request->end_date)) {
+    //   $update['end_date'] = $end_date;
+    //   //Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+    //   //$update['end_time'] = $request->end_time;
+    // }
     
     //[0].":".$request->start_time[1]." ".$request->start_time[2];
     //[0].":".$request->end_time[1]." ".$request->end_time[2];

@@ -60,19 +60,19 @@
               @enderror
             </div>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Time')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control" name="start_time[]">
-                @for ($i = 1; $i <= 12; $i++)
+                @for ($i = 1; $i <= 23; $i++)
                 <option value="{{$i}}">{{ sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
           </div>
-          <div class="col-md-2">
+          {{-- <div class="col-md-2">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Minute')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
@@ -102,7 +102,7 @@
                 
               </select>
             </div>
-          </div>
+          </div> --}}
         </div>
         {{-- <div class="form-group">
           <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
@@ -113,7 +113,7 @@
               </span>
           @enderror
         </div> --}}
-        <div class="row">
+        {{-- <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('End Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
@@ -169,7 +169,7 @@
             </div>
           </div>
 
-        </div>
+        </div> --}}
         
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Discription')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
@@ -182,17 +182,28 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group">
-          <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <select class="form-control" name="status">
-            <option value=1>{{langMessage('Active')}}</option>
-            <option value=0>{{langMessage('Inactive')}}</option>
-          </select>
-          @error('status')
-              <span class="text-danger" role="alert">
-                  <strong>{{langMessage($message)}}</strong>
-              </span>
-          @enderror
+        <div class="row">
+          <div class="col-md-6">
+            <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+            <select class="form-control" name="status">
+              <option value=1>{{langMessage('Active')}}</option>
+              <option value=0>{{langMessage('Inactive')}}</option>
+            </select>
+            @error('status')
+                <span class="text-danger" role="alert">
+                    <strong>{{langMessage($message)}}</strong>
+                </span>
+            @enderror
+          </div>
+          <div class="col-md-6">
+            <label for="petrol_saved">User List<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+            <select class="form-control select2"  name="user_id[]" multiple="multiple">
+              @foreach($users as $user)
+                   <option value="{{$user->email}}">{{$user->email}}</option>
+              @endforeach
+            </select>
+            
+          </div>
         </div>
         
         <div class="form-group">
@@ -233,9 +244,51 @@
 @section('pagejs')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> 
 <script>
+  $('.select2').select2({
+      createTag: function (params) {
+          var term = $.trim(params.term);
+  
+          if (term === '') {
+              return null;
+          }
+          return {
+              id: term,
+              text: term,
+              newTag: true // add additional parameters
+          }
+      },
+      tags: true,
+      minimumInputLength: 2,
+      tokenSeparators: [','],
+      // ajax: {
+          // url: "{{-- route('country.list') =--}}",
+      //     dataType: "json",
+      //     type: "GET",
+      //     data: function (params) {
+      //         console.log(params);
+      //         var queryParameters = {
+      //             query: params.term
+      //         }
+      //         return queryParameters;
+      //     },
+      //     processResults: function (data) {
+      //         return {
+      //             results: $.map(data, function (item) {
+  
+      //                 return {
+      //                     text: item.name,
+      //                     id: item.id
+      //                 }
+      //             })
+      //         };
+      //     }
+      // }
+  });
+</script>
+<script>
   $(document).ready(function(){
     $('#end_date').datepicker();
-    $('.select2').select2();
+    
     $('.textarea').wysihtml5();
     ////////////////
     // var up_result = new Date();
@@ -279,7 +332,7 @@
   
         return date;
       }
-  } );
+    } );
     $('body').on('change','#start_date',function(){
 
       var result = new Date($(this).val());

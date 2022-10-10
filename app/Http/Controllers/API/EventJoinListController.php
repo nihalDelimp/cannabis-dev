@@ -16,6 +16,7 @@ use App\Models\Event;
 use App\Models\EventJoinList;
 use DB;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\sendQR_CodeNotification;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -74,9 +75,17 @@ class EventJoinListController extends Controller{
       $this->response['eventList'] = $eventList;
       $this->response['status'] = 1;
       
-      // $user = User::find($request->user_id);
+      $user = User::find($request->user_id);
+      $event = Event::find($request->event_id);
       // $user->event_status = 1;
       // $user->save();
+      $email = $user->email;
+      $body = [
+        'qr_code' =>  QrCode::size(100)->generate($event->special_link.'_'.$request->user_id),
+        'name' => $user->name,
+        'email' => $user->email,
+      ];
+      Mail::to($email)->send(new sendQR_CodeNotification($body));
 
     } else {
 

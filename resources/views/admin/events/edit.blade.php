@@ -62,7 +62,7 @@
             </div>
           </div>
           {{--  start--}}
-          <div class="col-md-2">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Time')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
@@ -74,7 +74,7 @@
               </select>
              </div>
           </div>
-          <div class="col-md-2">
+          {{-- <div class="col-md-2">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Minute')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
@@ -110,10 +110,10 @@
                 
               </select>
             </div>
-          </div>
+          </div> --}}
           {{-- end --}}
         </div>
-        <div class="row">
+        {{-- <div class="row">
           <div class="col-md-6">
             <div class="form-group">
             
@@ -126,7 +126,7 @@
               @enderror
             </div>
           </div>
-          {{-- srart --}}
+          
           <div class="col-md-2">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Time')}}
@@ -175,9 +175,9 @@
               </select>
             </div>
           </div>
-          {{-- end --}}
+         
 
-        </div>
+        </div> --}}
         
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Discription')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>

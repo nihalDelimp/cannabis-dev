@@ -51,7 +51,7 @@
       </li>
         <li class="treeview {{ $controller == 'EventController'?'active menu-open':''}}">
           <a href="#">
-          <i class="fa fa-table"></i> <span>{{langMessage('Event')}}</span>
+          <i class="fa fa-table"></i> <span>{{langMessage('Production')}}</span>
           <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
           </span>

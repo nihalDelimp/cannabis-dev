@@ -79,6 +79,19 @@
               @enderror
             </div>
           </div>
+          {{-- <div class="col-md-4">
+            <div class="form-group">
+              
+              <label for="petrol_saved">Production List<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+              <select  name="event_id" id="event_id"  class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Select Production')}}" />
+              <option value="">Select Production </option>
+                @foreach($events as $event)
+                   <option value="{{$event->id}}">{{$event->name}}</option>
+                    
+                @endforeach
+              </select>
+            </div>
+          </div> --}}
         </div>
         
         <div class="row">
