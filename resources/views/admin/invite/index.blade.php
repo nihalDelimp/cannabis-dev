@@ -112,7 +112,7 @@
               newTag: true // add additional parameters
           }
       },
-      tags: false,
+      tags: true,
       minimumInputLength: 2,
       tokenSeparators: [','],
       

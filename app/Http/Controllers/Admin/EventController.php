@@ -298,6 +298,7 @@ class EventController extends Controller{
     
     $limit = $request->input('length');
     $start = $request->input('start');
+    //dd($start);
     $order = $columns[$request->input('order.0.column')];
     $dir = $request->input('order.0.dir');
 
@@ -326,19 +327,13 @@ class EventController extends Controller{
     $temps = $temp->get();
     // $temps = $temp->get(['events.*']);
     //   $temp =  Event::query();
-    //   if(count($search) > 0){
-    //     $sh = (object)$search;
-    //     if(!empty($sh->name)){
-    //       $temp->where('events.name','LIKE',"%{$sh->name}%");
-    //     }
-    //     if(!empty($sh->user_id)){
-    //       $temp->where('events.user_id','=',$sh->user_id);
-    //     }
-    //   }
-      //$temp->where('posts.post_type','=','1');
-      $totalData  = $temp->count();
-     
-      $totalFiltered = $totalData;
+    //   
+    //$temp->where('posts.post_type','=','1');
+    $totalData  = Event::get()->count();
+    // $totalData  = $temp->count();
+    //dd($totalData);
+    
+    $totalFiltered = $totalData;
     $data = array();
     
     if(!empty($temps)){

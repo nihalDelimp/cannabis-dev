@@ -165,7 +165,7 @@ class UserController extends Controller
         $temp->limit($limit);
         $temp->orderBy($order,$dir);
         $temps = $temp->get();
-        $totalData  = $temp->count();
+        $totalData  = User::where('role','!=',1)->get()->count();
         $totalFiltered = $totalData;
         $data = array();
         
