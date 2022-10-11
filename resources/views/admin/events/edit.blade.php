@@ -332,7 +332,7 @@ $(document).ready(function(){
 $(document).ready(function(){
         $('#editForm').on('submit', function(e){
           //e.preventDefault();
-          alert("hdljflksdf");
+          //alert("hdljflksdf");
             $('#addSave').prop('disabled', true);
             // $(e.originalEvent.submitter).prop('disabled', true);
             $('#addSave').attr('value','Please wait...');

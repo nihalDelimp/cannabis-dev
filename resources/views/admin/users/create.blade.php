@@ -274,7 +274,7 @@
   $(document).ready(function(){
         $('#CreateForm').on('submit', function(e){
             e.preventDefault();
-            alert("hdljflksdf");
+            //alert("hdljflksdf");
             $('#addSave').prop('disabled', true);
             // $(e.originalEvent.submitter).prop('disabled', true);
             $('#addSave').attr('value','Please wait...');
