@@ -39,7 +39,7 @@ class EventJoinListController extends Controller{
   public function UserJoinLists($id = null){
     if($id != null) {
       //$this->response['eventList'] = EventJoinList::where('user_id',$id)->get();
-       $evm = EventJoinList::where('user_id',$id)->get();
+       $evm = EventJoinList::where('user_id',$id)->paginate(6);
       // $this->response['events'] = EventJoinList::where('user_id',$id)->select('event_id')->get();
       foreach($evm as $key => $val) {
         $this->response['event'][$key] = Event::find($val->event_id);
