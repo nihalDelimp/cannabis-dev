@@ -127,11 +127,10 @@ class EventController extends Controller{
       foreach($request->user_id as $key => $email) {
       $user = User::where('email', $email)->first();
         $body = [
-          'production_link' => $event->special_link,
+          'production_link' => env('SPA_URL').'/'.$event->special_link,
           'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
           'production_name' => $event->name,
-          'name' => $user->name,
-          'email' => $email,
+          'name' => $email,
         ];
         Mail::to($email)->send(new sendProductionNotification($body));
       }
@@ -417,16 +416,15 @@ class EventController extends Controller{
    
   }
   public function sendInvite(Request $request){
-    //dd($request->all());
+    //dd($request->all()); REACT_APP_SPAURL= http://localhost:3000/rsvp
     $event = Event::find($request->event_id);
     foreach($request->user_id as $key => $email) {
-      $user = User::where('email', $email)->first();
+     
       $body = [
-        'production_link' => $event->special_link,
+        'production_link' => env('SPA_URL').'/'.$event->special_link,
         'production_name' => $event->name,
         'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
-        'name' => $user->name,
-        'email' => $email,
+        'name' => $email,
       ];
       Mail::to($email)->send(new sendProductionNotification($body));
     }
