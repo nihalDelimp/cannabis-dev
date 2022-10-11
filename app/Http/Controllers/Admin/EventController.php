@@ -125,11 +125,13 @@ class EventController extends Controller{
       $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
       $event->save();
       foreach($request->user_id as $key => $email) {
-      
+      $user = User::where('email', $email)->first();
         $body = [
           'production_link' => $event->special_link,
+          'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
           'production_name' => $event->name,
-          'name' => $email,
+          'name' => $user->name,
+          'email' => $email,
         ];
         Mail::to($email)->send(new sendProductionNotification($body));
       }
@@ -418,11 +420,13 @@ class EventController extends Controller{
     //dd($request->all());
     $event = Event::find($request->event_id);
     foreach($request->user_id as $key => $email) {
-      
+      $user = User::where('email', $email)->first();
       $body = [
         'production_link' => $event->special_link,
         'production_name' => $event->name,
-        'name' => $email,
+        'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
+        'name' => $user->name,
+        'email' => $email,
       ];
       Mail::to($email)->send(new sendProductionNotification($body));
     }

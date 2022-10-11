@@ -84,6 +84,8 @@ class EventJoinListController extends Controller{
         'qr_code' =>  QrCode::size(100)->generate($event->special_link.'_'.$request->user_id),
         'name' => $user->name,
         'email' => $user->email,
+        'event_name' => $event->name,
+        'event_time' => Carbon::parse($event->start_date)->format('m-d-Y'),
       ];
       Mail::to($email)->send(new sendQR_CodeNotification($body));
 
