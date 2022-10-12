@@ -79,12 +79,13 @@ class PostController extends Controller{
         ]);
         //Get the token just created above
         $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
-        $link = route('create.password.with.login', $tokenData->token);
+        $link = env('SPA_URL').'/create-password/'.$tokenData->token;
+        // $link = route('create.password.with.login', $tokenData->token);
         //dd("elkdf->",$link);
         $email = $data['email'];
         $body = [
           'url' => $link,
-          'name' => $data['email'],
+          'name' => $data['email']
         ];
         
         Mail::to($email)->send(new createNewPassword($body));
