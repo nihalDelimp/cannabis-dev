@@ -1,4 +1,17 @@
 @extends('layouts.default')
+<style type="text/css">
+  .parsley-errors-list {
+  list-style: none;
+  color: rgb(248, 0, 0);
+  padding: 0;
+  }
+  .parsley-required li{
+  font-size: 14px;
+  line-height: 18px;
+  color: red;
+  margin-top: 6px;
+  }
+</style>
 @section('content')
   <section class="content-header">
     <h1>
@@ -41,7 +54,7 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Name')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <input type="text" name="name" value="{{ $news->name }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}" />
+          <input type="text" name="name" value="{{ $news->name }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}"  required data-parsley-required-message="Enter your name">
           @error('name')
               <span class="text-danger" role="alert">
                   <strong>{{langMessage($message)}}</strong>
@@ -53,7 +66,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($news->start_date)->format('m/d/Y') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
+              <input type="text" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($news->start_date)->format('m/d/Y') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}"  required data-parsley-required-message="Select start date">
               @error('start_date')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -68,7 +81,7 @@
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label> 
               <select class="form-control" name="start_time[]">
-                @for ($i = 0; $i <= 12; $i++)
+                @for ($i = 1; $i <= 12; $i++)
                 <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->start_date)->hour ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
@@ -81,7 +94,7 @@
               </label>
               <select class="form-control" name="start_time[]">
                 
-                  <option value="">-select-</option>
+                  {{-- <option value="">-select-</option> --}}
                   <option value="am" {{ $news->start_time == 'am' ? 'selected' : ''}}>AM</option>
                  
                   <option value="pm" {{ $news->start_time == 'pm' ? 'selected' : ''}}>PM</option>
@@ -271,10 +284,13 @@
   </section>
 @stop
 @section('pagejs')
-
+<script src="{{asset('plugins/parsley/parsley.min.js')}}"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> 
 <script>
 $(document).ready(function(){
- 
+  $('#editForm').parsley({
+
+  });
   $('#end_date').datepicker();
   $('.select2').select2();
   $('.textarea').wysihtml5();

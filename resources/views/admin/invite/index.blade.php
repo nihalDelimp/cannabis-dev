@@ -101,16 +101,22 @@
     });
     $('.select2').select2({
       createTag: function (params) {
-          var term = $.trim(params.term);
-  
-          if (term === '') {
-              return null;
-          }
-          return {
-              id: term,
-              text: term,
-              newTag: true // add additional parameters
-          }
+
+      const value = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      
+
+      // Don't offset to create a tag if there is no @ symbol
+        if (value.test(params.term)===false) {
+          // Return null to disable tag creation
+          // alert("boom")
+          return;
+        }
+
+
+        return {
+          id: params.term,
+          text: params.term
+        }
       },
       tags: true,
       minimumInputLength: 2,

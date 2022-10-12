@@ -1,4 +1,17 @@
 @extends('layouts.default')
+<style type="text/css">
+  .parsley-errors-list {
+  list-style: none;
+  color: rgb(248, 0, 0);
+  padding: 0;
+  }
+  .parsley-required li{
+  font-size: 14px;
+  line-height: 18px;
+  color: red;
+  margin-top: 6px;
+  }
+</style>
 @section('content')
   <section class="content-header">
     <h1>
@@ -41,7 +54,7 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Name')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <input type="text" name="name" value="{{ old('name') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}" />
+          <input type="text" name="name" value="{{ old('name') }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}" required data-parsley-required-message="Enter your name">
           @error('name')
               <span class="text-danger" role="alert">
                   <strong>{{langMessage($message)}}</strong>
@@ -52,7 +65,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Start Date')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="start_date" id="start_date" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" />
+              <input type="text" name="start_date" id="start_date" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Start Date')}}" required data-parsley-required-message="Enter your Start Date">
               @error('start_date')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -66,7 +79,7 @@
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control" name="start_time[]">
-                @for ($i = 0; $i <= 12; $i++)
+                @for ($i = 1; $i <= 12; $i++)
                 <option value="{{$i}}">{{ sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
@@ -79,7 +92,6 @@
               </label>
               <select class="form-control" name="start_time[]">
                 
-                  <option value="">-select-</option>
                   <option value="am">AM</option>
                  
                   <option value="pm">PM</option>
@@ -183,7 +195,7 @@
         <div class="row">
           <div class="col-md-6">
             <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-            <select class="form-control" name="status">
+            <select class="form-control" name="status" >
               <option value=1>{{langMessage('Active')}}</option>
               <option value=0>{{langMessage('Inactive')}}</option>
             </select>
@@ -215,7 +227,7 @@
           </div>
           <div class="box-body">
             <div class="form-group">
-            <input type="file" name="image_path" class="form-control">
+            <input type="file" name="image_path" class="form-control" required data-parsley-required-message="Upload Image file">
             @error('image_path')
                 <span class="text-danger" role="alert">
                     <strong>{{langMessage($message)}}</strong>
@@ -241,27 +253,25 @@
 @stop
 @section('pagejs')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> 
+<script src="{{asset('plugins/parsley/parsley.min.js')}}"></script> 
 <script>
-  
+  $('#createForm').parsley({
+
+  });
   $('.select2').select2({
-      // createTag: function (params) {
-      //     var term = $.trim(params.term);
-  
-      //     if (term === '') {
-      //         return null;
-      //     }
-      //     return {
-      //         id: term,
-      //         text: term,
-      //         newTag: true // add additional parameters
-      //     }
-      // },
+      
       createTag: function (params) {
+
+        const value = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        console.log(value.test(params.term))
+       
         // Don't offset to create a tag if there is no @ symbol
-        if (params.term.indexOf('@') === -1) {
+        if (value.test(params.term)===false) {
           // Return null to disable tag creation
-          return null;
+          // alert("boom")
+          return;
         }
+
 
         return {
           id: params.term,

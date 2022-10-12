@@ -71,7 +71,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('Email')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="text" name="email" id="email" required data-parsley-required-message="Please Enter your Email" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your email')}}" />
+              <input type="text" name="email" id="email" data-parsley-type="email" required data-parsley-required-message="Please Enter your Email" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your email')}}" />
               @error('email')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>
@@ -123,7 +123,7 @@
             <div class="form-group">
               
               <label for="petrol_saved">{{langMessage('DOB')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-              <input type="date" name="dob" id="dob" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your dob')}}" />
+              <input type="date" name="dob" id="dob" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Enter your dob')}}"  required data-parsley-required-message="Select your DOB">
               @error('dob')
                   <span class="text-danger" role="alert">
                       <strong>{{langMessage($message)}}</strong>

@@ -1,4 +1,17 @@
 @extends('layouts.default')
+<style type="text/css">
+  .parsley-errors-list {
+  list-style: none;
+  color: rgb(248, 0, 0);
+  padding: 0;
+  }
+  .parsley-required li{
+  font-size: 14px;
+  line-height: 18px;
+  color: red;
+  margin-top: 6px;
+  }
+</style>
 @section('content')
   <section class="content-header">
     <h1>
@@ -41,7 +54,7 @@
       <div class="col-md-12">
         <div class="form-group">
           <label for="petrol_saved">{{langMessage('Name')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-          <input type="text" name="name" value="{{ $user->name }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}" />
+          <input type="text" name="name" value="{{ $user->name }}" class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" placeholder="{{langMessage('Name')}}" required data-parsley-required-message="Please Enter your Name">
           @error('name')
               <span class="text-danger" role="alert">
                   <strong>{{langMessage($message)}}</strong>
@@ -188,8 +201,12 @@
   </section>
 @stop
 @section('pagejs')
+<script src="{{ asset('dist/parsley/parsley.min.js') }}"></script> 
 <script>
 $(document).ready(function(){
+  $('#editForm').parsley({ 
+
+  });
   $('.select2').select2();
   $('.textarea').wysihtml5();
 
