@@ -60,36 +60,34 @@
               @enderror
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Time')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control" name="start_time[]">
-                @for ($i = 1; $i <= 23; $i++)
+                @for ($i = 0; $i <= 12; $i++)
                 <option value="{{$i}}">{{ sprintf("%02d", $i)}}</option>
                 @endfor
               </select>
              </div>
           </div>
-          {{-- <div class="col-md-2">
+          <div class="col-md-3">
             <div class="form-group">
-              <label for="petrol_saved">{{langMessage('Set Minute')}}
+              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label>
               <select class="form-control" name="start_time[]">
-                @for ($i = 0; $i <= 4; $i++)
-               
-                  @if($i == 4) 
-                  <option value="{{$i*15-1}}">{{$i*15-1}}</option>
-                  @else 
-                  <option value="{{$i*15}}">{{sprintf("%02d", $i*15)}}</option>
-                  @endif
-                @endfor
+                
+                  <option value="">-select-</option>
+                  <option value="am">AM</option>
+                 
+                  <option value="pm">PM</option>
+                 
               </select>
              </div>
           </div>
-          <div class="col-md-2">
+         {{-- <div class="col-md-2">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Second')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
@@ -246,17 +244,29 @@
 <script>
   
   $('.select2').select2({
-      createTag: function (params) {
-          var term = $.trim(params.term);
+      // createTag: function (params) {
+      //     var term = $.trim(params.term);
   
-          if (term === '') {
-              return null;
-          }
-          return {
-              id: term,
-              text: term,
-              newTag: true // add additional parameters
-          }
+      //     if (term === '') {
+      //         return null;
+      //     }
+      //     return {
+      //         id: term,
+      //         text: term,
+      //         newTag: true // add additional parameters
+      //     }
+      // },
+      createTag: function (params) {
+        // Don't offset to create a tag if there is no @ symbol
+        if (params.term.indexOf('@') === -1) {
+          // Return null to disable tag creation
+          return null;
+        }
+
+        return {
+          id: params.term,
+          text: params.term
+        }
       },
       tags: true,
       minimumInputLength: 2,

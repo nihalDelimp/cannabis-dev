@@ -62,15 +62,30 @@
             </div>
           </div>
           {{--  start--}}
-          <div class="col-md-6">
+          <div class="col-md-3">
             <div class="form-group">
               <label for="petrol_saved">{{langMessage('Set Time')}}
                 <i class="fa fa-star text-red" aria-hidden="true"></i>
               </label> 
               <select class="form-control" name="start_time[]">
-                @for ($i = 1; $i <= 23; $i++)
+                @for ($i = 0; $i <= 12; $i++)
                 <option value="{{$i}}" {{$i == \Carbon\Carbon::parse($news->start_date)->hour ? 'selected':''}}>{{sprintf("%02d", $i)}}</option>
                 @endfor
+              </select>
+             </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="petrol_saved">{{langMessage('Set AM/PM')}}
+                <i class="fa fa-star text-red" aria-hidden="true"></i>
+              </label>
+              <select class="form-control" name="start_time[]">
+                
+                  <option value="">-select-</option>
+                  <option value="am" {{ $news->start_time == 'am' ? 'selected' : ''}}>AM</option>
+                 
+                  <option value="pm" {{ $news->start_time == 'pm' ? 'selected' : ''}}>PM</option>
+                 
               </select>
              </div>
           </div>

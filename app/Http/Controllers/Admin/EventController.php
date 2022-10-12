@@ -68,8 +68,9 @@ class EventController extends Controller{
     // $validate['sub_title'] = 'required';
     // $validate['content'] = 'required';
     // $validate['status'] = 'required';
-    // $validate['category_id'] = 'required';
-    $validate['image_path'] = 'required|mimes:jpeg,png,jpg|max:51200';
+    $validate['start_date'] = 'required';
+    $validate['image_path'] = 'mimes:jpeg,png,jpg|max:51200';
+    // $validate['image_path'] = 'required|mimes:jpeg,png,jpg|max:51200';
     $messages = [];
     $attributes = [];
     $validator = Validator::make($request->all(),$validate,$messages,$attributes);
@@ -91,6 +92,10 @@ class EventController extends Controller{
     
     // $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
     // $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+    if(isset($request->start_time[1])) {
+      $insert['start_time'] = $request->start_time[1];
+    }
+    
     $insert['start_date'] = $start_date;
     //$insert['end_date'] = $end_date;
     $insert['discription'] = $request->discription;
@@ -124,15 +129,17 @@ class EventController extends Controller{
       $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
       $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
       $event->save();
-      foreach($request->user_id as $key => $email) {
-      $user = User::where('email', $email)->first();
-        $body = [
-          'production_link' => env('SPA_URL').'/'.$event->special_link,
-          'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
-          'production_name' => $event->name,
-          'name' => $email,
-        ];
-        Mail::to($email)->send(new sendProductionNotification($body));
+      if(isset($request->user_id)){
+        foreach($request->user_id as $key => $email) {
+        $user = User::where('email', $email)->first();
+          $body = [
+            'production_link' => env('SPA_URL').'/'.$event->special_link,
+            'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
+            'production_name' => $event->name,
+            'name' => $email,
+          ];
+          Mail::to($email)->send(new sendProductionNotification($body));
+        }
       }
     }
     
@@ -167,6 +174,8 @@ class EventController extends Controller{
     // $validate['content'] = 'required';
     // $validate['status'] = 'required';
     // $validate['category_id'] = 'required';
+    $validate['start_date'] = 'required';
+    
     if(!empty($image)){
       $validate['image_path'] = 'mimes:jpeg,png,jpg|max:51200';
     }
@@ -188,6 +197,9 @@ class EventController extends Controller{
     $update['status'] = $request->status;
 
     $update['start_date'] = $start_date;
+    if(isset($request->start_time[1])) {
+      $update['start_time'] = $request->start_time[1];
+    }
     //Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
     //$update['start_time'] = $request->start_time;
     // if(!empty($request->end_date)) {
