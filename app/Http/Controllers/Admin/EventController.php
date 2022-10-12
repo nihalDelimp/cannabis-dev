@@ -433,7 +433,7 @@ class EventController extends Controller{
     foreach($request->user_id as $key => $email) {
      
       $body = [
-        'production_link' => env('SPA_URL').'/'.$event->special_link,
+        'production_link' => env('SPA_URL').'/rsvp/'.$event->special_link,
         'production_name' => $event->name,
         'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
         'name' => $email,

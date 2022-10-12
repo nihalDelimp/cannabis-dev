@@ -60,43 +60,65 @@ class EventJoinListController extends Controller{
     $this->sendResponse($this->response);
   }
   public function eventJoinLists(Request $request) {
-    $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
-    // dd($request->all());
-    // dd($result);
-    if($result === null) {
-      $insert = [];
-      $insert = [
-        'event_id' => $request->event_id,
-        'user_id' => $request->user_id,
-        'event_status' => 1,
-      ];
-      EventJoinList::where('user_id', $request->user_id)->update(['event_status' => 0]);
-     
-
-      $eventList = EventJoinList::create($insert);
-      $this->response['eventList'] = $eventList;
-      $this->response['status'] = 1;
+    try{
+      if(!Event::find($request->event_id)) {
+        $this->response['success'] = true;
+        $this->response['status'] = "0";
+        $this->response['message'] = "Event id not match.";
+        $this->sendResponse($this->response);
+      }
+      if(!User::find($request->user_id)) {
+        $this->response['success'] = true;
+        $this->response['status'] = "0";
+        $this->response['message'] = "User id not match.";
+        $this->sendResponse($this->response);
+      }
+      $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
+      //dd($request->all());
+      //dd($result);
+      if($result === null) {
+        if (!is_int($request->event_id) || !is_int($request->user_id) ){
+          $this->response['success'] = true;
+          $this->response['status'] = "0";
+          $this->response['message'] = "sumthing went wrong!.";
+          $this->sendResponse($this->response);
+        }
+        $insert = [];
+        $insert = [
+          'event_id' => $request->event_id,
+          'user_id' => $request->user_id,
+          'event_status' => 1,
+        ];
+        EventJoinList::where('user_id', $request->user_id)->update(['event_status' => 0]);
       
-      $user = User::find($request->user_id);
-      $event = Event::find($request->event_id);
-      // $user->event_status = 1;
-      // $user->save();
-      $email = $user->email;
-      $body = [
-        'qr_code' =>  QrCode::size(100)->generate($event->special_link.'_'.$request->user_id),
-        'name' => $user->name,
-        'email' => $user->email,
-        'event_name' => $event->name,
-        'event_time' => Carbon::parse($event->start_date)->format('m-d-Y'),
-      ];
-      Mail::to($email)->send(new sendQR_CodeNotification($body));
 
-    } else {
+        $eventList = EventJoinList::create($insert);
+        $this->response['eventList'] = $eventList;
+        $this->response['status'] = 1;
+        
+        $user = User::find($request->user_id);
+        $event = Event::find($request->event_id);
+        // $user->event_status = 1;
+        // $user->save();
+        $email = $user->email;
+        $body = [
+          'qr_code' =>  QrCode::size(100)->generate($event->special_link.'_'.$request->user_id),
+          'name' => $user->name,
+          'email' => $user->email,
+          'event_name' => $event->name,
+          'event_time' => Carbon::parse($event->start_date)->format('m-d-Y'),
+        ];
+        Mail::to($email)->send(new sendQR_CodeNotification($body));
 
-      $this->response['status'] = 0;
-      $this->response['message'] = "You are already exist in this Event.";//$this->langError(['Record exist already.']);
+      } else {
+
+        $this->response['status'] = 0;
+        $this->response['message'] = "You are already exist in this Event.";//$this->langError(['Record exist already.']);
+      }
+      $this->sendResponse($this->response);
+    } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
     }
-    $this->sendResponse($this->response);
 
   }
  
