@@ -12,8 +12,12 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Support\Str;
 use DB;
 use JWTAuth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\createNewPassword;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -131,7 +135,7 @@ class UserController extends Controller
     ////////////////
     public function authenticate(Request $request)
     {
-        
+       
         $credentials = $request->only('email', 'password');
         //dd($credentials);
         // if ($token = $this->guard()->attempt($credentials)) {
@@ -306,7 +310,7 @@ class UserController extends Controller
                         'success' => true,
                         'status' => "0"
                     ]);
-                    }
+                }
                 // if (!$tokenData) { dd("tokendata"); return view('auth.passwords.email'); }
 
                 $user = User::where('email', $tokenData->email)->first();
@@ -381,20 +385,65 @@ class UserController extends Controller
        // return $this->sendResponse($result);
     }
     public function checkMail(Request $request) {
-        $email = $request->email;
-        $result =  User::where('email', $email)->first();
-        if( $result != null) {
-            $this->response['data'] = $result;
-            $this->response['auth'] = JWTAuth::parseToken()->authenticate();
-            $this->response['status'] = 1;
-            $this->sendResponse($this->response);
+       
+        try{
             
-        } else {
-            $this->response['data'] = '';
-            $this->response['status'] = 0;
-            $this->response['message'] = "Registration first";
-            //dd($this->response);
-            $this->sendResponse($this->response);
+            $email = $request->email;
+            $result =  User::where('email', $email)->first();
+            if( $result != null) {
+                $this->response['data'] = $result;
+                $this->response['auth'] = JWTAuth::parseToken()->authenticate();
+                $this->response['status'] = 1;
+                $this->sendResponse($this->response);
+                
+            } else {
+                $this->response['data'] = '';
+                $this->response['status'] = 0;
+                $this->response['message'] = "Registration first";
+                //dd($this->response);
+                $this->sendResponse($this->response);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
+
+    }
+    public function sendMail(Request $request) {
+        
+        try{
+            
+            $email = $request->email;
+            $result =  User::where('email', $email)->first();
+            if( $result != null) {
+                $getData = DB::table('password_resets')->where('email', $request->email)->first();
+                if($getData == null) {
+                    DB::table('password_resets')->insert([
+                        'email' => $request->email,
+                        'token' => Str::random(60),
+                        'created_at' => Carbon::now()
+                        ]);
+                    $getData = DB::table('password_resets')->where('email', $request->email)->first();
+                }
+                $link = env('SPA_URL').'/reset-password/'.$getData->token;
+                $body = [
+                'url' => $link,
+                'name' => $email
+                ];
+            
+                Mail::to($email)->send(new createNewPassword($body));
+                $this->response['status'] = "1";
+                $this->response['message'] = "We have sent you a Link on your email.";
+                $this->sendResponse($this->response);
+                
+            } else {
+                $this->response['status'] = "0";
+                $this->response['message'] = "Registration first";
+                //dd($this->response);
+                $this->sendResponse($this->response);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
         
 

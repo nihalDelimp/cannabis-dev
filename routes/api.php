@@ -60,11 +60,13 @@ Route::post('store-event-join-list', [App\Http\Controllers\API\EventJoinListCont
 Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
 Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser'])->name('register-users');
 Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
+Route::post("user-reset-password/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
 
 Route::get('event-list', [App\Http\Controllers\API\EventApiController::class, 'listEvent']);
 Route::post('event-show/{id}', [App\Http\Controllers\API\EventApiController::class, 'showEvent']);
 Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::class,'showUser']);
 Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
 Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
+Route::post("send-email",[App\Http\Controllers\API\UserController::class,'sendMail']);
 
 

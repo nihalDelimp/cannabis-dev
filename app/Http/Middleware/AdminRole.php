@@ -36,12 +36,17 @@ class AdminRole
           return $next($request);
       }
       else {
+         
+            $user = JWTAuth::parseToken()->authenticate();
+              
+          
+            if($user && $user->role != 1) {
+              return response()->json(['status' => 'Authorization Token not found']);
+            } 
+            
+            return $next($request);
+         
         
-        $user = JWTAuth::parseToken()->authenticate();
-        if($user && $user->role != 1) {
-          return response()->json(['status' => 'Authorization Token not found']);
-        } 
-        return $next($request);
       }
 
         // if(!$user = Auth::user()) {
