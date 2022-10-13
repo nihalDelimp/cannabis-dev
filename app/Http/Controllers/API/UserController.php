@@ -178,7 +178,7 @@ class UserController extends Controller
  		//Token created, return with success response and jwt token
         return response()->json([
             'success' => true,
-            'status' => 1,
+            'status' => "1",
             'token' => $token,
             'user' => auth()->user(),
             // 'user' => auth()->user(),
@@ -359,7 +359,7 @@ class UserController extends Controller
                 //Token created, return with success response and jwt token
                 return response()->json([
                     'success' => true,
-                    'status' => 1,
+                    'status' => "1",
                     'token' => $token,
                     'user' => $user,
                 ]);
@@ -393,12 +393,12 @@ class UserController extends Controller
             if( $result != null) {
                 $this->response['data'] = $result;
                 $this->response['auth'] = JWTAuth::parseToken()->authenticate();
-                $this->response['status'] = 1;
+                $this->response['status'] = "1";
                 $this->sendResponse($this->response);
                 
             } else {
                 $this->response['data'] = '';
-                $this->response['status'] = 0;
+                $this->response['status'] = "0";
                 $this->response['message'] = "Registration first";
                 //dd($this->response);
                 $this->sendResponse($this->response);
