@@ -80,7 +80,7 @@ class EventJoinListController extends Controller{
         if (!is_int($request->event_id) || !is_int($request->user_id) ){
           $this->response['success'] = true;
           $this->response['status'] = "0";
-          $this->response['message'] = "sumthing went wrong!.";
+          $this->response['message'] = "something went wrong!.";
           $this->sendResponse($this->response);
         }
         $insert = [];

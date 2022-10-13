@@ -95,11 +95,12 @@ class PostController extends Controller{
         
       }
       else {
-        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+        $this->response['data']['error'] = 'Sorry there is no data to display.';
       }
     }
     else{
-      $this->response['data']['error'] = $this->langError($this->error);
+      $this->response['data']['error'] = 'Email Is Already Registered With Us';
+      // $this->response['data']['error'] = $this->langError($this->error);
     }
     
     $this->sendResponse($this->response);
@@ -423,13 +424,13 @@ class PostController extends Controller{
         $this->response['status'] = "1";
         $this->response['data']['total_count'] = $totalCount;
         $this->response['data']['posts'] = $posts;
+      }
+      else{
+        $this->response['data']['error'] = $this->langError(['Sorry there is no data to display.']);
+      }
     }
     else{
-      $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
-    }
-  }
-    else{
-      $this->response['data']['error'] = $this->langError($this->error);
+       $this->response['data']['error'] = $this->langError($this->error);
     }
     $this->sendResponse($this->response);
   }

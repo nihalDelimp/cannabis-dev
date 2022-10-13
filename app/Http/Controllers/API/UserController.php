@@ -18,6 +18,7 @@ use JWTAuth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\createNewPassword;
+use App\Mail\resetPassword;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -86,7 +87,7 @@ class UserController extends Controller
         
         } else {
             $this->response['status'] = "0";
-            $this->response['data']['msg'] = 'Opss !.. somthing wrong. ';
+            $this->response['data']['msg'] = 'Opss !.. something went wrong. ';
         }
         return $this->sendResponse($this->response);
     }
@@ -285,7 +286,7 @@ class UserController extends Controller
                 $this->response['data']['user'] = $user;
             }
             else{
-                $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+                $this->response['data']['error'] = $this->langError(['Sorry there is no data to display.']);
             }
             }
             
@@ -431,7 +432,7 @@ class UserController extends Controller
                 'name' => $email
                 ];
             
-                Mail::to($email)->send(new createNewPassword($body));
+                Mail::to($email)->send(new resetPassword($body));
                 $this->response['status'] = "1";
                 $this->response['message'] = "We have sent you a Link on your email.";
                 $this->sendResponse($this->response);
