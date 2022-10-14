@@ -49,7 +49,9 @@
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('news.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
       </li>
-        <li class="treeview {{ $controller == 'EventController'?'active menu-open':''}}">
+     
+        {{-- <li class="treeview {{ $controller == 'EventController'?'active menu-open':''}}"> --}}
+        <li class="treeview {{ request()->segment(3) == 'events'?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Production')}}</span>
           <span class="pull-right-container">
@@ -82,18 +84,36 @@
           </ul>
         </li>
         {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}"> --}}
-        <li class="treeview ">
+        <li class="treeview {{request()->segment(3) == 'invite' ? 'active menu-open':'' }}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Invite')}}</span>
           <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
           </span>
           </a>
-          <ul class="treeview-menu">
+        
+          <ul class="treeview-menu ">
                
                 <li  class="{{ $action == 'index'?'active':'' }}">
                     <a href="{{ route('invite.index',app()->getLocale())}}">
                     <i class="fa fa-circle-o"></i> {{langMessage('Invite User')}}
+                    </a>
+                </li>
+          </ul>
+        </li>
+        <li class="treeview {{request()->segment(3) == 'registered-user-list' ? 'active menu-open':'' }}">
+          <a href="#">
+          <i class="fa fa-table"></i> <span>{{langMessage('Registered User List')}}</span>
+          <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+          </span>
+          </a>
+        
+          <ul class="treeview-menu ">
+               
+                <li  class="{{ $action == 'showEventUserList'?'active':'' }}">
+                    <a href="{{ route('showEventUserList',app()->getLocale())}}">
+                    <i class="fa fa-circle-o"></i> {{langMessage('List')}}
                     </a>
                 </li>
           </ul>

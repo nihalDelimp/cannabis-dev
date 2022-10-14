@@ -98,5 +98,7 @@ Route::group([
   Route::post('play-list-sort', 'PlayListController@sort')->name('play.list.sort');
   Route::get('play-list/{id}', 'PlayListController@view')->name('play.list.view');
   Route::get('invite', 'EventController@invite')->name('invite.index');
+  Route::get('registered-user-list', 'EventController@showEventUserList')->name('showEventUserList');
+  Route::post('get-registered-users', 'UserController@getRegisteredUsers')->name('getRegisteredUsers');
   Route::post('send-invite', 'EventController@sendInvite')->name('invite.send');
 });

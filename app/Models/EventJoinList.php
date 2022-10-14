@@ -16,4 +16,9 @@ class EventJoinList extends Model
         
         
     ];
+    
+    public function users()
+    {
+        return $this->hasOne('App\Models\User','id','user_id');
+    }
 }

@@ -68,5 +68,6 @@ Route::get("user-detail-show/{id}",[App\Http\Controllers\API\UserController::cla
 Route::get("user-list",[App\Http\Controllers\API\UserController::class,'userList']);
 Route::get("search-user/{slug}",[App\Http\Controllers\API\UserController::class,'userSearchList']);
 Route::post("send-email",[App\Http\Controllers\API\UserController::class,'sendMail']);
+Route::post("validate-production",[App\Http\Controllers\API\UserController::class,'validateUser']);
 
 

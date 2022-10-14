@@ -8,7 +8,7 @@ use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Post;
+use App\Models\Event;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Tag;
@@ -448,5 +448,41 @@ class UserController extends Controller
         }
         
 
+    }
+    public function validateUser(Request $request) {
+        try {
+            $user_id = $request->user_id;
+            $event_id = $request->event_id;
+            if(!Event::find($request->event_id)) {
+                $this->response['success'] = true;
+                $this->response['status'] = "0";
+                $this->response['message'] = "Event id not match.";
+                $this->sendResponse($this->response);
+            }
+            if(!User::find($request->user_id)) {
+            $this->response['success'] = true;
+            $this->response['status'] = "0";
+            $this->response['message'] = "User id not match.";
+            $this->sendResponse($this->response);
+            }
+            if(User::find($request->user_id)->role != 3) {
+            $this->response['success'] = true;
+            $this->response['status'] = "0";
+            $this->response['message'] = "You have not access to validate this production.";
+            $this->sendResponse($this->response);
+            }
+            $event = Event::find($request->event_id);
+            $event->validate = 1;
+            $event->save();
+            $this->response['success'] = true;
+            $this->response['status'] = "1";
+            $this->response['message'] = "Production is validate successfull .";
+            $this->sendResponse($this->response);
+
+
+
+        } catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

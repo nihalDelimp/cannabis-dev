@@ -86,8 +86,8 @@
           <div class="col-md-12">
             <div class="form-group">
             
-              {{-- <label for="petrol_saved">{{langMessage('QR Code')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-               {!! QrCode::size(100)->generate($event->special_link) !!} --}}
+              <label for="petrol_saved">{{langMessage('QR Code')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+               {!! QrCode::size(100)->generate($event->special_link) !!}
               
             </div>
           </div>

@@ -427,6 +427,13 @@ class EventController extends Controller{
     return view('admin.invite.index',compact('events','users','pageHeading'));
    
   }
+  public function showEventUserList(){
+    $events = Event::get();
+    $users = User::get();
+    $pageHeading = "Production Registered Users";
+    return view('admin.eventUserList.index',compact('events','users','pageHeading'));
+   
+  }
   public function sendInvite(Request $request){
     //dd($request->all()); REACT_APP_SPAURL= http://localhost:3000/rsvp
     $event = Event::find($request->event_id);

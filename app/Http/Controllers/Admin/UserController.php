@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\EventJoinList;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
@@ -195,6 +196,79 @@ class UserController extends Controller
             $data[] = $nestedData;
           }
         }
+    
+        $json_data = array(
+        "draw"            => intval($request->input('draw')),
+        "recordsTotal"    => intval($totalData),
+        "recordsFiltered" => intval($totalFiltered),
+        "data"            => $data
+        );
+        echo json_encode($json_data);
+    }
+    public function getRegisteredUsers(Request $request){
+        //$search = $this->getSearchableFields($request->all());
+      if($request['event_id'] != null) {
+
+      
+        $search['event_id'] = $request['event_id'];
+        $columns = array(
+            0=>'id', 1=>'name', 2=>'email', 3=>'phone', 4=>'organization', 5=>'dob',
+            6=>'position', 7=>'instagram_name', 8=>'insterested_status', 9=>'password',
+             10=>'created_at', 11=>'updated_at');
+    
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        // echo $start ."--dkf</br>";
+        // dd($request->input('order.0.column'));
+        $dir = $request->input('order.0.dir');
+    
+        $temp =  EventJoinList::where('event_id',$request['event_id']);
+        // if(count($search) > 0){
+        //     $sh = (object)$search;
+        //     if(!empty($sh->name)){
+        //       $temp->where('users.name','LIKE',"%{$sh->name}%");
+        //     }
+        // }
+        $temp->offset($start);
+        $temp->limit($limit);
+        $temp->orderBy($order,$dir);
+        $temps = $temp->get();
+        $totalData  = $temps->count();
+        $totalFiltered = $totalData;
+        $data = array();
+        
+        if(!empty($temps)){
+          foreach ($temps as $key=>$temp){
+           //$show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
+            // $destroy = route('users.destroy', [app()->getLocale(),$temp->id]);
+            // $edit =  route('users.edit', [ app()->getLocale(),$temp->id]);
+            $nestedData['sn'] = ($start+$key+1);
+            $nestedData['name'] = $temp->users->name;
+            $nestedData['email'] = $temp->users->email;
+            $nestedData['phone'] = $temp->users->phone ? $temp->users->phone : "N/A";
+            $nestedData['dob'] = $temp->users->dob ? Carbon::parse($temp->users->dob)->format('m-d-Y'): "N/A";
+            $nestedData['organization'] = $temp->users->organization ? $temp->users->organization : "N/A";
+            $nestedData['insterested_status'] = $temp->users->insterested_status == 1? "Yes" : "No";
+            $nestedData['position'] = $temp->users->position ? $temp->users->position : "N/A";
+            $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
+            $nestedData['invited_owner'] = $temp->users->invited_owner == 1 ? "Yes" : "No";
+            
+            // $nestedData['options'] = "";
+            // $nestedData['options'] .= "&nbsp;&nbsp;<a href='{$edit}' class='btn btn-warning'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
+            // $nestedData['options'] .= "&nbsp;&nbsp;<form style='display:inline-block;' action='{$destroy}' method='post'>
+            //   <input type='hidden' name='_token' value='".csrf_token()."'>
+            //   <input type='hidden' name='_method' value='DELETE'>
+            //   <button type='submit' class='btn btn-danger' onclick='return confirm(\"Are you sure?\")'><i class='fa fa-trash' aria-hidden='true'></i></button>
+            // </form>";
+            $data[] = $nestedData;
+          }
+        }
+      } else {
+        $totalData = 0;
+        $totalFiltered = 0;
+        $data = [];
+      }
     
         $json_data = array(
         "draw"            => intval($request->input('draw')),
