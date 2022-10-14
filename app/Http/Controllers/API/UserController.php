@@ -452,6 +452,42 @@ class UserController extends Controller
     public function validateUser(Request $request) {
         try {
             $user_id = $request->user_id;
+            // $event_id = $request->event_id;
+            // if(!Event::find($request->event_id)) {
+            //     $this->response['success'] = true;
+            //     $this->response['status'] = "0";
+            //     $this->response['message'] = "Event id not match.";
+            //     $this->sendResponse($this->response);
+            // }
+            if(!User::find($request->user_id)) {
+            $this->response['success'] = true;
+            $this->response['status'] = "0";
+            $this->response['message'] = "User id not match.";
+            $this->sendResponse($this->response);
+            }
+            if(User::find($request->user_id)->role != 3) {
+            $this->response['success'] = true;
+            $this->response['status'] = "0";
+            $this->response['message'] = "You have not access to validate this production.";
+            $this->sendResponse($this->response);
+            }
+            // $event = Event::find($request->event_id);
+            // $event->validate = 1;
+            // $event->save();
+            $this->response['success'] = true;
+            $this->response['status'] = "1";
+            $this->response['message'] = "User is validate successfull .";
+            $this->sendResponse($this->response);
+
+
+
+        } catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function validateProduction(Request $request) {
+        try {
+            $user_id = $request->user_id;
             $event_id = $request->event_id;
             if(!Event::find($request->event_id)) {
                 $this->response['success'] = true;
@@ -465,19 +501,26 @@ class UserController extends Controller
             $this->response['message'] = "User id not match.";
             $this->sendResponse($this->response);
             }
-            if(User::find($request->user_id)->role != 3) {
-            $this->response['success'] = true;
-            $this->response['status'] = "0";
-            $this->response['message'] = "You have not access to validate this production.";
-            $this->sendResponse($this->response);
-            }
-            $event = Event::find($request->event_id);
-            $event->validate = 1;
-            $event->save();
+            $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
+            if($result != null) {
+        
+       
+            $result->is_validate = 1;
+            $result->save();
+        
+
+        
+            $this->response['eventList'] = $result;
             $this->response['success'] = true;
             $this->response['status'] = "1";
-            $this->response['message'] = "Production is validate successfull .";
+            $this->response['message'] = "User is validate successfull .";
             $this->sendResponse($this->response);
+            } else {
+            $this->response['eventList'] = '';
+            $this->response['success'] = false;
+            $this->response['status'] = "0";
+            $this->response['message'] = "User is not exist in Production join list .";
+            }
 
 
 
