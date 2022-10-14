@@ -508,8 +508,8 @@ class UserController extends Controller
             if($result->is_validate == 1) {
                 $this->response['eventList'] = $result;
                 $this->response['success'] = true;
-                $this->response['status'] = "1";
-                $this->response['message'] = "User already validate.";
+                $this->response['status'] = "0";
+                $this->response['message'] = "User already validated.";
                 $this->sendResponse($this->response);
             }
             $result->is_validate = 1;
