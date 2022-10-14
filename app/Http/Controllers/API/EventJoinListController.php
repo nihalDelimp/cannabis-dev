@@ -102,7 +102,7 @@ class EventJoinListController extends Controller{
         // $user->save();
         $email = $user->email;
         $body = [
-          'qr_code' =>  QrCode::size(100)->generate($event->special_link.'_'.$request->user_id),
+          'qr_code' =>  QrCode::size(100)->generate($event->special_link.'-'.$request->user_id),
           'name' => $user->name,
           'email' => $user->email,
           'event_name' => $event->name,
