@@ -505,7 +505,13 @@ class UserController extends Controller
             $result = EventJoinList::where('event_id',$request->event_id)->where('user_id',$request->user_id)->first();
             if($result != null) {
         
-       
+            if($result->is_validate == 1) {
+                $this->response['eventList'] = $result;
+                $this->response['success'] = true;
+                $this->response['status'] = "1";
+                $this->response['message'] = "User already validate.";
+                $this->sendResponse($this->response);
+            }
             $result->is_validate = 1;
             $result->save();
         
