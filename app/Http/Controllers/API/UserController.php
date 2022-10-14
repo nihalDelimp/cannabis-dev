@@ -521,6 +521,7 @@ class UserController extends Controller
             $this->response['success'] = false;
             $this->response['status'] = "0";
             $this->response['message'] = "User is not exist in Production join list .";
+            $this->sendResponse($this->response);
             }
 
 
