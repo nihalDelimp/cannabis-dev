@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Mail\sendProductionNotification;
+use App\Mail\SendProductionNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Post;
@@ -138,7 +138,7 @@ class EventController extends Controller{
             'production_name' => $event->name,
             'name' => $email,
           ];
-          Mail::to($email)->send(new sendProductionNotification($body));
+          Mail::to($email)->send(new SendProductionNotification($body));
         }
       }
     }
@@ -445,7 +445,7 @@ class EventController extends Controller{
         'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
         'name' => $email,
       ];
-      Mail::to($email)->send(new sendProductionNotification($body));
+      Mail::to($email)->send(new SendProductionNotification($body));
     }
     return redirect()->route('invite.index',app()->getLocale())->with('success','Invitation send successfully...');
     // return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is deleted successfully.');

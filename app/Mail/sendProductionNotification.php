@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class sendProductionNotification extends Mailable
+class SendProductionNotification extends Mailable
 {
     use Queueable, SerializesModels;
     // public $from;
@@ -42,7 +42,7 @@ class sendProductionNotification extends Mailable
         // return $this->from(env('MAIL_FROM_ADDRESS'))
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
-        return $this->from('info@thsbooking.com')
+        return $this->from('nihal@delimp.com')
                 ->markdown('includes.email.productionNotification')->with('body',$this->body);
     }
 }

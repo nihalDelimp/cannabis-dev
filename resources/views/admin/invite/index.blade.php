@@ -70,7 +70,7 @@
 
             <div class="row">
               <div class="form-group col-sm-12">
-                <button type="submit" class="btn btn-primary" id="addSave">{{langMessage('Send Invoice')}}</button>
+                <button type="submit" class="btn btn-primary" id="addSave">{{langMessage('Send Invite')}}</button>
                 {{-- <a href="#" class="btn btn-primary" id="reset">{{langMessage('reset')}}</a> --}}
               </div>
             </div>
