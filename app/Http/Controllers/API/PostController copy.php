@@ -160,7 +160,7 @@ class PostController extends Controller{
     $posts = $post->get(['id','title','slug','category_id','image','post_type','content','created_at']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
-        $post->image = ($post->post_type == '1')?url('images/posts/news/listing',$post->image):url('images/posts/video/listing',$post->image);
+        $post->image = ($post->post_type == '1')?url('images/posts/news',$post->image):url('images/posts/video',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->category = $post->category;
       }
@@ -197,7 +197,7 @@ class PostController extends Controller{
     //$posts = $post->get(['posts.*']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
-        $post->image = url('images/posts/news/listing',$post->image);
+        $post->image = url('images/posts/news',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->category = $post->category;
       }
@@ -282,7 +282,7 @@ class PostController extends Controller{
       $posts = $post->get(['posts.id','posts.title as post_title','posts.slug','posts.image','posts.content','posts.category_id','posts.created_at']);
       if(count($posts)>0){
         foreach($posts as $key=>$post){
-          $post->image = url('images/posts/news/listing',$post->image);
+          $post->image = url('images/posts/news',$post->image);
           $post->user_name = 'Jhone Smith';
           $post->category = $post->category;
         }
@@ -332,7 +332,7 @@ class PostController extends Controller{
       $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
       if(count($posts)>0){
         foreach($posts as $key=>$post){
-          $post->image = url('images/posts/news/listing',$post->image);
+          $post->image = url('images/posts/news',$post->image);
           $post->user_name = 'Jhone Smith';
           $post->category = $post->category;
         }
@@ -417,7 +417,7 @@ class PostController extends Controller{
       $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
       if(count($posts)>0){
         foreach($posts as $key=>$post){
-          $post->image = url('images/posts/video/listing',$post->image);
+          $post->image = url('images/posts/video',$post->image);
           $post->user_name = 'Jhone Smith';
           $post->category = $post->category;
         }
