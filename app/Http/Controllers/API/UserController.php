@@ -536,4 +536,85 @@ class UserController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function storeUser(Request $request){
+    
+        //dd($request->all());
+        $name = $request->fname." ".$request->lname;
+        $data = [];
+        $data = [
+          'name' => $name,
+          'phone' => $request->phone,
+          'organization' => $request->organization,
+          'dob' => $request->dob,
+          'email' => $request->email,
+          'position' => $request->position,
+          'instagram_name' => $request->instagram_name,
+          'insterested_status' => $request->insterested_status,
+          'invited_owner' => $request->invited_owner,
+          //'password'=>Hash::make($request->password),
+        ];
+        if(!empty($request->password)) {
+          $data['password'] = Hash::make($request->password);
+        }
+        $validation['email'] = 'required|email|unique:users';
+        //$validation['phone'] = 'required|unique:users';
+        $attributes = [];
+        $messages = [];
+        $validator = Validator::make($request->all(), $validation,$messages,$attributes);
+        if($validator->fails()){
+         $errors = json_decode($validator->errors()->toJson(), true);
+         if (!empty($errors)){
+            foreach($errors as $k => $v) {
+              foreach($v as $error){
+                $this->error[] = $error;
+              }
+            }
+         }
+        }
+        if(count($this->error) == 0){
+          $user = User::create($data);
+    
+    
+    
+          if(!empty($user)){
+          //dd($user);
+            DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => Str::random(60),
+            'created_at' => Carbon::now()
+            ]);
+            //Get the token just created above
+            $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
+            $link = env('SPA_URL').'/create-password/'.$tokenData->token;
+            // $link = route('create.password.with.login', $tokenData->token);
+            //dd("elkdf->",$link);
+            $email = $data['email'];
+            $body = [
+              'url' => $link,
+              'name' => $data['email']
+            ];
+            
+            Mail::to($email)->send(new createNewPassword($body));
+            $this->response['userId'] = $user->id;
+            $this->response['status'] = "1";
+            $this->response['data']['user'] = $user;
+            
+          }
+          else {
+            $this->response['data']['error'] = 'Sorry there is no data to display.';
+          }
+        }
+        else{
+          $this->response['data']['error'] = 'Email Is Already Registered With Us';
+          // $this->response['data']['error'] = $this->langError($this->error);
+        }
+        
+        $this->sendResponse($this->response);
+        
+        
+        // $request->title;
+        // $this->sendResponse($post);
+    }
+
 }

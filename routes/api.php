@@ -58,7 +58,7 @@ Route::group(['middleware' => 'jwt.verify'], function(){
 
 Route::post('store-event-join-list', [App\Http\Controllers\API\EventJoinListController::class, 'eventJoinLists']);
 Route::post("edit-user-detail/{id}",[App\Http\Controllers\API\UserController::class,'updateUser']);
-Route::post('register-users', [App\Http\Controllers\API\PostController::class, 'storeUser'])->name('register-users');
+Route::post('register-users', [App\Http\Controllers\API\UserController::class, 'storeUser'])->name('register-users');
 Route::post("user-password-with-login/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
 Route::post("user-reset-password/{token}",[App\Http\Controllers\API\UserController::class,'loginPasswordUser'])->name('create.password.with.login');
 

@@ -42,7 +42,7 @@ class resetPassword extends Mailable
         // return $this->from(env('MAIL_FROM_ADDRESS'))
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
-        return $this->from('info@thsbooking.com')
+        return $this->from('nihal@delimp.com')
                 ->markdown('includes.email.resetPassword')->with('body',$this->body);
     }
 }
