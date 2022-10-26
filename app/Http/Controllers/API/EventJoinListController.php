@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Image;
 
 class EventJoinListController extends Controller{
   public function __construct(){
@@ -101,13 +102,16 @@ class EventJoinListController extends Controller{
         // $user->event_status = 1;
         // $user->save();
         $email = $user->email;
+        $qrCode = QrCode::size(100)->generate(env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id);
         $body = [
-          'qr_code' =>  QrCode::size(100)->generate(env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id),
+          'qr_code' => " $qrCode ",
+          // 'qr_code' =>  QrCode::size(100)->generate(env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id),
           'name' => $user->name,
           'email' => $user->email,
           'event_name' => $event->name,
           'event_time' => Carbon::parse($event->start_date)->format('m-d-Y'),
         ];
+        //dd($body);
         Mail::to($email)->send(new sendQR_CodeNotification($body));
 
       } else {

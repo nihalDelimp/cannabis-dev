@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class sendQR_CodeNotification extends Mailable
+class SendQR_CodeNotification extends Mailable
 {
     use Queueable, SerializesModels;
     // public $from;

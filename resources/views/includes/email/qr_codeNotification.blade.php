@@ -12,8 +12,15 @@
             <div class="puco-text text_textBlock__WUY_8">
                 <p class="puco-text"><em>Hi {{$body['name']}},</em><br><br><em>Have you heard the news? Something big is coming from {{$body['event_name']}}.</em><br><br><em>On {{ $body['event_time']}}, we’ll be live casting  our production live at cannabis capitol prodcution room.</em><br><br><em>Be the part of it to learn everything about the {{$body['event_name']}}.</em><br><br><em>Get on the list today!</em>
                     <br><br><em>
-                        {{ $body['qr_code'] }} 
+                        <div style="text-align: center;">
+                            <img src="data:image/qr_code.png, {!! base64_encode(QrCode::format('png')->size(100)->generate('QrCode as PNG image!')) !!}" />
+                        </div>
+                        {{-- {!! QrCode::size(300)->generate( $body['qr_code'] ) !!} --}}
+                    {{-- </br>
+                    {!! $body['qr_code'] !!}  --}}
                     </em></p>
+                    
+                    
             </div>
         </div>
     </div>
