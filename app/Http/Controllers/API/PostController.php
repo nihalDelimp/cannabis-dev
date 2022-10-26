@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Mail\createNewPassword;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Post;
@@ -117,7 +116,7 @@ class PostController extends Controller{
     }
     if(count($this->error) == 0){
       $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
-      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.category_id','posts.created_at']);
+      ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.link_id','posts.category_id','posts.created_at']);
       if(!empty($post)){
         $post->image = url('images/posts/news/main',$post->image);
         $post->user_name = 'Jhone Smith';

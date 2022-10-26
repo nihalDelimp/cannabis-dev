@@ -30,7 +30,7 @@ Route::any('/get_related_videos', [App\Http\Controllers\API\PostController::clas
 /*video play-list */
 Route::post('video-play-list', [App\Http\Controllers\API\PlayListController::class, 'categoriesWithVideos']);
 Route::get('featured-video', [App\Http\Controllers\API\PlayListController::class, 'featuredVideo']);
-
+Route::any('/get_advertisement', [App\Http\Controllers\API\AdvertisementController::class, 'getAdvertisement']);
 Route::post("login",[App\Http\Controllers\API\UserController::class,'authenticate'])->name('login');
 Route::group(['middleware' => 'jwt.verify'], function(){
     
