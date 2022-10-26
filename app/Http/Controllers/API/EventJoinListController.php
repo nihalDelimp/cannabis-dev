@@ -102,7 +102,7 @@ class EventJoinListController extends Controller{
         // $user->event_status = 1;
         // $user->save();
         $email = $user->email;
-        $qrCode = QrCode::size(100)->generate(env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id);
+        $qrCode = env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id;
         $body = [
           'qr_code' => " $qrCode ",
           // 'qr_code' =>  QrCode::size(100)->generate(env('SPA_URL').'/rsvp/'.$event->special_link.'-'.$request->user_id),
@@ -112,7 +112,12 @@ class EventJoinListController extends Controller{
           'event_time' => Carbon::parse($event->start_date)->format('m-d-Y'),
         ];
         //dd($body);
-        Mail::to($email)->send(new sendQR_CodeNotification($body));
+        //Mail::to($email)->send(new sendQR_CodeNotification($body));
+
+        Mail::send('includes.email.qr_codeNotification', compact('body'), function ($message) use($email) {
+          $message->from('nihal@delimp.com', 'Laravel');
+          $message->to($email); 
+        });
 
       } else {
 
