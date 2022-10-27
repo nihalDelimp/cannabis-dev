@@ -43,6 +43,7 @@ class resetPassword extends Mailable
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
         return $this->from('nihal@delimp.com')
+                ->subject('Reset password')
                 ->markdown('includes.email.resetPassword')->with('body',$this->body);
     }
 }

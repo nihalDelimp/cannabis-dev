@@ -83,6 +83,7 @@
           <th>{{langMessage('Position')}}</th>
           <th>{{langMessage('Instagram Name')}}</th>
           <th>{{langMessage('Interested')}}</th>
+          <th>{{langMessage('Is participated user')}}</th>
           <th>{{langMessage('Invited Owner')}}</th>
           {{-- <th>{{langMessage('Action')}}</th> --}}
         </tr>
@@ -157,6 +158,7 @@
             { "data": "position" },            
             { "data": "instagram_name" },            
             { "data": "invited_owner" },            
+            { "data": "is_validate" },            
             { "data": "insterested_status" },
             // { "data": "options" }
           ]

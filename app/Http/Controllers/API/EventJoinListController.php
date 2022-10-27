@@ -115,7 +115,7 @@ class EventJoinListController extends Controller{
         //Mail::to($email)->send(new sendQR_CodeNotification($body));
 
         Mail::send('includes.email.qr_codeNotification', compact('body'), function ($message) use($email) {
-          $message->from('nihal@delimp.com', 'Laravel');
+          $message->from('nihal@delimp.com', 'Cannabis Capitol');
           $message->to($email); 
         });
 

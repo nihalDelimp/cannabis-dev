@@ -24,7 +24,7 @@ Laravel Team.
                 <p class="puco-text">   <em>Hi {{$body['name']}},</em><br><br><em>We have sent you  an email for reset password , Please click and goto your web browser and reset password. </em><br><br><em>Brace youself for a healty production moment and do enjoy it alot.</em><br><br><em>Get on the production link today! Please Click on this button </em>
                     <br><br><em>
                         @component('mail::button', ['url' => $body['url']])
-                        For reset password
+                        Reset password
                         @endcomponent
                     </em></p>
                    

@@ -16,7 +16,7 @@
                 <p class="puco-text">   <em>Hi {{$body['name']}},</em><br><br><em>Have you heard the news? Something big is coming from " {{$body['production_name']}} ".</em><br><br><em>On {{ $body['production_time']}}, we are invitng you on this Time, so that you can enjoy the moment of the live production moments</em><br><br><em>Brace youself for a healty production moment and do enjoy it alot.</em><br><br><em>Get on the production link today! Please Click on this button </em>
                     <br><br><em>
                         @component('mail::button', ['url' => $body['production_link']])
-                        Production
+                        Join production
                         @endcomponent
                     </em></p>
                    

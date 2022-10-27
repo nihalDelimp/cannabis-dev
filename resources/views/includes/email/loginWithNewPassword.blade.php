@@ -24,7 +24,7 @@ Laravel Team.
                 <p class="puco-text">   <em>Hi {{$body['name']}},</em><br><br><em>We have sent you  an email for create new password , Please click and goto your web browser and create a new password. </em><br><br><em>Brace youself for a healty production moment and do enjoy it alot.</em><br><br><em>Get on the production link today! Please Click on this button </em>
                     <br><br><em>
                         @component('mail::button', ['url' => $body['url']])
-                        For create new password
+                        Create new password
                         @endcomponent
                     </em></p>
                    
