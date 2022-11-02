@@ -252,8 +252,8 @@ class UserController extends Controller
             $nestedData['insterested_status'] = $temp->users->insterested_status == 1? "Yes" : "No";
             $nestedData['position'] = $temp->users->position ? $temp->users->position : "N/A";
             $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
-            $nestedData['invited_owner'] = $temp->users->invited_owner == 1 ? "Yes" : "No";
-            $nestedData['is_validate'] = $temp->users->is_validate == 1 ? "Yes" : "No";
+            $nestedData['invited_owner'] = $temp->users->insterested_status == 1 ? "Yes" : "No";
+            $nestedData['is_validate'] = $temp->is_validate == 1 ? "Yes" : "No";
             
             // $nestedData['options'] = "";
             // $nestedData['options'] .= "&nbsp;&nbsp;<a href='{$edit}' class='btn btn-warning'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
