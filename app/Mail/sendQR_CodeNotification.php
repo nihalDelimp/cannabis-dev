@@ -43,7 +43,7 @@ class SendQR_CodeNotification extends Mailable
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
         return $this->from('nihal@delimp.com')
-                ->subject('QR-Code')
+                ->subject('Access to Production and QR Code Available here!')
                 ->markdown('includes.email.qr_codeNotification')->with([
                     'body'=>$this->body,
                     'type' => 'png'

@@ -128,8 +128,11 @@
                   </span>
               @enderror
               </div>
+              {{-- {{ env('AWS_URL').'/images/posts/news/thumbnail/'.$news->thumbnail_image }} --}}
               <div class="form-group">
-                <img src="{{asset('images/posts/news/listing/'.$news->image)}}" alt="">
+                {{-- <img src="{{asset(env('AWS_URL').'/images/posts/news/lsiting/'.$news->image)}}" alt=""> --}}
+                <img src="{{asset(env('AWS_URL').'/images/posts/news/listing/'.$news->image)}}" alt="">
+                {{-- <img src="{{asset('images/posts/news/listing/'.$news->image)}}" alt=""> --}}
               </div>
             </div>
           </div>

@@ -20,6 +20,7 @@ class Post extends Model
         'post_type',
         'status',
         'image',
+        'thumbnail_image',
         'slug',
         'image',
         'file_path',
@@ -38,6 +39,7 @@ class Post extends Model
 
     public function getImagePathAttribute()
     {
-        return url('images/posts/video/listing/'.$this->image);
+        return env('AWS_URL').'/images/posts/video/listing/'.$this->image;
+        // return url('images/posts/video/listing/'.$this->image);
     }
 }

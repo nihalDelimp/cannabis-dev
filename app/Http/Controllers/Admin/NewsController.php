@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 use File;
+use Image;
 use ImageResize;
 
 class NewsController extends Controller{
@@ -43,6 +45,7 @@ class NewsController extends Controller{
 
   public function store(Request $request){
     $image = $request->file('image');
+   
     $validate['title'] = 'required|unique:posts';
     $validate['sub_title'] = 'required';
     $validate['content'] = 'required';
@@ -64,33 +67,48 @@ class NewsController extends Controller{
     $insert['category_id'] = $request->category_id;
     $tags_id = $request->tags_id;
     if(!empty($image)){
-      $imageHeight = ImageResize::make($image)->height();
-      $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/news');
-
+      $filename = $image->getClientOriginalName();
+      $base_path = Storage::disk('admin')->put('images/posts/news', $image);
+      $post_image_path = Storage::disk('admin')->url($base_path);
+      $insert['image'] = basename($post_image_path);
+      
+      
+      // $destinationPath = public_path('images/posts/news/thumbnail');
+      $destinationPath = public_path('/thumbnail');
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
-      $insert['image'] = time().'-'.$insert['slug'].'.'.$image->getClientOriginalExtension();
-      File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
+      $filename = $image->getClientOriginalName();
+      $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
+      //$file_name = time().'.'.$image->getClientOriginalExtension();
+      $thumbnail_path = Storage::disk('admin')->put('images/posts/news/listing/'.$insert['image'], $ImageUpload, 'public');
+      $deletefile_path = $destinationPath.'/'.$filename;  
+      File::delete($deletefile_path);
+      $thumbnail_image_path = Storage::disk('admin')->url('images/posts/news/listing/'.$insert['image']);
+      // $insert['thumbnail_image'] = basename($thumbnail_image_path);
+      // $destinationPath = public_path('images/posts/news');AWS_URL
+
+      // File::makeDirectory($destinationPath, $mode = 0777, true, true);
+      // $insert['image'] = time().'-'.$insert['slug'].'.'.$image->getClientOriginalExtension();
+      // File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
 
 
-      $img = ImageResize::make($image->getRealPath());
+      // $img = ImageResize::make($image->getRealPath());
 
-      $img->orientate();
-      $img->resize(360, 180, function ($constraint){
-      $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$insert['image']);
+      // $img->orientate();
+      // $img->resize(360, 180, function ($constraint){
+      // $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$insert['image']);
 
-      //
-      File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
-      if($imageHeight > 450 || $imageWidth > 760){
-        $img = ImageResize::make($image->getRealPath());
-        $img->orientate();
-        $img->resize(760, 450, function ($constraint){
-        $constraint->aspectRatio();})->save($destinationPath.'/main/'.$insert['image']);
-      }
-      else{
-        $image->move($destinationPath.'/main/', $insert['image']);
-      }
-      $image->move($destinationPath, $insert['image']);
+      // //
+      // File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
+      // if($imageHeight > 450 || $imageWidth > 760){
+      //   $img = ImageResize::make($image->getRealPath());
+      //   $img->orientate();
+      //   $img->resize(760, 450, function ($constraint){
+      //   $constraint->aspectRatio();})->save($destinationPath.'/main/'.$insert['image']);
+      // }
+      // else{
+      //   $image->move($destinationPath.'/main/', $insert['image']);
+      // }
+      // $image->move($destinationPath, $insert['image']);
     }
     $news = Post::create($insert);
     if(!empty($tags_id)){
@@ -103,6 +121,8 @@ class NewsController extends Controller{
   public function update(Request $request){
     $id = $request->segment(4);
     $image = $request->file('image');
+    //dd($image_path);
+
     $validate['title'] = 'required|unique:posts,title,'.$id;
     $validate['sub_title'] = 'required';
     $validate['content'] = 'required';
@@ -125,36 +145,62 @@ class NewsController extends Controller{
     $update['content'] = $request->content;
     $update['category_id'] = $request->category_id;
     if(!empty($image)){
+
       $imageHeight = ImageResize::make($image)->height();
       $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/news');
+      //$destinationPath = public_path('images/posts/news');
 
+      //bukit img 
+      $filename = $image->getClientOriginalName();
+      //dd($image);
+      //dd(Storage::disk('admin')->get('images/posts/news/'));
+      
+      $base_path = Storage::disk('admin')->put('images/posts/news', $image);
+      $post_image_path = Storage::disk('admin')->url($base_path);
+      
+      $update['image'] = basename($post_image_path);
+
+      $destinationPath = public_path('/thumbnail');
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
-      $update['image'] = time().'-'.$update['slug'].'.'.$image->getClientOriginalExtension();
-      File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
-
-
-      $img = ImageResize::make($image->getRealPath());
-
-      $img->orientate();
-      $img->resize(360, 180, function ($constraint){
-      $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$update['image']);
+     
+      $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
+      $file_name = time().'.'.$image->getClientOriginalExtension();
+      $thumbnail_path = Storage::disk('admin')->put('images/posts/news/listing/'.$update['image'], $ImageUpload, 'public');
+      
+      $deletefile_path = $destinationPath.'/'.$filename;  
+      File::delete($deletefile_path);
+      //$update['thumbnail_image'] = basename($thumbnail_image_path);
 
       //
-      File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
-      if($imageHeight > 450 || $imageWidth > 760){
-        $img = ImageResize::make($image->getRealPath());
-        $img->orientate();
-        $img->resize(760, 450, function ($constraint){
-        $constraint->aspectRatio();})->save($destinationPath.'/main/'.$update['image']);
-      }
-      else{
-        $image->move($destinationPath.'/main/', $update['image']);
-      }
-      $image->move($destinationPath, $update['image']);
-      $this->removeNewsImage($id);
+
+      // File::makeDirectory($destinationPath, $mode = 0777, true, true);
+      // $update['image1'] = time().'-'.$update['slug'].'.'.$image->getClientOriginalExtension();
+      // File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
+
+
+      // $img = ImageResize::make($image->getRealPath());
+
+      // $img->orientate();
+      // $img->resize(360, 180, function ($constraint){
+      // $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$update['image1']);
+
+      // //
+      // File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
+      // if($imageHeight > 450 || $imageWidth > 760){
+      //   $img = ImageResize::make($image->getRealPath());
+      //   $img->orientate();
+      //   $img->resize(760, 450, function ($constraint){
+      //   $constraint->aspectRatio();})->save($destinationPath.'/main/'.$update['image1']);
+      // }
+      // else{
+      //   $image->move($destinationPath.'/main/', $update['image1']);
+      // }
+      // $image->move($destinationPath, $update['image1']);
+      // $this->removeNewsImage($id);
     }
     $tags_id = $request->tags_id;
+    //unset($update['image1']);
+    //dd($update);
     Post::whereId($id)->update($update);
     if(!empty($tags_id)){
       $news = Post::find($id);

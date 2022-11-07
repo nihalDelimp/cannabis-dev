@@ -130,6 +130,22 @@ class UserController extends Controller
         // dd($search);
         return $search;
       }
+      public function getRegisturSearchableFields($request){
+        //event_id ,participate,position,organization,insterested_status
+        $search = [];
+
+        $searchableFields = ['event_id','participate','position','organization','insterested_status'];
+        // $searchableFields = ['name','email','phone','organization','position','instagram_name','insterested_status'];
+        foreach($searchableFields as $field){
+          if(isset($request[$field])){
+            //echo $request[$field]."</br>";
+            $search[$field] = $request[$field];
+           
+          }
+        }
+        //dd($search);
+        return $search;
+      }
     public function getUsers(Request $request){
         $search = $this->getSearchableFields($request->all());
     //    ;name`, `email`, `phone`, `organization`, `dob`, `position`, `instagram_name`, `insterested_status`, `invited_owner`,
@@ -206,11 +222,10 @@ class UserController extends Controller
         echo json_encode($json_data);
     }
     public function getRegisteredUsers(Request $request){
-        //$search = $this->getSearchableFields($request->all());
-      if($request['event_id'] != null) {
-
       
-        $search['event_id'] = $request['event_id'];
+      $search = $this->getRegisturSearchableFields($request->all());
+      // dd();
+      if($request['event_id'] != null) {
         $columns = array(
             0=>'id', 1=>'name', 2=>'email', 3=>'phone', 4=>'organization', 5=>'dob',
             6=>'position', 7=>'instagram_name', 8=>'insterested_status', 9=>'password',
@@ -223,13 +238,32 @@ class UserController extends Controller
         // dd($request->input('order.0.column'));
         $dir = $request->input('order.0.dir');
     
-        $temp =  EventJoinList::where('event_id',$request['event_id']);
-        // if(count($search) > 0){
-        //     $sh = (object)$search;
-        //     if(!empty($sh->name)){
-        //       $temp->where('users.name','LIKE',"%{$sh->name}%");
-        //     }
-        // }
+        $temp =  EventJoinList::where('event_id',$search['event_id']);
+        if(count($search) > 0){
+            $sh = (object)$search;
+            //dd( $sh);
+            if(!empty($sh->position)){
+              $position = $sh->position;
+              // $temp->where('users.position','LIKE',"%{$sh->position}%");
+              $temp = $temp->whereHas('users', function($q) use($position){
+                $q->where('position',$position);
+                // $q->where('position','LIKE',"%{$position}%");
+              });
+              //dd($temp->count());
+            }
+            if(!empty($sh->organization)){
+              $organization = $sh->organization;
+              $temp = $temp->whereHas('users', function($q) use($organization) {
+                $q->where('organization','LIKE',"%{$organization}%");
+              });
+            }
+            
+            if(isset($sh->participate) && $sh->participate != null){
+              $temp = $temp->where('is_validate','LIKE',"%{$sh->participate}%");
+              // echo $sh->participate;
+              // dd( $temp->get()->count());
+            } 
+        }
         $temp->offset($start);
         $temp->limit($limit);
         $temp->orderBy($order,$dir);
@@ -243,6 +277,24 @@ class UserController extends Controller
            //$show =  route('events.show', ['events' => $temp->id, 'locale' => app()->getLocale()]);
             // $destroy = route('users.destroy', [app()->getLocale(),$temp->id]);
             // $edit =  route('users.edit', [ app()->getLocale(),$temp->id]);
+            // echo $temp->users->position;
+            // echo config('userDetail.admin.user.positions')[$temp->users->position];
+            //dd(config('userDetail.admin.user.positions'));
+            $position_user = null;
+            //dd($position_user = config('userDetail.admin.user.positions')[$temp->users->position]);
+          
+            if(array_key_exists($temp->users->position, config('userDetail.admin.user.positions') )) {
+              if($temp->users->position != 9) {
+                $position_user = config('userDetail.admin.user.positions')[$temp->users->position];
+              } else {
+                $position_user = $temp->users->other_position;
+              }
+
+              
+            }
+            
+            
+
             $nestedData['sn'] = ($start+$key+1);
             $nestedData['name'] = $temp->users->name;
             $nestedData['email'] = $temp->users->email;
@@ -250,7 +302,7 @@ class UserController extends Controller
             $nestedData['dob'] = $temp->users->dob ? Carbon::parse($temp->users->dob)->format('m-d-Y'): "N/A";
             $nestedData['organization'] = $temp->users->organization ? $temp->users->organization : "N/A";
             $nestedData['insterested_status'] = $temp->users->insterested_status == 1? "Yes" : "No";
-            $nestedData['position'] = $temp->users->position ? $temp->users->position : "N/A";
+            $nestedData['position'] = $position_user ?$position_user :'N/A ';
             $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
             $nestedData['invited_owner'] = $temp->users->insterested_status == 1 ? "Yes" : "No";
             $nestedData['is_validate'] = $temp->is_validate == 1 ? "Yes" : "No";

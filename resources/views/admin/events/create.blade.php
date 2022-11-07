@@ -205,7 +205,7 @@
                 </span>
             @enderror
           </div>
-          <div class="col-md-6">
+          {{-- <div class="col-md-6">
             <label for="petrol_saved">User List<i class="fa fa-star text-red" aria-hidden="true"></i></label>
             <select class="form-control select2"  name="user_id[]" multiple="multiple">
               @foreach($users as $user)
@@ -213,7 +213,7 @@
               @endforeach
             </select>
             
-          </div>
+          </div> --}}
         </div>
         
         <div class="form-group">

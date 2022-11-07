@@ -153,7 +153,8 @@
               @enderror
               </div>
               <div class="form-group">
-                <img src="{{asset('images/posts/video/listing/'.$video->image)}}" alt="">
+                <img src="{{asset(env('AWS_URL').'/images/posts/video/listing/'.$video->image) }}" alt="">
+                {{-- <img src="{{asset('images/posts/video/listing/'.$video->image)}}" alt=""> --}}
               </div>
             </div>
           </div>

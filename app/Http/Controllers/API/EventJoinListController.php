@@ -41,15 +41,23 @@ class EventJoinListController extends Controller{
     if($id != null) {
       //$this->response['eventList'] = EventJoinList::where('user_id',$id)->get();
        $evm = EventJoinList::where('user_id',$id)->paginate(6);
-       $evm_count = EventJoinList::where('user_id',$id)->get()->count();
+       //$evm_count = EventJoinList::where('user_id',$id)->get()->count();
       // $this->response['events'] = EventJoinList::where('user_id',$id)->select('event_id')->get();
+      $count = 0;
+      $this->response['status'] = "0";
       foreach($evm as $key => $val) {
-        $this->response['event'][$key] = Event::find($val->event_id);
+        if(Event::find($val->event_id)) {
+          $this->response['event'][$key] = Event::find($val->event_id);
+          $count++;
+          $this->response['status'] = "1";
+        }
+        
+
       } 
       //dd($this->response['event']);
 
-      $this->response['status'] = "1";
-      $this->response['count'] = $evm_count;
+      
+      $this->response['count'] = $count;
       $this->response['message'] = "Data received successfully ";
       
 

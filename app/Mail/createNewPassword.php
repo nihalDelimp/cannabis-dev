@@ -43,7 +43,7 @@ class createNewPassword extends Mailable
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
         return $this->from('nihal@delimp.com')
-                ->subject('Create new password')
+                ->subject('Create new password ')
                 ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
     }
 }

@@ -126,8 +126,10 @@ class EventController extends Controller{
       $deletefile_path = $destinationPath.'/'.$filename;  
       File::delete($deletefile_path);
       $event->image_path = Storage::disk('admin')->url($base_path);
+      
       $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
-      $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
+      $event->special_link = strtr($event->name,[' '=>'_']).'/'.$event->id."_".md5(time());
+      // $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
       $event->save();
       if(isset($request->user_id)){
         foreach($request->user_id as $key => $email) {
@@ -227,6 +229,7 @@ class EventController extends Controller{
     $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
     //dd($ImageUpload);
     $file_name = time().'.'.$image->getClientOriginalExtension();
+    //dd($file_name);
     $thumbnail_path = Storage::disk('admin')->put($id.'/thumbnail/'.$file_name, $ImageUpload, 'public');
     $deletefile_path = $destinationPath.'/'.$filename;  
     File::delete($deletefile_path);

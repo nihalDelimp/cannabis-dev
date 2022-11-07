@@ -48,7 +48,8 @@ class PostController extends Controller{
     $posts = $post->get(['id','title','slug','category_id','image','post_type','content','created_at']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
-        $post->image = ($post->post_type == '1')?url('images/posts/news',$post->image):url('images/posts/video',$post->image);
+        $post->image = ($post->post_type == '1') ? env('AWS_URL').'/images/posts/news/'.$post->image:env('AWS_URL').'/images/posts/video/'.$post->image;
+        
         $post->user_name = 'Jhone Smith';
         $post->category = $post->category;
       }
@@ -100,6 +101,7 @@ class PostController extends Controller{
   }
 
   public function getNewsDetail(Request $request){
+    //dd($request->all());
     $validation['slug'] = 'required|string';
     $attributes = [];
     $messages = [];
@@ -118,7 +120,9 @@ class PostController extends Controller{
       $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
       ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.link_id','posts.category_id','posts.created_at']);
       if(!empty($post)){
-        $post->image = url('images/posts/news/main',$post->image);
+        // $post->image = url('images/posts/news/main',$post->image);
+        
+        $post->image = env('AWS_URL').'/images/posts/news/'.$post->image;
         $post->user_name = 'Jhone Smith';
         $post->tags = $post->tags;
         $post->category = $post->category;
@@ -257,7 +261,8 @@ class PostController extends Controller{
       $post = Post::where(['posts.slug'=>$request->slug,'posts.status'=>'1'])
       ->first(['posts.id','posts.title','posts.sub_title','posts.content','posts.slug','posts.image','posts.link_id','posts.category_id','posts.created_at']);
       if(!empty($post)){
-        $post->image = url('images/posts/video/main',$post->image);
+        $post->image = env('AWS_URL').'/images/posts/video/'.$post->image;
+        // $post->image = url('images/posts/video/main',$post->image);
         $post->user_name = 'Jhone Smith';
         $post->tags = $post->tags;
         $post->category = $post->category;
@@ -305,7 +310,8 @@ class PostController extends Controller{
       $posts = $post->get(['id','title','slug','category_id','image','content','created_at']);
       if(count($posts)>0){
         foreach($posts as $key=>$post){
-          $post->image = url('images/posts/video',$post->image);
+          $post->image = env('AWS_URL').'/images/posts/video/'.$post->image;
+          // $post->image = url('images/posts/video',$post->image);
           $post->user_name = 'Jhone Smith';
           $post->category = $post->category;
         }

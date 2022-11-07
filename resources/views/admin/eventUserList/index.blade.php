@@ -48,13 +48,47 @@
             
             
             <div class="row">
-              <div class="form-group col-sm-6 col-md-4">
+              <div class="form-group col-sm-3 col-md-3">
                 <label for="petrol_saved">Select Event<i class="fa fa-star text-red" aria-hidden="true"></i></label>
                   <select class="form-control event_select2" id="event_id"  name="event_id" required data-parsley-required-message="Please Select Event">
                     <option value="">-Select Event-</option>
                     @foreach($events as $event)
                         <option value="{{$event->id}}">{{$event->name}}</option>
                     @endforeach
+                  </select>
+              </div>
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="petrol_saved">Select Position<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+                {{-- {{ config('userDetail.admin.user.positions')[2] }} --}}
+                  <select class="form-control" id="position_id"  name="position" required data-parsley-required-message="Please Select Event">
+                    <option value="">-Select Position-</option>
+                    @foreach(config('userDetail.admin.user.positions') as $key => $position)
+                    <option value='{{$key}}'>{{$position}} </option>
+                    @endforeach
+                    {{-- <option value='1'>Store owner </option>
+                    <option value='2'>Brand owner</option>
+                    <option value='3'>Budtender</option>
+                    <option value='4'>Buyer</option>
+                    <option value='5'>Exec/Management</option>
+                    <option value='6'>Sales Rep</option>
+                    <option value='7'>Brand Ambassador</option>
+                    <option value='8'>Influencer/Content Creator</option>
+                    <option value='9'>Other</option> --}}
+                  </select>
+              </div>
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="petrol_saved">Organization<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+                  <input type="text" class="form-control" id="organization_id"  name="organization">
+                    
+              </div>
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="petrol_saved">Is Participate user<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+                  <select class="form-control" id="participate_id"  name="participate">
+                    <option value="">-Select-</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                   
+                    
                   </select>
               </div>
               
@@ -141,6 +175,9 @@
                   type: "POST",
                   data:function(data) {
                     data.event_id = $('#event_id').val();
+                    data.participate = $('#participate_id').val();
+                    data.position = $('#position_id').val();
+                    data.organization = $('#organization_id').val();
                     data.insterested_status = $('#statusId').val();
                   }
                   // ,

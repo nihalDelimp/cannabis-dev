@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 use File;
+use Image;
 use ImageResize;
 
 class VideoController extends Controller{
@@ -68,34 +70,50 @@ class VideoController extends Controller{
     $insert['post_type'] = 2;
     $tags_id = $request->tags_id;
     if(!empty($image)){
-      $imageHeight = ImageResize::make($image)->height();
-      $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/video');
+      $image_path = Storage::disk('admin')->put('images/posts/video',$image);
+      $video_image_url = Storage::disk('admin')->url($image_path);
+      $insert['image'] = basename($video_image_url);
+      $thumb_bassename_image = basename($video_image_url);
+      $file_name = time().".".$image->getClientOriginalExtension();
 
+      $destinationPath = public_path('/thumbnail');
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
-      $insert['image'] = time().'-'.$insert['slug'].'.'.$image->getClientOriginalExtension();
-      File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
-
-
-      $img = ImageResize::make($image->getRealPath());
-
-      $img->orientate();
-      $img->resize(360, 180, function ($constraint){
-      $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$insert['image']);
-
-      //
-      File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
-      if($imageHeight > 450 || $imageWidth > 760){
-        $img = ImageResize::make($image->getRealPath());
-        $img->orientate();
-        $img->resize(760, 450, function ($constraint){
-        $constraint->aspectRatio();})->save($destinationPath.'/main/'.$insert['image']);
-      }
-      else{
-        $image->move($destinationPath.'/main/', $insert['image']);
-      }
-      $image->move($destinationPath, $insert['image']);
+      $imageUpload = Image::make($image)->resize(320,240)->save($destinationPath.'/'.$file_name);
+      $thumbnail_image_path = Storage::disk('admin')->put('images/posts/video/listing/'.$thumb_bassename_image,$imageUpload, 'public');
+      $deletefile_path = $destinationPath.'/'.$file_name;  
+      File::delete($deletefile_path);
+      // $video_thumbnail_image_url = Storage::disk('admin')->url('images/posts/video/thumbnail/'.$thumb_bassename_image);
+      
     }
+    // if(!empty($image)){
+    //   $imageHeight = ImageResize::make($image)->height();
+    //   $imageWidth = ImageResize::make($image)->width();
+    //   $destinationPath = public_path('images/posts/video');
+
+    //   File::makeDirectory($destinationPath, $mode = 0777, true, true);
+    //   $insert['image'] = time().'-'.$insert['slug'].'.'.$image->getClientOriginalExtension();
+    //   File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
+
+
+    //   $img = ImageResize::make($image->getRealPath());
+
+    //   $img->orientate();
+    //   $img->resize(360, 180, function ($constraint){
+    //   $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$insert['image']);
+
+    //   //
+    //   File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
+    //   if($imageHeight > 450 || $imageWidth > 760){
+    //     $img = ImageResize::make($image->getRealPath());
+    //     $img->orientate();
+    //     $img->resize(760, 450, function ($constraint){
+    //     $constraint->aspectRatio();})->save($destinationPath.'/main/'.$insert['image']);
+    //   }
+    //   else{
+    //     $image->move($destinationPath.'/main/', $insert['image']);
+    //   }
+    //   $image->move($destinationPath, $insert['image']);
+    // }
     if($request->is_feature) {
       $videos = Post::where('is_feature', '1')->get();
       $videos->map(function($item, $key) {
@@ -139,35 +157,52 @@ class VideoController extends Controller{
     $update['status'] = $request->status;
     $update['content'] = $request->content;
     $update['category_id'] = $request->category_id;
+    // if(!empty($image)){
+    //   $imageHeight = ImageResize::make($image)->height();
+    //   $imageWidth = ImageResize::make($image)->width();
+    //   $destinationPath = public_path('images/posts/video');
+
+    //   File::makeDirectory($destinationPath, $mode = 0777, true, true);
+    //   $update['image'] = time().'-'.$update['slug'].'.'.$image->getClientOriginalExtension();
+    //   File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
+
+
+    //   $img = ImageResize::make($image->getRealPath());
+
+    //   $img->orientate();
+    //   $img->resize(360, 180, function ($constraint){
+    //   $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$update['image']);
+
+    //   //
+    //   File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
+    //   if($imageHeight > 450 || $imageWidth > 760){
+    //     $img = ImageResize::make($image->getRealPath());
+    //     $img->orientate();
+    //     $img->resize(760, 450, function ($constraint){
+    //     $constraint->aspectRatio();})->save($destinationPath.'/main/'.$update['image']);
+    //   }
+    //   else{
+    //     $image->move($destinationPath.'/main/', $update['image']);
+    //   }
+    //   $image->move($destinationPath, $update['image']);
+    //   $this->removeNewsImage($id);
+    // }
     if(!empty($image)){
-      $imageHeight = ImageResize::make($image)->height();
-      $imageWidth = ImageResize::make($image)->width();
-      $destinationPath = public_path('images/posts/video');
+      $image_path = Storage::disk('admin')->put('images/posts/video',$image);
+      $video_image_url = Storage::disk('admin')->url($image_path);
+      $update['image'] = basename($video_image_url);
+      $thumb_bassename_image = basename($video_image_url);
+      $file_name = time().".".$image->getClientOriginalExtension();
 
+      $destinationPath = public_path('/thumbnail');
       File::makeDirectory($destinationPath, $mode = 0777, true, true);
-      $update['image'] = time().'-'.$update['slug'].'.'.$image->getClientOriginalExtension();
-      File::makeDirectory($destinationPath.'/listing', $mode = 0777, true, true);
+      $imageUpload = Image::make($image)->resize(320,240)->save($destinationPath.'/'.$file_name);
+      $thumbnail_image_path = Storage::disk('admin')->put('images/posts/video/listing/'.$thumb_bassename_image,$imageUpload, 'public');
+      $deletefile_path = $destinationPath.'/'.$file_name;  
+      File::delete($deletefile_path);
 
-
-      $img = ImageResize::make($image->getRealPath());
-
-      $img->orientate();
-      $img->resize(360, 180, function ($constraint){
-      $constraint->aspectRatio();})->save($destinationPath.'/listing/'.$update['image']);
-
-      //
-      File::makeDirectory($destinationPath.'/main/', $mode = 0777, true, true);
-      if($imageHeight > 450 || $imageWidth > 760){
-        $img = ImageResize::make($image->getRealPath());
-        $img->orientate();
-        $img->resize(760, 450, function ($constraint){
-        $constraint->aspectRatio();})->save($destinationPath.'/main/'.$update['image']);
-      }
-      else{
-        $image->move($destinationPath.'/main/', $update['image']);
-      }
-      $image->move($destinationPath, $update['image']);
-      $this->removeNewsImage($id);
+      // $video_thumbnail_image_url = Storage::disk('admin')->url('images/posts/video/thumbnail/'.$thumb_bassename_image);
+      
     }
     $tags_id = $request->tags_id;
 

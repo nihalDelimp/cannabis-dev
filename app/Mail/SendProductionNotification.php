@@ -43,7 +43,7 @@ class SendProductionNotification extends Mailable
         // ->markdown('includes.email.loginWithNewPassword')->with('body',$this->body);
         
         return $this->from('nihal@delimp.com')
-                ->subject('Product Notification')
+                ->subject('You’ve been Invited!')
                 ->markdown('includes.email.productionNotification')->with('body',$this->body);
     }
 }

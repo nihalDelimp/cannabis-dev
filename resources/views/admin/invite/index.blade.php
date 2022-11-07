@@ -59,7 +59,7 @@
               <div class="form-group col-sm-6 col-md-4">
                 <label for="petrol_saved">User List<i class="fa fa-star text-red" aria-hidden="true"></i></label>
                   <select class="form-control select2"  name="user_id[]" multiple="multiple" required data-parsley-required-message="Please Select User">
-                    <option value="">-Select User-</option>
+                    <option value="" disabled>-Select User-</option>
                     @foreach($users as $user)
                         <option value="{{$user->email}}">{{$user->email}}</option>
                     @endforeach
@@ -119,8 +119,9 @@
         }
       },
       tags: true,
-      minimumInputLength: 2,
+      //minimumInputLength: 2,
       tokenSeparators: [','],
+      placeholder: "Select users / Enter user email",
       
   });
   $(document).ready(function(){
