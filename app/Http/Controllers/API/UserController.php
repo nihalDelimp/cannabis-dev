@@ -554,6 +554,9 @@ class UserController extends Controller
           'invited_owner' => $request->invited_owner,
           //'password'=>Hash::make($request->password),
         ];
+        if(isset($request->other_position)) {
+            $data['other_position'] = $request->other_position;
+        }
         if(!empty($request->password)) {
           $data['password'] = Hash::make($request->password);
         }
