@@ -10,6 +10,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -330,5 +331,34 @@ class UserController extends Controller
         "data"            => $data
         );
         echo json_encode($json_data);
+    }
+    public function downloadPdf(Request $request){
+      // dd($request->all());
+      $temp =  EventJoinList::where('event_id',$request['event_id']);
+      if(!empty($request->position)){
+        $position = $request->position;
+        // $temp->where('users.position','LIKE',"%{$sh->position}%");
+        $temp = $temp->whereHas('users', function($q) use($position){
+          $q->where('position',$position);
+          // $q->where('position','LIKE',"%{$position}%");
+        });
+        //dd($temp->count());
+      }
+      if(!empty($request->organization)){
+        $organization = $request->organization;
+        $temp = $temp->whereHas('users', function($q) use($organization) {
+          $q->where('organization','LIKE',"%{$organization}%");
+        });
+      }
+      
+      if(isset($request->participate) && $request->participate != null){
+        $temp = $temp->where('is_validate','LIKE',"%{$request->participate}%");
+      }
+      $temps = $temp->get();
+      //dd($temps);
+      $count = $temp->get()->count();
+      $pdf = Pdf::loadView('admin.eventUserList.Pdf_userlist',compact('temps','count'))->setOptions(['defaultFont' => 'sans-serif']);
+      return $pdf->download('user_list.pdf');
+      //dd($temp->get()->count());
     }
 }

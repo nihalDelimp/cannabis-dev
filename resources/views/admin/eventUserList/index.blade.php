@@ -50,7 +50,7 @@
             <div class="row">
               <div class="form-group col-sm-3 col-md-3">
                 <label for="petrol_saved">Select Event<i class="fa fa-star text-red" aria-hidden="true"></i></label>
-                  <select class="form-control event_select2" id="event_id"  name="event_id" required data-parsley-required-message="Please Select Event">
+                  <select class="form-control event_select2" id="event_id"  name="event_id">
                     <option value="">-Select Event-</option>
                     @foreach($events as $event)
                         <option value="{{$event->id}}">{{$event->name}}</option>
@@ -60,7 +60,7 @@
               <div class="form-group col-sm-3 col-md-3">
                 <label for="petrol_saved">Select Position<i class="fa fa-star text-red" aria-hidden="true"></i></label>
                 {{-- {{ config('userDetail.admin.user.positions')[2] }} --}}
-                  <select class="form-control" id="position_id"  name="position" required data-parsley-required-message="Please Select Event">
+                  <select class="form-control" id="position_id"  name="position">
                     <option value="">-Select Position-</option>
                     @foreach(config('userDetail.admin.user.positions') as $key => $position)
                     <option value='{{$key}}'>{{$position}} </option>
@@ -99,6 +99,7 @@
               <div class="form-group col-sm-12">
                 <button type="submit" class="btn btn-primary" id="search">{{langMessage('Search')}}</button>
                 <a href="#" class="btn btn-primary" id="reset">{{langMessage('reset')}}</a>
+                <a href="#" class="btn btn-primary" style="display: none" id="downloadPdf">{{langMessage('Download PDF')}}</a>
               </div>
             </div>
           </form>
@@ -179,6 +180,7 @@
                     data.position = $('#position_id').val();
                     data.organization = $('#organization_id').val();
                     data.insterested_status = $('#statusId').val();
+                    
                   }
                   // ,
                   // success: function(data){
@@ -203,8 +205,26 @@
       });
       $('#search').on('click', function (event) {
         event.preventDefault();
+        $('#downloadPdf').show();
+        let url =  "{{ route('downloadPdf',app()->getLocale())}}";
+        
+        let event_id = $('#event_id').val();
+        let participate = $('#participate_id').val();
+        let position = $('#position_id').val();
+        let organization = $('#organization_id').val();
+        let insterested_status = $('#statusId').val();
+        url = url+"?event_id="+event_id+"&participate="+participate+"&position="+position+"&organization="+organization;
+        if(event_id != '') {
+
+        
+        $('#downloadPdf').attr('href',url);
+        }
         table.draw();
+       
+        console.log("cont: ",$('#leads_info').text());
+        
       });
+      
       $('#reset').on('click', function(event){
         event.preventDefault();
         $("#search-form")[0].reset();

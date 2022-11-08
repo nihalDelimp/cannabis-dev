@@ -101,4 +101,6 @@ Route::group([
   Route::get('registered-user-list', 'EventController@showEventUserList')->name('showEventUserList');
   Route::post('get-registered-users', 'UserController@getRegisteredUsers')->name('getRegisteredUsers');
   Route::post('send-invite', 'EventController@sendInvite')->name('invite.send');
+
+  Route::get('download-pdf', 'UserController@downloadPdf')->name('downloadPdf');
 });

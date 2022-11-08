@@ -285,6 +285,13 @@ table.dataTable thead tr[role="row"] th {
     padding-right: 8px;
 }
 
+/* #leads{
+    width: 50% !important;
+    background-color: red !important;
+} */
+
+
+
 @media screen and (max-width:1200px) {
 
     .table-slide {
