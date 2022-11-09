@@ -99,7 +99,7 @@
               <div class="form-group col-sm-12">
                 <button type="submit" class="btn btn-primary" id="search">{{langMessage('Search')}}</button>
                 <a href="#" class="btn btn-primary" id="reset">{{langMessage('reset')}}</a>
-                <a href="#" class="btn btn-primary" style="display: none" id="downloadPdf">{{langMessage('Download PDF')}}</a>
+                <a href="#" class="btn btn-primary" style="display: none" id="downloadPdf">{{langMessage('Download CSV')}}</a>
               </div>
             </div>
           </form>
