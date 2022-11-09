@@ -22,6 +22,8 @@ use Image;
 use ImageResize;
 use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Twilio\Rest\Client;
+use Exception;
 //use Intervention\Image\ImageManager;
 
 class EventController extends Controller{
@@ -438,8 +440,10 @@ class EventController extends Controller{
    
   }
   public function sendInvite(Request $request){
-    //dd($request->all()); REACT_APP_SPAURL= http://localhost:3000/rsvp
+    //dd($request->all()); 
+    //REACT_APP_SPAURL= http://localhost:3000/rsvp
     $event = Event::find($request->event_id);
+    
     foreach($request->user_id as $key => $email) {
      
       $body = [
@@ -449,10 +453,29 @@ class EventController extends Controller{
         'name' => $email,
       ];
       Mail::to($email)->send(new SendProductionNotification($body));
+      // $user = User::where('email',$email)->first();
+      // $phone = "+91".$user->phone;
+      // $this->sendMessage('Send Production notification on registre phone!!', $phone);
     }
     return redirect()->route('invite.index',app()->getLocale())->with('success','Invitation send successfully...');
     // return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is deleted successfully.');
-  
-   
   }
+
+  private function sendMessage($message, $recipients)
+    {
+      try {
+      $account_sid = env("TWILIO_SID");
+      $auth_token = env("TWILIO_AUTH_TOKEN");
+      $twilio_number = env("TWILIO_FROM");
+
+      $client = new Client($account_sid, $auth_token);
+      $client->messages->create($recipients, [
+        'from' => $twilio_number, 'body' => $message]);
+        dd('SMS Sent Successfully.');
+      } catch (Exception $e) {
+        dd("Error: ". $e->getMessage());
+    }
+    }
+
+
 }

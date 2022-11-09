@@ -103,4 +103,7 @@ Route::group([
   Route::post('send-invite', 'EventController@sendInvite')->name('invite.send');
 
   Route::get('download-pdf', 'UserController@downloadPdf')->name('downloadPdf');
+  Route::get('export-user-csv', function () {
+    return Excel::download(new UsersExport, 'users.csv');
+  });
 });

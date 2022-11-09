@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class UserController extends Controller
 {
@@ -357,8 +359,16 @@ class UserController extends Controller
       $temps = $temp->get();
       //dd($temps);
       $count = $temp->get()->count();
-      $pdf = Pdf::loadView('admin.eventUserList.Pdf_userlist',compact('temps','count'))->setOptions(['defaultFont' => 'sans-serif']);
-      return $pdf->download('user_list.pdf');
+      $event = Event::find($request['event_id']);
+      $namepdf = $event->name.".".time().".csv";
+      
+      return Excel::download(new UsersExport($request->event_id,$request->position,$request->organization, $request->participate) , $namepdf);
+      
+      // return $pdf->download($namepdf);
+      // $namepdf = $event->name.".".time().".pdf";
+      
+      // $pdf = Pdf::loadView('admin.eventUserList.Pdf_userlist',compact('temps','count'))->setOptions(['defaultFont' => 'sans-serif']);
+      // return $pdf->download($namepdf);
       //dd($temp->get()->count());
     }
 }

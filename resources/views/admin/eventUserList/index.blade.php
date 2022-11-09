@@ -82,7 +82,7 @@
                     
               </div>
               <div class="form-group col-sm-3 col-md-3">
-                <label for="petrol_saved">Is Participate user<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+                <label for="petrol_saved">Alright user<i class="fa fa-star text-red" aria-hidden="true"></i></label>
                   <select class="form-control" id="participate_id"  name="participate">
                     <option value="">-Select-</option>
                     <option value="1">Yes</option>
@@ -118,7 +118,8 @@
           <th>{{langMessage('Position')}}</th>
           <th>{{langMessage('Instagram Name')}}</th>
           <th>{{langMessage('Interested')}}</th>
-          <th>{{langMessage('Is participated user')}}</th>
+          <th>{{langMessage('Alright user')}}</th>
+          {{-- <th>{{langMessage('Is participated user')}}</th> --}}
           <th>{{langMessage('Invited Owner')}}</th>
           {{-- <th>{{langMessage('Action')}}</th> --}}
         </tr>
@@ -205,7 +206,8 @@
       });
       $('#search').on('click', function (event) {
         event.preventDefault();
-        $('#downloadPdf').show();
+        table.draw();
+       
         let url =  "{{ route('downloadPdf',app()->getLocale())}}";
         
         let event_id = $('#event_id').val();
@@ -215,13 +217,13 @@
         let insterested_status = $('#statusId').val();
         url = url+"?event_id="+event_id+"&participate="+participate+"&position="+position+"&organization="+organization;
         if(event_id != '') {
-
-        
-        $('#downloadPdf').attr('href',url);
+          $('#downloadPdf').show();
+          $('#downloadPdf').attr('href',url);
         }
-        table.draw();
-       
-        console.log("cont: ",$('#leads_info').text());
+         
+        
+        
+        console.log("cont: ",event_id);
         
       });
       
@@ -229,6 +231,7 @@
         event.preventDefault();
         $("#search-form")[0].reset();
         $("#select2-event_id-container").html('');
+        $('#downloadPdf').hide();
         table.draw();
       });
 
