@@ -229,9 +229,6 @@
         table.draw();
        
         let url =  "{{ route('downloadPdf',app()->getLocale())}}";
-
-        
-        
         
         let event_id = $('#event_id').val();
         let participate = $('#participate_id').val();
@@ -241,8 +238,6 @@
         url = url+"?event_id="+event_id+"&participate="+participate+"&position="+position+"&organization="+organization;
         if(event_id != '') {
          var countData = $('#count_data').val();
-         console.log("kkdfj : ",countData);
-         
           $('#downloadPdf').attr('href',url);
         }
          

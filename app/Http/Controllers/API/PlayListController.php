@@ -54,7 +54,6 @@ class PlayListController extends Controller{
   			$this->response['data']['error'] = $this->langError(["Sorry, there is no data to display."]);
 			$this->sendResponse($this->response);
   		}
-		
   		$video->image_path = $video->image_path;
   		$video->category_name = $video->category->title;
   		$video->user_name = 'John Smith';

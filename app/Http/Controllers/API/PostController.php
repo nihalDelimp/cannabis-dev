@@ -86,7 +86,8 @@ class PostController extends Controller{
     //$posts = $post->get(['posts.*']);
     if(count($posts)>0){
       foreach($posts as $key=>$post){
-        $post->image = url('images/posts/news',$post->image);
+        //$post->image = url('images/posts/news',$post->image);
+        $post->image = env('AWS_URL').'/images/posts/news/'.$post->image;        
         $post->user_name = 'Jhone Smith';
         $post->category = $post->category;
       }

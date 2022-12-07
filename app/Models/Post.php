@@ -20,7 +20,6 @@ class Post extends Model
         'post_type',
         'status',
         'image',
-        'thumbnail_image',
         'slug',
         'image',
         'file_path',
