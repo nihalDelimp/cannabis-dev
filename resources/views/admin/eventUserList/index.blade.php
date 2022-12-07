@@ -105,6 +105,7 @@
           </form>
         </div>
       </div>
+      <input type="hidden" id="count_data" value='0'>
       <table id="leads" class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -200,15 +201,37 @@
             { "data": "invited_owner" },            
             { "data": "is_validate" },            
             { "data": "insterested_status" },
+            
             // { "data": "options" }
-          ]
+          ],
+          "drawCallback": function( settings ) {
+             console.log(settings.json.data.length);
+            if(settings.json.data.length > 0) {
+              $('#downloadPdf').show();
+            }
+             
+           }
 
       });
+
+      $('body').on('change','#position_id', function () {
+        $('#downloadPdf').hide();
+      });
+      $('body').on('change','#participate_id', function () {
+        $('#downloadPdf').hide();
+      });
+      $('body').on('keyup','#organization_id', function () {
+        $('#downloadPdf').hide();
+      });
+
       $('#search').on('click', function (event) {
         event.preventDefault();
         table.draw();
        
         let url =  "{{ route('downloadPdf',app()->getLocale())}}";
+
+        
+        
         
         let event_id = $('#event_id').val();
         let participate = $('#participate_id').val();
@@ -217,13 +240,15 @@
         let insterested_status = $('#statusId').val();
         url = url+"?event_id="+event_id+"&participate="+participate+"&position="+position+"&organization="+organization;
         if(event_id != '') {
-          $('#downloadPdf').show();
+         var countData = $('#count_data').val();
+         console.log("kkdfj : ",countData);
+         
           $('#downloadPdf').attr('href',url);
         }
          
         
         
-        console.log("cont: ",event_id);
+        
         
       });
       

@@ -150,6 +150,7 @@ class UserController extends Controller
         return $search;
       }
     public function getUsers(Request $request){
+      
         $search = $this->getSearchableFields($request->all());
     //    ;name`, `email`, `phone`, `organization`, `dob`, `position`, `instagram_name`, `insterested_status`, `invited_owner`,
     //     `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`
@@ -309,6 +310,7 @@ class UserController extends Controller
             $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
             $nestedData['invited_owner'] = $temp->users->insterested_status == 1 ? "Yes" : "No";
             $nestedData['is_validate'] = $temp->is_validate == 1 ? "Yes" : "No";
+            $nestedData['count_data'] = count($temps);
             
             // $nestedData['options'] = "";
             // $nestedData['options'] .= "&nbsp;&nbsp;<a href='{$edit}' class='btn btn-warning'><i class='fa fa-pencil' aria-hidden='true'></i></a>";

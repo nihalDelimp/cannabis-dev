@@ -24,8 +24,7 @@
                     <em>
                         <div style="text-align: center;">
                         </div>
-                        
-                        <img src="{{ $message->embedData(QrCode::format('png')->size(500)->generate($body['qr_code']), 'nameForAttachment.png') }}" />
+                       <img src="{{ $message->embedData(QrCode::format('png')->size(500)->generate($body['qr_code']), 'nameForAttachment.png') }}" />
                     {{-- </br>
                     {!! $body['qr_code'] !!}  --}}
                     </em><br><br>

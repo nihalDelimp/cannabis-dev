@@ -81,6 +81,8 @@ class EventController extends Controller{
     }
     $insert = array();
     $insert['name'] = $request->name;
+
+    $insert['slug'] = strtolower(str_replace(' ','-',$request->name));
     
 
 
@@ -192,7 +194,7 @@ class EventController extends Controller{
     
     $update = array();
     $update['name'] = $request->name;
-   
+    $update['slug'] = strtolower(str_replace(' ','-',$request->name));
 
     // $update['special_link'] = URL::to($id."_".$request->name.'_'.md5(time()));
         
