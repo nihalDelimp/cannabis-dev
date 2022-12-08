@@ -84,7 +84,9 @@
           </ul>
         </li> --}}
         {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}"> --}}
-        <li class="treeview {{request()->segment(3) == 'invite' ? 'active menu-open':'' }}">
+
+        {{-- Comment invite link by thaseem no need --}}
+        {{-- <li class="treeview {{request()->segment(3) == 'invite' ? 'active menu-open':'' }}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Invite')}}</span>
           <span class="pull-right-container">
@@ -100,7 +102,7 @@
                     </a>
                 </li>
           </ul>
-        </li>
+        </li> --}}
         <li class="treeview {{request()->segment(3) == 'registered-user-list' ? 'active menu-open':'' }}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('Registered User List')}}</span>
