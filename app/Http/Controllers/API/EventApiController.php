@@ -43,7 +43,8 @@ class EventApiController extends Controller{
   }
   function showEvent($id)
   {
-      $event= Event::find($id);
+      //$event= Event::find($id);
+      $event= Event::where('slug',$id)->first();
       
       if(!empty($event)){
       
@@ -59,7 +60,8 @@ class EventApiController extends Controller{
   function deleteEvent($id)
   {
     
-    $Event= Event::find($id);
+      $Event= Event::find($id);
+    
     
     if ($Event) {
       $Event->delete();
