@@ -63,7 +63,7 @@
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('events.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
         </li>
-        {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}">
+        <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('User')}}</span>
           <span class="pull-right-container">
@@ -82,7 +82,7 @@
                     </a>
                 </li>
           </ul>
-        </li> --}}
+        </li>
         {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}"> --}}
 
         {{-- Comment invite link by thaseem no need --}}

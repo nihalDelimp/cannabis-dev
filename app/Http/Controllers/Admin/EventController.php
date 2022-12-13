@@ -223,7 +223,8 @@ class EventController extends Controller{
 
     $image = $request->file('image_path');
     
-    $filename = $image->getClientOriginalName();
+    $filename = str_replace(' ','-',$image->getClientOriginalName());
+    
     //$extension = $image->getClientOriginalExtension();
     $destinationPath = public_path('/thumbnail');
     $base_path = Storage::disk('admin')->put($id, $image);
@@ -290,6 +291,7 @@ class EventController extends Controller{
       $update_event = Event::where('id','!=',$id)->update(['status' => '0']);
      
     }
+    //dd($update);
     Event::find($id)->update($update);
    
     return redirect(route('events.index',app()->getLocale()))->with('success', 'Event is successfully updated');
