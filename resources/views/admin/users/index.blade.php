@@ -37,15 +37,14 @@
             <!-- <label for="Word">@lang('word')</label> -->
             <input class="form-control border-0 rounded-0 primary-text-color py-2 pl-3" name="name" type="text" id="name" placeholder="{{langMessage('User Name')}}">
             </div>
-            <div class="form-group col-sm-6 col-md-4">
-              {{-- <label for="petrol_saved">{{langMessage('Status')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label> --}}
+            {{-- <div class="form-group col-sm-6 col-md-4">
               <select class="form-control" name="status" id="statusId">
                 
                   <option value="">{{langMessage('Select Insterested User')}}</option>
                   <option value=1>{{langMessage('Yes')}}</option>
                   <option value=0>{{langMessage('No')}}</option>
               </select>
-            </div>
+            </div> --}}
             {{-- <div class="form-group col-sm-6 col-md-4">
               <!-- <label for="petrol_saved">{{langMessage('Events')}}<i class="fa fa-star text-red" aria-hidden="true"></i></label> -->
               <select class="form-control" name="user_id" id="user_id">
@@ -150,8 +149,9 @@
             { "data": "dob" },            
             { "data": "position" },            
             { "data": "instagram_name" },            
-            { "data": "invited_owner" },            
+                      
             { "data": "insterested_status" },
+            { "data": "invited_owner" },  
             { "data": "options" }
           ]
 

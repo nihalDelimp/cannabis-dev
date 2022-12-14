@@ -59,11 +59,11 @@
           </span>
           </a>
           <ul class="treeview-menu">
-              {{-- <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('events.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li> --}}
+              <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('events.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('events.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
         </li>
-        <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}">
+        {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}">
           <a href="#">
           <i class="fa fa-table"></i> <span>{{langMessage('User')}}</span>
           <span class="pull-right-container">
@@ -71,18 +71,18 @@
           </span>
           </a>
           <ul class="treeview-menu">
-                {{-- <li class="{{ $action == 'create'?'active':'' }}">
+                <li class="{{ $action == 'create'?'active':'' }}">
                     <a href="{{ route('users.create',app()->getLocale()) }}">
                     <i class="fa fa-circle-o"></i> {{langMessage('add')}}
                     </a>
-                </li> --}}
+                </li>
                 <li  class="{{ $action == 'index'?'active':'' }}">
                     <a href="{{ route('users.index',app()->getLocale()) }}">
                     <i class="fa fa-circle-o"></i> {{langMessage('manage')}}
                     </a>
                 </li>
           </ul>
-        </li>
+        </li> --}}
         {{-- <li class="treeview {{ $controller == 'UserController'?'active menu-open':''}}"> --}}
 
         {{-- Comment invite link by thaseem no need --}}

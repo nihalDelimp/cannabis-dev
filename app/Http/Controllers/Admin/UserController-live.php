@@ -165,15 +165,18 @@ class UserController extends Controller
         //dd($request->input('order.0.column'));
         $dir = $request->input('order.0.dir');
     
-        $temp =  User::where('role',2);
+        $temp =  User::where('role','!=',1);
+        //dd(count($search));//User::where('role','!=',1);
         if(count($search) > 0){
             $sh = (object)$search;
+    
+          //dd($sh);
             if(!empty($sh->name)){
-              $temp->where('users.name','LIKE',"%{$sh->name}%")->where('role',2);
+              $temp->where('users.name','LIKE',"%{$sh->name}%");
             }
-            // if(isset($sh->insterested_status)){
-            //   $temp->where('users.insterested_status','=',$sh->insterested_status);
-            // }
+            if(isset($sh->insterested_status)){
+              $temp->where('users.insterested_status','=',$sh->insterested_status);
+            }
             // if(!empty($sh->user_id)){
             //   $temp->where('events.user_id','=',$sh->user_id);
             // }
@@ -183,17 +186,7 @@ class UserController extends Controller
         $temp->limit($limit);
         $temp->orderBy($order,$dir);
         $temps = $temp->get();
-
-        $temp =  User::where('role',2);
-        if(count($search) > 0){
-            $sh = (object)$search;
-            if(!empty($sh->name)){
-              $temp->where('users.name','LIKE',"%{$sh->name}%")->where('role',2);
-            }
-        }
-        $totalData  = $temp->count();
-        
-       
+        $totalData  = User::where('role','!=',1)->get()->count();
         $totalFiltered = $totalData;
         $data = array();
         
@@ -209,10 +202,9 @@ class UserController extends Controller
             $nestedData['dob'] = $temp->dob ? Carbon::parse($temp->dob)->format('m-d-Y'): "N/A";
             $nestedData['organization'] = $temp->organization ? $temp->organization : "N/A";
             $nestedData['insterested_status'] = $temp->insterested_status == 1? "Yes" : "No";
-            $nestedData['position'] = !empty($temp->position) && $temp->position == '9' ?
-            $temp->other_position : config('userDetail.admin.user.positions')[$temp->position];
-            $nestedData['instagram_name'] = !empty($temp->instagram_name) ? $temp->instagram_name : "N/A";
-            $nestedData['invited_owner'] = !empty($temp->invited_owner) ?  $temp->invited_owner : 'N/A';
+            $nestedData['position'] = $temp->position ? $temp->position : "N/A";
+            $nestedData['instagram_name'] = $temp->instagram_name ? $temp->instagram_name : "N/A";
+            $nestedData['invited_owner'] = $temp->invited_owner == 1 ? "Yes" : "No";
             
             $nestedData['options'] = "";
             $nestedData['options'] .= "&nbsp;&nbsp;<a href='{$edit}' class='btn btn-warning'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
@@ -253,11 +245,15 @@ class UserController extends Controller
         $temp =  EventJoinList::where('event_id',$search['event_id']);
         if(count($search) > 0){
             $sh = (object)$search;
+            //dd( $sh);
             if(!empty($sh->position)){
               $position = $sh->position;
+              // $temp->where('users.position','LIKE',"%{$sh->position}%");
               $temp = $temp->whereHas('users', function($q) use($position){
                 $q->where('position',$position);
+                // $q->where('position','LIKE',"%{$position}%");
               });
+              //dd($temp->count());
             }
             if(!empty($sh->organization)){
               $organization = $sh->organization;
@@ -268,33 +264,15 @@ class UserController extends Controller
             
             if(isset($sh->participate) && $sh->participate != null){
               $temp = $temp->where('is_validate','LIKE',"%{$sh->participate}%");
+              // echo $sh->participate;
+              // dd( $temp->get()->count());
             } 
         }
         $temp->offset($start);
         $temp->limit($limit);
         $temp->orderBy($order,$dir);
         $temps = $temp->get();
-        $temp =  EventJoinList::where('event_id',$search['event_id']);
-        if(count($search) > 0){
-            $sh = (object)$search;
-            if(!empty($sh->position)){
-              $position = $sh->position;
-              $temp = $temp->whereHas('users', function($q) use($position){
-                $q->where('position',$position);
-              });
-            }
-            if(!empty($sh->organization)){
-              $organization = $sh->organization;
-              $temp = $temp->whereHas('users', function($q) use($organization) {
-                $q->where('organization','LIKE',"%{$organization}%");
-              });
-            }
-            
-            if(isset($sh->participate) && $sh->participate != null){
-              $temp = $temp->where('is_validate','LIKE',"%{$sh->participate}%");
-            } 
-        }
-        $totalData  = $temp->count();
+        $totalData  = $temps->count();
         $totalFiltered = $totalData;
         $data = array();
         
@@ -330,7 +308,7 @@ class UserController extends Controller
             $nestedData['insterested_status'] = $temp->users->insterested_status == 1? "Yes" : "No";
             $nestedData['position'] = $position_user ?$position_user :'N/A ';
             $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
-            $nestedData['invited_owner'] = !empty($temp->users->invited_owner) ? $temp->users->invited_owner : 'N/A';
+            $nestedData['invited_owner'] = $temp->users->insterested_status == 1 ? "Yes" : "No";
             $nestedData['is_validate'] = $temp->is_validate == 1 ? "Yes" : "No";
             $nestedData['count_data'] = count($temps);
             

@@ -68,7 +68,7 @@ class UsersExport implements FromCollection ,WithHeadings
             $nestedData['Insterested Status'] = $temp->users->insterested_status == 1? "Yes" : "No";
             $nestedData['position'] = $position_user ?$position_user :'N/A ';
             $nestedData['Instagram Name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
-            $nestedData['Invited Owner'] = $temp->users->insterested_status == 1 ? "Yes" : "No";
+            $nestedData['Invited Owner'] = !empty($temp->users->invited_owner) ? $temp->users->invited_owner : 'N/A';
             $nestedData['Alright user'] = $temp->is_validate == 1 ? "Yes" : "No";
             $data[] = $nestedData;
           }
