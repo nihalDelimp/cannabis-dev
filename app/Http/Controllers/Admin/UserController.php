@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Exports\UsersExportCSV;
 
 class UserController extends Controller
 {
@@ -122,7 +123,7 @@ class UserController extends Controller
         // dd($search['insterested_status']);
         $search = [];
 
-        $searchableFields = ['name','email','phone','organization','position','instagram_name','insterested_status'];
+        $searchableFields = ['organization','insterested_status','name','email','phone','position','instagram_name'];
         foreach($searchableFields as $field){
           if(isset($request[$field])){
             //echo $request[$field]."</br>";
@@ -171,9 +172,15 @@ class UserController extends Controller
             if(!empty($sh->name)){
               $temp->where('users.name','LIKE',"%{$sh->name}%")->where('role',2);
             }
-            // if(isset($sh->insterested_status)){
-            //   $temp->where('users.insterested_status','=',$sh->insterested_status);
-            // }
+            if(!empty($sh->organization)){
+              $temp->where('users.organization','LIKE',"%{$sh->organization}%")->where('role',2);
+            }
+            if(isset($sh->insterested_status)){
+              $temp->where('users.insterested_status',$sh->insterested_status)->where('role',2);
+            }
+            if(isset($sh->position)){
+              $temp->where('users.position',$sh->position)->where('role',2);
+            }
             // if(!empty($sh->user_id)){
             //   $temp->where('events.user_id','=',$sh->user_id);
             // }
@@ -189,6 +196,15 @@ class UserController extends Controller
             $sh = (object)$search;
             if(!empty($sh->name)){
               $temp->where('users.name','LIKE',"%{$sh->name}%")->where('role',2);
+            }
+            if(!empty($sh->organization)){
+              $temp->where('users.organization','LIKE',"%{$sh->organization}%")->where('role',2);
+            }
+            if(isset($sh->insterested_status)){
+              $temp->where('users.insterested_status',$sh->insterested_status)->where('role',2);
+            }
+            if(isset($sh->position)){
+              $temp->where('users.position',$sh->position)->where('role',2);
             }
         }
         $totalData  = $temp->count();
@@ -309,29 +325,26 @@ class UserController extends Controller
             $position_user = null;
             //dd($position_user = config('userDetail.admin.user.positions')[$temp->users->position]);
           
-            if(array_key_exists($temp->users->position, config('userDetail.admin.user.positions') )) {
-              if($temp->users->position != 9) {
+            
+              if(!empty($temp->users->position) && $temp->users->position != 9) {
                 $position_user = config('userDetail.admin.user.positions')[$temp->users->position];
               } else {
-                $position_user = $temp->users->other_position;
+                $position_user = !empty($temp->users->other_position) ? $temp->users->other_position : 'N/A';
               }
-
-              
-            }
             
             
 
             $nestedData['sn'] = ($start+$key+1);
-            $nestedData['name'] = $temp->users->name;
-            $nestedData['email'] = $temp->users->email;
-            $nestedData['phone'] = $temp->users->phone ? $temp->users->phone : "N/A";
-            $nestedData['dob'] = $temp->users->dob ? Carbon::parse($temp->users->dob)->format('m-d-Y'): "N/A";
-            $nestedData['organization'] = $temp->users->organization ? $temp->users->organization : "N/A";
-            $nestedData['insterested_status'] = $temp->users->insterested_status == 1? "Yes" : "No";
-            $nestedData['position'] = $position_user ?$position_user :'N/A ';
-            $nestedData['instagram_name'] = $temp->users->instagram_name ? $temp->users->instagram_name : "N/A";
+            $nestedData['name'] = !empty($temp->users->name) ? $temp->users->name :'N/A';
+            $nestedData['email'] = !empty($temp->users->email) ? $temp->users->email : 'N/A';
+            $nestedData['phone'] = !empty($temp->users->phone) ? $temp->users->phone : "N/A";
+            $nestedData['dob'] = !empty($temp->users->dob) ? Carbon::parse($temp->users->dob)->format('m-d-Y'): "N/A";
+            $nestedData['organization'] = !empty($temp->users->organization) ? $temp->users->organization : "N/A";
+            $nestedData['insterested_status'] = !empty($temp->users->insterested_status) && $temp->users->insterested_status == 1 ? "Yes" : "No";
+            $nestedData['position'] = $position_user;
+            $nestedData['instagram_name'] = !empty($temp->users->instagram_name) ? $temp->users->instagram_name : "N/A";
             $nestedData['invited_owner'] = !empty($temp->users->invited_owner) ? $temp->users->invited_owner : 'N/A';
-            $nestedData['is_validate'] = $temp->is_validate == 1 ? "Yes" : "No";
+            $nestedData['is_validate'] = !empty($temp->is_validate) && $temp->is_validate == 1 ? "Yes" : "No";
             $nestedData['count_data'] = count($temps);
             
             // $nestedData['options'] = "";
@@ -394,5 +407,41 @@ class UserController extends Controller
       // $pdf = Pdf::loadView('admin.eventUserList.Pdf_userlist',compact('temps','count'))->setOptions(['defaultFont' => 'sans-serif']);
       // return $pdf->download($namepdf);
       //dd($temp->get()->count());
+    }
+    public function downloadUserCsv(Request $request){
+      //dd($request->all());
+      $temp =  User::where('role',2);
+      
+      if(!empty($request->name)){
+        $name = $request->name;
+        $temp = $temp->where('name','LIKE',"%{$name}%");
+          
+      }
+      if(!empty($request->position)){
+        $position = $request->position;
+        $temp = $temp->where('position',$position);
+          
+      }
+      if(!empty($request->organization)){
+        $organization = $request->organization;
+        $temp = $temp->where('organization','LIKE',"%{$organization}%");
+        
+      }
+      if(!empty($request->insterested_status)){
+        $insterested_status = $request->insterested_status;
+        $temp = $temp->where('insterested_status','LIKE',"%{$insterested_status}%");
+        
+      }
+      
+      
+      $temps = $temp->get();
+      
+      $count = $temp->get()->count();
+      
+      
+      $namepdf = "User-List.".time().".csv";
+      
+      return Excel::download(new UsersExportCSV($request->name,$request->position,$request->organization, $request->insterested_status) , $namepdf);
+      
     }
 }

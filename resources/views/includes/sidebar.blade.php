@@ -59,7 +59,7 @@
           </span>
           </a>
           <ul class="treeview-menu">
-              {{-- <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('events.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li> --}}
+              <li class="{{ $action == 'create'?'active':'' }}"><a href="{{ route('events.create',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('add')}}</a></li>
               <li  class="{{ $action == 'index'?'active':'' }}"><a href="{{ route('events.index',app()->getLocale()) }}"><i class="fa fa-circle-o"></i> {{langMessage('manage')}}</a></li>
           </ul>
         </li>

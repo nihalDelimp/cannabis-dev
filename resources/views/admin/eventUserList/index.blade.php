@@ -82,7 +82,7 @@
                     
               </div>
               <div class="form-group col-sm-3 col-md-3">
-                <label for="petrol_saved">Alright user<i class="fa fa-star text-red" aria-hidden="true"></i></label>
+                <label for="petrol_saved">Attended<i class="fa fa-star text-red" aria-hidden="true"></i></label>
                   <select class="form-control" id="participate_id"  name="participate">
                     <option value="">-Select-</option>
                     <option value="1">Yes</option>
@@ -120,8 +120,8 @@
           <th>{{langMessage('Instagram Name')}}</th>
           <th>{{langMessage('Invited Owner')}}</th>
          
-          <th>{{langMessage('Alright user')}}</th>
-          <th>{{langMessage('Interested')}}</th>
+          <th>{{langMessage('Attended')}}</th>
+          <th>{{langMessage('Content with us')}}</th>
           {{-- <th>{{langMessage('Is participated user')}}</th> --}}
          
           {{-- <th>{{langMessage('Action')}}</th> --}}
@@ -188,7 +188,7 @@
                   }
                   // ,
                   // success: function(data){
-                  //   console.log(data);
+                  //   (data);
                   // }
                 }, 
           "columns": [
@@ -208,8 +208,12 @@
           ],
           "drawCallback": function( settings ) {
              console.log(settings.json.data.length);
+             
             if(settings.json.data.length > 0) {
               $('#downloadPdf').show();
+             
+            } else {
+              $('#downloadPdf').hide();
             }
              
            }
