@@ -34,7 +34,7 @@
                     </em>
                     <br><br>
                     <em>
-                        10541 Calle Lee ste 101 Los Alamitos, California 90720.
+                        Cannabis Capitol | 10541 Calle Lee ste 101 Los Alamitos, California 90720.
                     </em>
                 </p>
                     
