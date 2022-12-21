@@ -27,9 +27,14 @@
                        <img src="{{ $message->embedData(QrCode::format('png')->size(500)->generate($body['qr_code']), 'nameForAttachment.png') }}" />
                     {{-- </br>
                     {!! $body['qr_code'] !!}  --}}
-                    </em><br><br>
+                    </em>
+                    <br><br>
                     <em>
                         Any information regarding this production can be accessed at CannabisCapitol.com under Productions.
+                    </em>
+                    <br><br>
+                    <em>
+                        10541 Calle Lee ste 101 Los Alamitos, California 90720.
                     </em>
                 </p>
                     
