@@ -71,4 +71,6 @@ Route::post("send-email",[App\Http\Controllers\API\UserController::class,'sendMa
 Route::post("validate-user",[App\Http\Controllers\API\UserController::class,'validateUser']);
 Route::post("validate-production",[App\Http\Controllers\API\UserController::class,'validateProduction']);
 
+Route::get("get-production-privacy-policy/{id}",[App\Http\Controllers\API\EventApiController::class,'getPrivacyPolicy']);
+
 

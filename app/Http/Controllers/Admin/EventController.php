@@ -62,9 +62,7 @@ class EventController extends Controller{
   }
 
   public function store(Request $request){
-    
-    //dd($request->all());
-    
+        
     $image = $request->file('image_path');
     $validate['name'] = 'required';
     // $validate['sub_title'] = 'required';
@@ -84,69 +82,48 @@ class EventController extends Controller{
 
     $insert['slug'] = strtolower(str_replace(' ','-',$request->name));
     
-
-
     $timestamp1 = $request->start_date .' '.$request->start_time[0].':00:00';
-    // $timestamp1 = $request->start_date .' '.$request->start_time[0].':'.$request->start_time[1].':'.$request->start_time[2];
-    // $timestamp2 = $request->end_date .' '.$request->end_time[0].':'.$request->end_time[1].':'.$request->end_time[2];
-    //echo "date-".$timestamp1."</br>";
-    $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
-    //$end_date = date('Y-m-d H:i:s', strtotime($timestamp2));
 
-    
-    // $insert['start_date'] = Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
-    // $insert['end_date'] = Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+    $start_date = date('Y-m-d H:i:s', strtotime($timestamp1));
+
     if(isset($request->start_time[1])) {
       $insert['start_time'] = $request->start_time[1];
     }
     
     $insert['start_date'] = $start_date;
-    //$insert['end_date'] = $end_date;
     $insert['discription'] = $request->discription;
-    //$insert['start_time'] = $request->start_time;//[0].":".$request->start_time[1]." ".$request->start_time[2];
-    //$insert['end_time'] = $request->end_time;//[0].":".$request->end_time[1]." ".$request->end_time[2];
-    
-    //$insert['image_path'] = $request->image_path;
     $insert['status'] = $request->status;
+    $insert['privacy_policy'] = $request->privacy_policy;
     $event = Event::create($insert);
-    /////////////////send emil user_id
-    
-      
-        
-        
-        ///Mail::to($email)->send(new sendProductionNotification($body));
-    /////////end emil
-    if($request->status == 1) {
-      $update_event = Event::where('id','!=',$event->id)->update(['status' => '0']);
-    }
+
     if($event){
-      $filename = $image->getClientOriginalName();
-      $destinationPath = public_path('/thumbnail');
-      $base_path = Storage::disk('admin')->put($event->id, $image);
-      $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
-      //dd($ImageUpload);
-      $file_name = time().'.'.$image->getClientOriginalExtension();
-      $thumbnail_path = Storage::disk('admin')->put($event->id.'/thumbnail/'.$file_name, $ImageUpload, 'public');
-      $deletefile_path = $destinationPath.'/'.$filename;  
-      File::delete($deletefile_path);
-      $event->image_path = Storage::disk('admin')->url($base_path);
-      
-      $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
-      $event->special_link = strtr($event->name,[' '=>'_']).'/'.$event->id."_".md5(time());
-      // $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
-      $event->save();
-      if(isset($request->user_id)){
-        foreach($request->user_id as $key => $email) {
-        $user = User::where('email', $email)->first();
-          $body = [
-            'production_link' => env('SPA_URL').'/rsvp/'.$event->special_link,
-            'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
-            'production_name' => $event->name,
-            'name' => $email,
-          ];
-          Mail::to($email)->send(new SendProductionNotification($body));
+        $filename = $image->getClientOriginalName();
+        $destinationPath = public_path('/thumbnail');
+        $base_path = Storage::disk('admin')->put($event->id, $image);
+        $ImageUpload = Image::make($image)->resize(320, 240)->save($destinationPath.'/'.$filename);
+        //dd($ImageUpload);
+        $file_name = time().'.'.$image->getClientOriginalExtension();
+        $thumbnail_path = Storage::disk('admin')->put($event->id.'/thumbnail/'.$file_name, $ImageUpload, 'public');
+        $deletefile_path = $destinationPath.'/'.$filename;  
+        File::delete($deletefile_path);
+        $event->image_path = Storage::disk('admin')->url($base_path);
+        
+        $event->thumbnail_path = Storage::disk('admin')->url($event->id.'/thumbnail/'.$file_name);
+        $event->special_link = strtr($event->name,[' '=>'_']).'/'.$event->id."_".md5(time());
+        // $event->special_link = $event->id."_".strtr($event->name,[' '=>'_']).'_'.md5(time());
+        $event->save();
+        if(isset($request->user_id)){
+            foreach($request->user_id as $key => $email) {
+                $user = User::where('email', $email)->first();
+                $body = [
+                    'production_link' => env('SPA_URL').'/rsvp/'.$event->special_link,
+                    'production_time' => Carbon::parse($event->start_date)->format('m-d-Y'), 
+                    'production_name' => $event->name,
+                    'name' => $email,
+                ];
+                Mail::to($email)->send(new SendProductionNotification($body));
+            }
         }
-      }
     }
     
     // if(!empty($tags_id)){
@@ -171,7 +148,7 @@ class EventController extends Controller{
     
     //echo $start_date;
     //dd(Carbon::parse($request->start_date)->format('Y-m-d H:i:s'));
-    // echo "id-".$id; 
+    //echo "id-".$id; 
     //dd($request->all());
     
     $image = $request->file('image_path');
@@ -201,6 +178,7 @@ class EventController extends Controller{
     $update['discription'] = $request->discription;
     $update['user_id'] = auth()->user()->id;
     $update['status'] = $request->status;
+    $update['privacy_policy'] = $request->privacy_policy;
 
     $update['start_date'] = $start_date;
     if(isset($request->start_time[1])) {
@@ -287,10 +265,10 @@ class EventController extends Controller{
     //   $this->removeEventImage($id);
     // }
     // $tags_id = $request->tags_id;
-    if($request->status == 1) {
-      $update_event = Event::where('id','!=',$id)->update(['status' => '0']);
+    // if($request->status == 1) {
+    //   $update_event = Event::where('id','!=',$id)->update(['status' => '0']);
      
-    }
+    // }
     //dd($update);
     Event::find($id)->update($update);
    

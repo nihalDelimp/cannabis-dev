@@ -178,4 +178,15 @@ class EventApiController extends Controller{
     // $this->sendResponse($post);
   }
 
+  public function getPrivacyPolicy($id)
+  {
+    if(!$event = Event::find($id)) {
+        $this->response['data']['error'] = $this->langError(['sorry there is no data to display.']);
+        return $this->sendResponse($this->response);
+    }
+    $this->response['status'] = "1";
+    $this->response['data']['privacy_policy'] = $event->privacy_policy;
+    $this->sendResponse($this->response);
+  }
+
 }

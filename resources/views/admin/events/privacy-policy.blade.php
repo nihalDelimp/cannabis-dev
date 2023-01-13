@@ -1,0 +1,22 @@
+<pre>
+This is an Infused Productions INC DBA Infused Digital and Cannabis Capitol Production and private event.
+
+You are invited to a private filming to participate in the audience of Cannabis Capitol's <strong>Production name</strong> Live Production Filming!
+
+This is an Infused Productions INC DBA Infused Digital and Cannabis Capitol Private Production.
+
+NO SALES OF ANY KIND ALLOWED OR ILLEGAL PRODUCTS OF ANY KIND ALLOWED INSIDE INFUSED PRODUCTIONS AT ANYTIME!
+
+Production : Video and Photoshoot located at 10541 Calle Lee, Suite 101, Los Alamitos, CA 90720 (the “Production”)
+
+DATE/TIME OF PRODUCTION: Beginning the evening of, (Date of Signature) and ending at the conclusion of the Production.
+
+ORGANIZERS: Cannabis Capitol (“4th N 20”) and Infused Productions DBA Infused Digital (“Infused” and together with the directors, officers, employees, volunteers, representatives, and agents of both Cannabis Capitol and Infused, the activity or production holders, activity or event sponsors, and activity or event volunteers, collectively the “Organizers”).
+
+Release of Liability - I HEREBY ASSUME ALL OF THE RISKS OF PARTICIPATING AND/OR VOLUNTEERING IN THE PRODUCTION including by way of example and not limitation, any risks that may arise from negligence or carelessness on the part of the Organizers, from dangerous or defective equipment or property owned, maintained, or controlled by them, or because of their possible liability without fault. I certify that there are no health-related reasons or problems which preclude my participation in this Production. I acknowledge that this Release of Liability and Photography Release Waiver will be used by the Organizers of the Production in which I may participate, and that it will govern my actions and responsibilities at said activity or Production. In consideration of my application and permitting me to participate in this Production, I hereby take action for myself, my executors, administrators, heirs, next of kin, successors, and assigns as follows: (A) I WAIVE, RELEASE, AND DISCHARGE from any and all liability, including but not limited to, liability arising from the negligence or fault of the Organizers, for my death, disability, personal injury, property damage, property theft, or actions of any kind which may hereafter occur to me including my traveling to and from this Production; (B) I INDEMNIFY, HOLD HARMLESS, AND PROMISE NOT TO SUE the Organizers from any and all liabilities or claims made as a result of participation in the Event, whether caused by the negligence of release or otherwise. I acknowledge that the Organizers are NOT responsible for the errors, omissions, acts, or failures to act of any party or entity conducting a specific event or activity on behalf of the Organizers.
+
+Photography/Use of Image
+I understand that at this production or related activities, I may be photographed and/or videoed. I agree to allow my photo, video, or film likeness to be used for any legitimate purpose by Organizers, producers, sponsors, organizers, and assigns. I hereby authorize Organizers, to publish photographs/ video/film taken of me at the Production, and my name and likeness, for use in the Organizer’s print, online and video-based marketing materials, as well as other Organizer publications. I hereby release and hold harmless the Organizers from any reasonable expectation of privacy or confidentiality associated with the images specified above. I further acknowledge that my participation is voluntary and that I will not receive financial compensation of any type associated with the taking or publication of these photographs/video/ film or participation in company marketing materials or other Organizer publications. I acknowledge and agree that publication of said photographs/video/film confers no rights of ownership or royalties whatsoever. I hereby release the Organizers and any third parties involved in the creation or publication of marketing materials, from liability for any claims by me or any third party in connection with my participation.
+
+This Release of Liability and Photography Release Waiver shall be construed broadly to provide a release and waiver to the maximum extent permissible under applicable law. I CERTIFY THAT I HAVE READ THIS DOCUMENT, AND I FULLY UNDERSTAND ITS CONTENT. I AM AWARE THAT THIS IS A RELEASE OF LIABILITY AND A CONTRACT AND I SIGN IT OF MY OWN FREE WILL.
+</pre>
